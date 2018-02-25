@@ -14,6 +14,8 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="@color/toolbar_color"
+            app:layout_constraintBottom_toTopOf="@+id/homeViewPager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -77,6 +79,7 @@
                             android:id="@+id/golgelik"
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
+                            android:layout_marginTop="7dp"
                             android:background="@color/golgelik"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -99,15 +102,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
-        <android.support.design.widget.BottomNavigationView
+        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:menu="@menu/bottom_navigation_menu"
             app:layout_constraintStart_toStartOf="parent">
 
-        </android.support.design.widget.BottomNavigationView>
+        </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
         <View
             android:id="@+id/view"

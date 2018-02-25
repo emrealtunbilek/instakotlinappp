@@ -31,4 +31,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:design:26.1.0'
+
+    //bottom navigation view
+    compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 }

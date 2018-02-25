@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#fafafa</color>
+    <color name="colorPrimary">#000</color>
+    <color name="toolbar_color">#fafafa</color>
     <color name="colorPrimaryDark">#f0f0f0</color>
     <color name="colorAccent">#FF4081</color>
     <color name="golgelik">#dbdbdb</color>
