@@ -19,7 +19,8 @@
         <activity android:name=".News.NewsActivity" />
         <activity android:name=".Profile.ProfileActivity" />
         <activity android:name=".Search.SearchActivity" />
-        <activity android:name=".Share.ShareActivity"></activity>
+        <activity android:name=".Share.ShareActivity" />
+        <activity android:name=".Profile.ProfileSettingsActivity"></activity>
     </application>
 
 </manifest>
