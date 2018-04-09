@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.emrealtunbilek.instakotlinapp.R
+import kotlinx.android.synthetic.main.fragment_profile_edit.*
+import kotlinx.android.synthetic.main.fragment_profile_edit.view.*
 
 
 /**
@@ -18,8 +20,17 @@ class ProfileEditFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_profile_edit, container, false)
+
+        val view=inflater!!.inflate(R.layout.fragment_profile_edit, container, false)
+
+        view.imgClose.setOnClickListener {
+
+            activity.onBackPressed()
+
+        }
+
+
+        return view
     }
 
-}// Required empty public constructor
+}
