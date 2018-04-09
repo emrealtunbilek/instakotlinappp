@@ -29,7 +29,7 @@ class ProfileEditFragment : Fragment() {
         val view=inflater!!.inflate(R.layout.fragment_profile_edit, container, false)
 
         circleProfileImageFragment=view.findViewById(R.id.circleProfileImage)
-        initImageLoader()
+
         setupProfilePicture()
 
 
@@ -43,17 +43,12 @@ class ProfileEditFragment : Fragment() {
         return view
     }
 
-    private fun initImageLoader(){
 
-        var universalImageLoader=UniversalImageLoader(activity)
-        ImageLoader.getInstance().init(universalImageLoader.config)
-
-    }
 
     private fun setupProfilePicture() {
 
         //https://orig00.deviantart.net/67cd/f/2012/309/8/c/android_icon_by_gabrydesign-d4m7he9.png
-        var imgURL= "orig00.deviantart.net/67cd/f/2012/309/8/c/android_icon_by_gabrydesign-d4m7he9.png"
+        var imgURL= "orig00.deviantart.net/67cd/f/2012/309/8/c/android_icon_by_gabrydesign-d4m7he9.pngffffff"
         UniversalImageLoader.setImage(imgURL,circleProfileImageFragment,null,"https://")
 
 

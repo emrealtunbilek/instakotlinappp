@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
+import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
 import kotlinx.android.synthetic.main.activity_profile.*
 
 
@@ -20,6 +21,13 @@ class ProfileActivity : AppCompatActivity() {
 
         setupToolbar()
         setupNavigationView()
+        setupProfilePhoto()
+    }
+
+    private fun setupProfilePhoto() {
+
+        val imgUrl="www.wallpaperup.com/uploads/wallpapers/2016/06/24/991808/9ab236cccae5470451c20329ca43ec6b-1400.jpg"
+        UniversalImageLoader.setImage(imgUrl,circleProfileImage,progressBar,"https://")
     }
 
     private fun setupToolbar() {

@@ -39,11 +39,12 @@ class UniversalImageLoader(val mContext:Context) {
 
         }
 
+
     companion object {
 
         private val defaultImage = R.drawable.ic_profile
 
-        fun setImage(imgURL:String, imageView:ImageView, mProgressBar:ProgressBar?, ilkKisim:String){
+        fun setImage(imgURL:String, imageView:ImageView, mProgressBar:ProgressBar?, ilkKisim:String?){
 
             //imgUrl:facebook.com/images/logo.jpeg
             //ilkKisim:http://
