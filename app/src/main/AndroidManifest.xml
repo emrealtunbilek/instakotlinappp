@@ -12,11 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Home.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".News.NewsActivity" />
         <activity android:name=".Profile.ProfileActivity" />
@@ -24,7 +20,13 @@
         <activity android:name=".Share.ShareActivity" />
         <activity android:name=".Profile.ProfileSettingsActivity" />
         <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".Login.RegisterActivity" />
+        <activity android:name=".Login.RegisterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
