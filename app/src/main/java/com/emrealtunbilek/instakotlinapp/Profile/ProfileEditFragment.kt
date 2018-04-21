@@ -48,7 +48,7 @@ class ProfileEditFragment : Fragment() {
     private fun setupProfilePicture() {
 
         //https://orig00.deviantart.net/67cd/f/2012/309/8/c/android_icon_by_gabrydesign-d4m7he9.png
-        var imgURL= "orig00.deviantart.net/67cd/f/2012/309/8/c/android_icon_by_gabrydesign-d4m7he9.pngffffff"
+        var imgURL= "orig00.deviantart.net/67cd/f/2012/309/8/c/android_icon_by_gabrydesign-d4m7he9.png"
         UniversalImageLoader.setImage(imgURL,circleProfileImageFragment,null,"https://")
 
 

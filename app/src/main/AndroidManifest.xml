@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.emrealtunbilek.instakotlinapp">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +22,9 @@
         <activity android:name=".Profile.ProfileActivity" />
         <activity android:name=".Search.SearchActivity" />
         <activity android:name=".Share.ShareActivity" />
-        <activity android:name=".Profile.ProfileSettingsActivity"></activity>
+        <activity android:name=".Profile.ProfileSettingsActivity" />
+        <activity android:name=".Login.LoginActivity" />
+        <activity android:name=".Login.RegisterActivity" />
     </application>
 
 </manifest>
