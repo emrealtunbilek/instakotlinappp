@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import com.emrealtunbilek.instakotlinapp.R
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -75,5 +76,36 @@ class RegisterActivity : AppCompatActivity() {
 
         })
 
+        btnIleri.setOnClickListener {
+
+            if(etGirisYontemi.hint.toString().equals("Telefon")){
+
+                loginRoot.visibility=View.GONE
+                loginContainer.visibility=View.VISIBLE
+                var transaction=supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
+                transaction.addToBackStack("telefonKoduGirFragmentEklendi")
+                transaction.commit()
+
+
+
+            }
+            else {
+                loginRoot.visibility=View.GONE
+                loginContainer.visibility=View.VISIBLE
+                var transaction=supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.loginContainer,EmailGirisYontemiFragment())
+                transaction.addToBackStack("emailileGirisFragmentEklendi")
+                transaction.commit()
+            }
+
+        }
+
+
+    }
+
+    override fun onBackPressed() {
+        loginRoot.visibility= View.VISIBLE
+        super.onBackPressed()
     }
 }
