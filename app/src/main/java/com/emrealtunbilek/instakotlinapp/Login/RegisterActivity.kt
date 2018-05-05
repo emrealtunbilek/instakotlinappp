@@ -93,7 +93,7 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
                 transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
                 transaction.addToBackStack("telefonKoduGirFragmentEklendi")
                 transaction.commit()
-                EventBus.getDefault().postSticky(EventbusDataEvents.TelefonNoGonder(etGirisYontemi.text.toString()))
+                EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(etGirisYontemi.text.toString(),null,null,null, false))
 
 
             }
@@ -104,7 +104,7 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
                 transaction.replace(R.id.loginContainer, KayitFragment())
                 transaction.addToBackStack("emailileGirisFragmentEklendi")
                 transaction.commit()
-                EventBus.getDefault().postSticky(EventbusDataEvents.EmailGonder(etGirisYontemi.text.toString()))
+                EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(null,etGirisYontemi.text.toString(), null, null, true))
             }
 
         }

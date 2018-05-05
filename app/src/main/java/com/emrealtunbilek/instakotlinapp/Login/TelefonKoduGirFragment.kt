@@ -21,8 +21,7 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
-
-
+import kotlinx.android.synthetic.main.activity_register.*
 
 
 class TelefonKoduGirFragment : Fragment() {
@@ -44,15 +43,12 @@ class TelefonKoduGirFragment : Fragment() {
         view.btnTelKodIleri.setOnClickListener {
 
             if(gelenKod.equals(view.etOnayKodu.text.toString())){
+                EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(gelenTelNo,null, verificationID,gelenKod,false))
                 var transaction=activity!!.supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.loginContainer,KayitFragment())
                 transaction.addToBackStack("kayitFragmentEklendi")
                 transaction.commit()
             }else {
-                var transaction=activity!!.supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.loginContainer,KayitFragment())
-                transaction.addToBackStack("kayitFragmentEklendi")
-                transaction.commit()
                 Toast.makeText(activity,"Kod Hatalı",Toast.LENGTH_SHORT).show()
             }
 
@@ -89,9 +85,9 @@ class TelefonKoduGirFragment : Fragment() {
     }
 
     @Subscribe (sticky = true)
-    internal fun onTelefonNoEvent(telefonNumarasi : EventbusDataEvents.TelefonNoGonder){
+    internal fun onTelefonNoEvent(kayitBilgileri : EventbusDataEvents.KayitBilgileriniGonder){
 
-        gelenTelNo=telefonNumarasi.telNo
+        gelenTelNo= kayitBilgileri.telNo!!
         Log.e("emre","Gelen tel no : "+gelenTelNo)
 
     }
