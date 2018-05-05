@@ -23,7 +23,7 @@ class ProfileEditFragment : Fragment() {
     lateinit var circleProfileImageFragment:CircleImageView
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val view=inflater!!.inflate(R.layout.fragment_profile_edit, container, false)
@@ -35,7 +35,7 @@ class ProfileEditFragment : Fragment() {
 
         view.imgClose.setOnClickListener {
 
-            activity.onBackPressed()
+            activity!!.onBackPressed()
 
         }
 

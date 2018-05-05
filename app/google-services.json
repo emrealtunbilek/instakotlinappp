@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "148163689443",
+    "firebase_url": "https://kotlininstagramkursu.firebaseio.com",
+    "project_id": "kotlininstagramkursu",
+    "storage_bucket": "kotlininstagramkursu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148163689443:android:6fff54e6b164d01e",
+        "android_client_info": {
+          "package_name": "com.emrealtunbilek.instakotlinapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148163689443-8c625flg8j5ssg8cou9rkbkkdo0sppr6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emrealtunbilek.instakotlinapp",
+            "certificate_hash": "b7c5b8560bad7fb5d5b0e6350fce6f19f2ddf596"
+          }
+        },
+        {
+          "client_id": "148163689443-tgf7ibkc434fkgjncbspvg7b6300q6l0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1FN4CtS9drupV7ZMhVCxjaRXwb4_fp5s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148163689443-tgf7ibkc434fkgjncbspvg7b6300q6l0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

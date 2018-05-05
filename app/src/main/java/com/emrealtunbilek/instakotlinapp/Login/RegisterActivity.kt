@@ -43,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
             viewTelefon.visibility = View.VISIBLE
             viewEposta.visibility = View.INVISIBLE
             etGirisYontemi.setText("")
-            etGirisYontemi.inputType = InputType.TYPE_CLASS_NUMBER
+            etGirisYontemi.inputType = InputType.TYPE_CLASS_PHONE
             etGirisYontemi.setHint("Telefon")
 
             btnIleri.isEnabled=false
