@@ -15,13 +15,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
 
-class EmailGirisYontemiFragment : Fragment() {
+class KayitFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater!!.inflate(R.layout.fragment_email_giris_yontemi, container, false)
+        return inflater!!.inflate(R.layout.fragment_kayit, container, false)
     }
 
     @Subscribe(sticky = true)
@@ -41,5 +41,6 @@ class EmailGirisYontemiFragment : Fragment() {
         super.onDetach()
         EventBus.getDefault().unregister(this)
     }
+
 
 }

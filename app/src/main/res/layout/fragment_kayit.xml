@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.emrealtunbilek.instakotlinapp.Login.TelefonKoduGirFragment">
+    tools:context="com.emrealtunbilek.instakotlinapp.Login.KayitFragment">
 
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
-        android:text="ONAY KODUNU GİR"
+        android:layout_marginTop="64dp"
+        android:text="AD VE ŞİFRE"
         android:textColor="@color/siyah"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -21,63 +21,69 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Şu numaraya gönderdiğimiz 6 haneli kodu gir :"
-        android:textColor="@color/siyah"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <TextView
-        android:id="@+id/tvKullaniciTelNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="123 45 620"
-        android:textColor="@color/siyah"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
     <EditText
-        android:id="@+id/etOnayKodu"
+        android:id="@+id/editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/register_edit_text"
-        android:padding="16dp"
         android:ems="10"
-        android:hint="Onay Kodu"
-        android:inputType="number"
+        android:hint="Adın ve soyadın"
+        android:inputType="textPersonName"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvKullaniciTelNo" />
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
-    <Button
-        android:id="@+id/btnTelKodIleri"
+    <EditText
+        android:id="@+id/editText2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/register_button_aktif"
-        android:text="Ileri"
-        android:textAllCaps="false"
-        android:textColor="@color/beyaz"
+        android:background="@drawable/register_edit_text"
+        android:ems="10"
+        android:hint="Şifre"
+        android:inputType="textPassword"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etOnayKodu" />
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/register_edit_text"
+        android:ems="10"
+        android:hint="Kullanıcı Adı"
+        android:inputType="textPersonName"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/register_button"
+        android:text="Giriş"
+        android:textAllCaps="false"
+        android:textColor="@color/mavi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText3" />
 
     <View
         android:id="@+id/golgelik1"

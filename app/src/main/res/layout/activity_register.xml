@@ -109,7 +109,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/register_button"
             android:enabled="false"
-            android:text="Ileri"
+            android:text="Ileriiiiii"
             android:textAllCaps="false"
             android:textColor="@color/sonukmavi"
             app:layout_constraintEnd_toEndOf="parent"
