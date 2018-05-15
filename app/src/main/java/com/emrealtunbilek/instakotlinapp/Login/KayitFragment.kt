@@ -36,13 +36,13 @@ class KayitFragment : Fragment() {
             gelenEmail = kayitbilgileri.email!!
 
             Toast.makeText(activity,"Gelen email : "+gelenEmail,Toast.LENGTH_SHORT).show()
-            Log.e("emre", "Gelen tel no : " + gelenEmail)
+            Log.e("emre", "Gelen email : " + gelenEmail)
         } else {
             telNo = kayitbilgileri.telNo!!
             verificationID = kayitbilgileri.verificationID!!
             gelenKod=kayitbilgileri.code!!
 
-            Toast.makeText(activity,"Gelen kod : "+gelenKod+" VerificationID:"+verificationID,Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity,"Gelen kod : "+gelenKod+" VerificationID: "+verificationID,Toast.LENGTH_SHORT).show()
 
         }
 

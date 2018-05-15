@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                if (start+before+count >= 10) {
+                if (s!!.length >= 10) {
 
                     btnIleri.isEnabled=true
                     btnIleri.setTextColor(ContextCompat.getColor(this@RegisterActivity,R.color.beyaz))
@@ -89,10 +89,12 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
 
                 loginRoot.visibility=View.GONE
                 loginContainer.visibility=View.VISIBLE
+
                 var transaction=supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
                 transaction.addToBackStack("telefonKoduGirFragmentEklendi")
                 transaction.commit()
+
                 EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(etGirisYontemi.text.toString(),null,null,null, false))
 
 

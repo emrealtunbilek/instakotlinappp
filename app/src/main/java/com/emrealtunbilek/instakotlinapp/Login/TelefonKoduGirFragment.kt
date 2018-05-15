@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 
 import com.emrealtunbilek.instakotlinapp.R
@@ -17,11 +18,9 @@ import kotlinx.android.synthetic.main.fragment_telefon_kodu_gir.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import java.util.concurrent.TimeUnit
-import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
-import kotlinx.android.synthetic.main.activity_register.*
+
 
 
 class TelefonKoduGirFragment : Fragment() {
@@ -30,6 +29,7 @@ class TelefonKoduGirFragment : Fragment() {
     lateinit var mCallbacks:PhoneAuthProvider.OnVerificationStateChangedCallbacks
     var verificationID = ""
     var gelenKod=""
+    lateinit var progressBar: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,6 +37,7 @@ class TelefonKoduGirFragment : Fragment() {
         var view=inflater!!.inflate(R.layout.fragment_telefon_kodu_gir, container, false)
 
         view.tvKullaniciTelNo.setText(gelenTelNo)
+        progressBar=view.pbTelNoOnayla
 
         setupCallback()
 
@@ -70,16 +71,29 @@ class TelefonKoduGirFragment : Fragment() {
         mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-              gelenKod = credential.smsCode!!
+                if(!credential.smsCode.isNullOrEmpty())
+                {
+                    gelenKod = credential.smsCode!!
+                    progressBar.visibility=View.INVISIBLE
+                    Log.e("HATA","on verification completed sms gelmiş:"+ gelenKod)
+
+                }else{
+                    Log.e("HATA","on verification completed sms gelmeyecek")
+                }
+
+
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
                  Log.e("HATA","Hata çıktı: "+e.message)
+                progressBar.visibility=View.INVISIBLE
             }
 
             override fun onCodeSent(verificationId: String?,
                                     token: PhoneAuthProvider.ForceResendingToken?) {
                 verificationID =verificationId!!
+                progressBar.visibility=View.VISIBLE
+                Log.e("HATA","oncodesent çalıştı")
             }
         }
     }
