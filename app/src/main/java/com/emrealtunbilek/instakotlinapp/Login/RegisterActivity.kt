@@ -9,6 +9,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
 import kotlinx.android.synthetic.main.activity_register.*
@@ -87,26 +88,34 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
 
             if(etGirisYontemi.hint.toString().equals("Telefon")){
 
-                loginRoot.visibility=View.GONE
-                loginContainer.visibility=View.VISIBLE
-
-                var transaction=supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
-                transaction.addToBackStack("telefonKoduGirFragmentEklendi")
-                transaction.commit()
-
-                EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(etGirisYontemi.text.toString(),null,null,null, false))
+                if(isValidTelefon(etGirisYontemi.text.toString())){
+                    loginRoot.visibility=View.GONE
+                    loginContainer.visibility=View.VISIBLE
+                    var transaction=supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
+                    transaction.addToBackStack("telefonKoduGirFragmentEklendi")
+                    transaction.commit()
+                    EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(etGirisYontemi.text.toString(),null,null,null, false))
+                }else {
+                    Toast.makeText(this,"Lütfen geçerli bir telefon numarası giriniz",Toast.LENGTH_SHORT).show()
+                }
 
 
             }
             else {
-                loginRoot.visibility=View.GONE
-                loginContainer.visibility=View.VISIBLE
-                var transaction=supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.loginContainer, KayitFragment())
-                transaction.addToBackStack("emailileGirisFragmentEklendi")
-                transaction.commit()
-                EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(null,etGirisYontemi.text.toString(), null, null, true))
+
+                if(isValidEmail(etGirisYontemi.text.toString())){
+                    loginRoot.visibility=View.GONE
+                    loginContainer.visibility=View.VISIBLE
+                    var transaction=supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.loginContainer, KayitFragment())
+                    transaction.addToBackStack("emailileGirisFragmentEklendi")
+                    transaction.commit()
+                    EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(null,etGirisYontemi.text.toString(), null, null, true))
+                }
+                else {
+                    Toast.makeText(this,"Lütfen geçerli bir email  giriniz",Toast.LENGTH_SHORT).show()
+                }
             }
 
         }
@@ -120,6 +129,24 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
         if(elemanSayisi==0){
             loginRoot.visibility= View.VISIBLE
         }
+    }
+
+    fun isValidEmail(kontrolEdilecekMail:String):Boolean{
+
+        if(kontrolEdilecekMail == null){
+            return false
+        }
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(kontrolEdilecekMail).matches()
+
+    }
+
+    fun isValidTelefon(kontrolEdilecekTelefon:String):Boolean{
+
+        if(kontrolEdilecekTelefon == null || kontrolEdilecekTelefon.length > 14){
+            return false
+        }
+        return android.util.Patterns.PHONE.matcher(kontrolEdilecekTelefon).matches()
+
     }
 
 
