@@ -10,8 +10,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_register.*
 import org.greenrobot.eventbus.EventBus
 
@@ -19,10 +21,13 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
 
 
     lateinit var manager:FragmentManager
+    lateinit var mRef:DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        mRef=FirebaseDatabase.getInstance().reference
 
         manager=supportFragmentManager
         manager.addOnBackStackChangedListener(this)
@@ -88,14 +93,49 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
 
             if(etGirisYontemi.hint.toString().equals("Telefon")){
 
+                var ceptelefonuKullanimdaMi=false
+
                 if(isValidTelefon(etGirisYontemi.text.toString())){
-                    loginRoot.visibility=View.GONE
-                    loginContainer.visibility=View.VISIBLE
-                    var transaction=supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
-                    transaction.addToBackStack("telefonKoduGirFragmentEklendi")
-                    transaction.commit()
-                    EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(etGirisYontemi.text.toString(),null,null,null, false))
+
+                    mRef.child("users").addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onCancelled(p0: DatabaseError?) {
+
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot?) {
+
+                          if(p0!!.getValue()!=null){
+
+                              for(user in p0!!.children){
+
+                                  var okunanKullanici=user.getValue(Users::class.java)
+                                  if(okunanKullanici!!.phone_number!!.equals(etGirisYontemi.text.toString())){
+                                      Toast.makeText(this@RegisterActivity,"Telefon numarası Kullanımda",Toast.LENGTH_SHORT).show()
+                                      ceptelefonuKullanimdaMi=true
+                                      break
+                                  }
+
+                              }
+
+                              if(ceptelefonuKullanimdaMi==false){
+                                  loginRoot.visibility=View.GONE
+                                  loginContainer.visibility=View.VISIBLE
+                                  var transaction=supportFragmentManager.beginTransaction()
+                                  transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
+                                  transaction.addToBackStack("telefonKoduGirFragmentEklendi")
+                                  transaction.commit()
+                                  EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(etGirisYontemi.text.toString(),null,null,null, false))
+                              }
+
+                          }
+
+                        }
+
+                    })
+
+
+
+
                 }else {
                     Toast.makeText(this,"Lütfen geçerli bir telefon numarası giriniz",Toast.LENGTH_SHORT).show()
                 }
@@ -105,13 +145,46 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
             else {
 
                 if(isValidEmail(etGirisYontemi.text.toString())){
-                    loginRoot.visibility=View.GONE
-                    loginContainer.visibility=View.VISIBLE
-                    var transaction=supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.loginContainer, KayitFragment())
-                    transaction.addToBackStack("emailileGirisFragmentEklendi")
-                    transaction.commit()
-                    EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(null,etGirisYontemi.text.toString(), null, null, true))
+
+                    var emailKullanimdaMi=false
+
+
+                    mRef.child("users").addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onCancelled(p0: DatabaseError?) {
+
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot?) {
+
+                            if(p0!!.getValue() != null){
+
+                                for(user in p0!!.children){
+
+                                    var okunanKullanici=user.getValue(Users::class.java)
+                                    if (okunanKullanici!!.email!!.equals(etGirisYontemi.text.toString())){
+                                        Toast.makeText(this@RegisterActivity,"Email Kullanımda",Toast.LENGTH_SHORT).show()
+                                        emailKullanimdaMi=true
+                                        break
+                                    }
+
+
+                                }
+
+                                if(emailKullanimdaMi==false){
+                                    loginRoot.visibility=View.GONE
+                                    loginContainer.visibility=View.VISIBLE
+                                    var transaction=supportFragmentManager.beginTransaction()
+                                    transaction.replace(R.id.loginContainer, KayitFragment())
+                                    transaction.addToBackStack("emailileGirisFragmentEklendi")
+                                    transaction.commit()
+                                    EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(null,etGirisYontemi.text.toString(), null, null, true))
+                                }
+                            }
+                        }
+
+                    })
+
+
                 }
                 else {
                     Toast.makeText(this,"Lütfen geçerli bir email  giriniz",Toast.LENGTH_SHORT).show()

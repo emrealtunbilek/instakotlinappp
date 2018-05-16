@@ -23,8 +23,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_kayit.*
 import kotlinx.android.synthetic.main.fragment_kayit.view.*
 import org.greenrobot.eventbus.EventBus
@@ -64,115 +63,161 @@ class KayitFragment : Fragment() {
 
         view.btnGiris.setOnClickListener {
 
-            progressBar.visibility=View.VISIBLE
+            var userNameKullanimdaMi=false
 
-            //kullanıcı email ile kaydolmak istiyor
-            if(emailIleKayitIslemi){
+            mRef.child("users").addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
 
-                var sifre=view.etSifre.text.toString()
-                var adSoyad=view.etAdSoyad.text.toString()
-                var userName=view.etKullaniciAdi.text.toString()
+                }
 
+                override fun onDataChange(p0: DataSnapshot?) {
 
-                mAuth.createUserWithEmailAndPassword(gelenEmail,sifre)
-                        .addOnCompleteListener(object : OnCompleteListener<AuthResult>{
-                            override fun onComplete(p0: Task<AuthResult>) {
+                    if(p0!!.getValue() != null){
 
-                                if(p0!!.isSuccessful){
-                                    Toast.makeText(activity,"Oturum email ile açıldı"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
-
-                                    var userID=mAuth.currentUser!!.uid.toString()
-                                    //oturum açan kullanıcın verilerini databaseye kaydedelim...
-                                    var kaydedilecekKullanici=Users(gelenEmail,sifre,userName,adSoyad,"","",userID)
-
-                                    mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
-                                            .addOnCompleteListener(object : OnCompleteListener<Void>{
-                                                override fun onComplete(p0: Task<Void>) {
-                                                   if(p0!!.isSuccessful){
-                                                       Toast.makeText(activity,"Kullanıcı kaydedildi",Toast.LENGTH_SHORT).show()
-                                                       progressBar.visibility=View.INVISIBLE
-                                                   }else {
-                                                       progressBar.visibility=View.INVISIBLE
-                                                       mAuth.currentUser!!.delete()
-                                                               .addOnCompleteListener(object : OnCompleteListener<Void>{
-                                                                   override fun onComplete(p0: Task<Void>) {
-                                                                       if(p0!!.isSuccessful){
-                                                                           Toast.makeText(activity,"Kullanıcı kaydedilemedi, Tekrar deneyin",Toast.LENGTH_SHORT).show()
-                                                                       }
-                                                                   }
-
-                                                               })
-                                                   }
-                                                }
-
-
-                                            })
-
-
-
-                                }else {
-                                    progressBar.visibility=View.INVISIBLE
-                                    Toast.makeText(activity,"Oturum açılamadı :"+p0!!.exception, Toast.LENGTH_SHORT).show()
-                                }
-
+                        for (user in p0!!.children){
+                            var okunanKullanici= user.getValue(Users::class.java)
+                            if(okunanKullanici!!.user_name!!.equals(view.etKullaniciAdi.text.toString())){
+                                Toast.makeText(activity,"Kullanıcı adı Kullanımda",Toast.LENGTH_SHORT).show()
+                                userNameKullanimdaMi=true
+                                break
                             }
+                        }
 
-                        })
-
-            }
-
-            //kulllanıcı telelfon no ile kayıt olmak istiyor
-            else {
-
-                var sifre=view.etSifre.text.toString()
-                var sahteEmail = telNo+"@emre.com" //"+905547126420@emre.com"
-                var adSoyad=view.etAdSoyad.text.toString()
-                var userName=view.etKullaniciAdi.text.toString()
-                mAuth.createUserWithEmailAndPassword(sahteEmail,sifre)
-                        .addOnCompleteListener(object : OnCompleteListener<AuthResult>{
-                            override fun onComplete(p0: Task<AuthResult>) {
-
-                                if(p0!!.isSuccessful){
-                                    Toast.makeText(activity,"Oturum tel no ile açıldı Uid:"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
-                                    var userID=mAuth.currentUser!!.uid.toString()
+                        if(userNameKullanimdaMi==false){
 
 
-                                    //oturum açan kullanıcın verilerini databaseye kaydedelim...
-                                    var kaydedilecekKullanici=Users("",sifre,userName,adSoyad,telNo,sahteEmail,userID)
 
-                                    mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
-                                            .addOnCompleteListener(object : OnCompleteListener<Void>{
-                                                override fun onComplete(p0: Task<Void>) {
-                                                    if(p0!!.isSuccessful){
-                                                        Toast.makeText(activity,"Kullanıcı kaydedildi",Toast.LENGTH_SHORT).show()
-                                                        progressBar.visibility=View.INVISIBLE
-                                                    }else {
-                                                        progressBar.visibility=View.INVISIBLE
-                                                        mAuth.currentUser!!.delete()
-                                                                .addOnCompleteListener(object : OnCompleteListener<Void>{
-                                                                    override fun onComplete(p0: Task<Void>) {
-                                                                        if(p0!!.isSuccessful){
-                                                                            Toast.makeText(activity,"Kullanıcı kaydedilemedi, Tekrar deneyin",Toast.LENGTH_SHORT).show()
-                                                                        }
+                            progressBar.visibility=View.VISIBLE
+
+                            //kullanıcı email ile kaydolmak istiyor
+                            if(emailIleKayitIslemi){
+
+                                var sifre=view.etSifre.text.toString()
+                                var adSoyad=view.etAdSoyad.text.toString()
+                                var userName=view.etKullaniciAdi.text.toString()
+
+
+                                mAuth.createUserWithEmailAndPassword(gelenEmail,sifre)
+                                        .addOnCompleteListener(object : OnCompleteListener<AuthResult>{
+                                            override fun onComplete(p0: Task<AuthResult>) {
+
+                                                if(p0!!.isSuccessful){
+                                                    Toast.makeText(activity,"Oturum email ile açıldı"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
+
+                                                    var userID=mAuth.currentUser!!.uid.toString()
+                                                    //oturum açan kullanıcın verilerini databaseye kaydedelim...
+                                                    var kaydedilecekKullanici=Users(gelenEmail,sifre,userName,adSoyad,"","",userID)
+
+                                                    mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
+                                                            .addOnCompleteListener(object : OnCompleteListener<Void>{
+                                                                override fun onComplete(p0: Task<Void>) {
+                                                                    if(p0!!.isSuccessful){
+                                                                        Toast.makeText(activity,"Kullanıcı kaydedildi",Toast.LENGTH_SHORT).show()
+                                                                        progressBar.visibility=View.INVISIBLE
+                                                                    }else {
+                                                                        progressBar.visibility=View.INVISIBLE
+                                                                        mAuth.currentUser!!.delete()
+                                                                                .addOnCompleteListener(object : OnCompleteListener<Void>{
+                                                                                    override fun onComplete(p0: Task<Void>) {
+                                                                                        if(p0!!.isSuccessful){
+                                                                                            Toast.makeText(activity,"Kullanıcı kaydedilemedi, Tekrar deneyin",Toast.LENGTH_SHORT).show()
+                                                                                        }
+                                                                                    }
+
+                                                                                })
                                                                     }
+                                                                }
 
-                                                                })
-                                                    }
+
+                                                            })
+
+
+
+                                                }else {
+                                                    progressBar.visibility=View.INVISIBLE
+                                                    Toast.makeText(activity,"Oturum açılamadı :"+p0!!.exception, Toast.LENGTH_SHORT).show()
                                                 }
 
+                                            }
 
-                                            })
-                                }else {
-                                    progressBar.visibility=View.INVISIBLE
-                                    Toast.makeText(activity,"Oturum açılamadı :"+p0!!.exception, Toast.LENGTH_SHORT).show()
-                                }
+                                        })
 
                             }
 
-                        })
+                            //kulllanıcı telelfon no ile kayıt olmak istiyor
+                            else {
+
+                                var sifre=view.etSifre.text.toString()
+                                var sahteEmail = telNo+"@emre.com" //"+905547126420@emre.com"
+                                var adSoyad=view.etAdSoyad.text.toString()
+                                var userName=view.etKullaniciAdi.text.toString()
+                                mAuth.createUserWithEmailAndPassword(sahteEmail,sifre)
+                                        .addOnCompleteListener(object : OnCompleteListener<AuthResult>{
+                                            override fun onComplete(p0: Task<AuthResult>) {
+
+                                                if(p0!!.isSuccessful){
+                                                    Toast.makeText(activity,"Oturum tel no ile açıldı Uid:"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
+                                                    var userID=mAuth.currentUser!!.uid.toString()
 
 
-            }
+                                                    //oturum açan kullanıcın verilerini databaseye kaydedelim...
+                                                    var kaydedilecekKullanici=Users("",sifre,userName,adSoyad,telNo,sahteEmail,userID)
+
+                                                    mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
+                                                            .addOnCompleteListener(object : OnCompleteListener<Void>{
+                                                                override fun onComplete(p0: Task<Void>) {
+                                                                    if(p0!!.isSuccessful){
+                                                                        Toast.makeText(activity,"Kullanıcı kaydedildi",Toast.LENGTH_SHORT).show()
+                                                                        progressBar.visibility=View.INVISIBLE
+                                                                    }else {
+                                                                        progressBar.visibility=View.INVISIBLE
+                                                                        mAuth.currentUser!!.delete()
+                                                                                .addOnCompleteListener(object : OnCompleteListener<Void>{
+                                                                                    override fun onComplete(p0: Task<Void>) {
+                                                                                        if(p0!!.isSuccessful){
+                                                                                            Toast.makeText(activity,"Kullanıcı kaydedilemedi, Tekrar deneyin",Toast.LENGTH_SHORT).show()
+                                                                                        }
+                                                                                    }
+
+                                                                                })
+                                                                    }
+                                                                }
+
+
+                                                            })
+                                                }else {
+                                                    progressBar.visibility=View.INVISIBLE
+                                                    Toast.makeText(activity,"Oturum açılamadı :"+p0!!.exception, Toast.LENGTH_SHORT).show()
+                                                }
+
+                                            }
+
+                                        })
+
+
+                            }
+
+
+
+                        }
+
+                    }
+
+
+                }
+
+
+            })
+
+
+
+
+
+
+
+
+
+
 
 
 
