@@ -62,10 +62,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/register_edit_text"
+        android:padding="16dp"
         android:ems="10"
         android:hint="Kullanıcı Adı"
         android:inputType="textPersonName"
-        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSifre" />
@@ -79,9 +79,9 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/register_button"
         android:enabled="false"
-        android:text="Giriş"
         android:textAllCaps="false"
         android:textColor="@color/mavi"
+        android:text="Giriş"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etKullaniciAdi" />

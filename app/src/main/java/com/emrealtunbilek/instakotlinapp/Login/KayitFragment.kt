@@ -2,6 +2,7 @@ package com.emrealtunbilek.instakotlinapp.Login
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -20,8 +21,6 @@ import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.EmailAuthCredential
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_kayit.*
@@ -53,6 +52,13 @@ class KayitFragment : Fragment() {
 
         if(mAuth.currentUser != null){
             mAuth.signOut()
+        }
+
+        view.tvGirisYap.setOnClickListener {
+
+            var intent=Intent(activity,LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+
         }
 
         mRef= FirebaseDatabase.getInstance().reference
