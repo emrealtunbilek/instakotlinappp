@@ -86,6 +86,7 @@ class TelefonKoduGirFragment : Fragment() {
 
             override fun onVerificationFailed(e: FirebaseException) {
                  Log.e("HATA","Hata çıktı: "+e.message)
+                Toast.makeText(activity,"hata:"+e.message,Toast.LENGTH_SHORT).show()
                 progressBar.visibility=View.INVISIBLE
             }
 

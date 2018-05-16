@@ -12,9 +12,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.emrealtunbilek.instakotlinapp.Models.Users
 
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.EmailAuthCredential
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_kayit.*
 import kotlinx.android.synthetic.main.fragment_kayit.view.*
 import org.greenrobot.eventbus.EventBus
@@ -27,15 +36,124 @@ class KayitFragment : Fragment() {
     var verificationID = ""
     var gelenKod = ""
     var gelenEmail = ""
+    var emailIleKayitIslemi=true
+    lateinit var mAuth:FirebaseAuth
+    lateinit var mRef:DatabaseReference
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         var view= inflater!!.inflate(R.layout.fragment_kayit, container, false)
 
+        mAuth= FirebaseAuth.getInstance()
+
+        if(mAuth.currentUser != null){
+            mAuth.signOut()
+        }
+
+        mRef= FirebaseDatabase.getInstance().reference
+
         view.etAdSoyad.addTextChangedListener(watcher)
         view.etKullaniciAdi.addTextChangedListener(watcher)
         view.etSifre.addTextChangedListener(watcher)
+
+        view.btnGiris.setOnClickListener {
+
+
+            //kullanıcı email ile kaydolmak istiyor
+            if(emailIleKayitIslemi){
+
+                var sifre=view.etSifre.text.toString()
+                var adSoyad=view.etAdSoyad.text.toString()
+                var userName=view.etKullaniciAdi.text.toString()
+
+
+                mAuth.createUserWithEmailAndPassword(gelenEmail,sifre)
+                        .addOnCompleteListener(object : OnCompleteListener<AuthResult>{
+                            override fun onComplete(p0: Task<AuthResult>) {
+
+                                if(p0!!.isSuccessful){
+                                    Toast.makeText(activity,"Oturum email ile açıldı"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
+
+                                    var userID=mAuth.currentUser!!.uid.toString()
+                                    //oturum açan kullanıcın verilerini databaseye kaydedelim...
+                                    var kaydedilecekKullanici=Users(gelenEmail,sifre,userName,adSoyad,userID)
+
+                                    mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
+                                            .addOnCompleteListener(object : OnCompleteListener<Void>{
+                                                override fun onComplete(p0: Task<Void>) {
+                                                   if(p0!!.isSuccessful){
+                                                       Toast.makeText(activity,"Kullanıcı kaydedildi",Toast.LENGTH_SHORT).show()
+                                                   }else {
+
+                                                       Toast.makeText(activity,"Kullanıcı kaydedilemedi",Toast.LENGTH_SHORT).show()
+                                                   }
+                                                }
+
+
+                                            })
+
+
+
+                                }else {
+                                    Toast.makeText(activity,"Oturum açılamadı :"+p0!!.exception, Toast.LENGTH_SHORT).show()
+                                }
+
+                            }
+
+                        })
+
+            }
+
+            //kulllanıcı telelfon no ile kayıt olmak istiyor
+            else {
+
+                var sifre=view.etSifre.text.toString()
+                var sahteEmail = telNo+"@emre.com" //"+905547126420@emre.com"
+                var adSoyad=view.etAdSoyad.text.toString()
+                var userName=view.etKullaniciAdi.text.toString()
+                mAuth.createUserWithEmailAndPassword(sahteEmail,sifre)
+                        .addOnCompleteListener(object : OnCompleteListener<AuthResult>{
+                            override fun onComplete(p0: Task<AuthResult>) {
+
+                                if(p0!!.isSuccessful){
+                                    Toast.makeText(activity,"Oturum tel no ile açıldı Uid:"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
+                                    var userID=mAuth.currentUser!!.uid.toString()
+
+
+                                    //oturum açan kullanıcın verilerini databaseye kaydedelim...
+                                    var kaydedilecekKullanici=Users(sifre,userName,adSoyad,telNo,sahteEmail,userID)
+
+                                    mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
+                                            .addOnCompleteListener(object : OnCompleteListener<Void>{
+                                                override fun onComplete(p0: Task<Void>) {
+                                                    if(p0!!.isSuccessful){
+                                                        Toast.makeText(activity,"Kullanıcı kaydedildi",Toast.LENGTH_SHORT).show()
+                                                    }else {
+
+                                                        Toast.makeText(activity,"Kullanıcı kaydedilemedi",Toast.LENGTH_SHORT).show()
+                                                    }
+                                                }
+
+
+                                            })
+                                }else {
+                                    Toast.makeText(activity,"Oturum açılamadı :"+p0!!.exception, Toast.LENGTH_SHORT).show()
+                                }
+
+                            }
+
+                        })
+
+
+            }
+
+
+
+
+
+
+        }
 
 
         return view
@@ -75,15 +193,19 @@ class KayitFragment : Fragment() {
 
     }
 
+
+    //////////////////////////// EVENTBUS /////////////////////////////////
     @Subscribe(sticky = true)
     internal fun onKayitEvent(kayitbilgileri: EventbusDataEvents.KayitBilgileriniGonder) {
 
         if (kayitbilgileri.emailkayit == true) {
+            emailIleKayitIslemi=true
             gelenEmail = kayitbilgileri.email!!
 
             Toast.makeText(activity,"Gelen email : "+gelenEmail,Toast.LENGTH_SHORT).show()
             Log.e("emre", "Gelen email : " + gelenEmail)
         } else {
+            emailIleKayitIslemi=false
             telNo = kayitbilgileri.telNo!!
             verificationID = kayitbilgileri.verificationID!!
             gelenKod=kayitbilgileri.code!!
@@ -104,6 +226,6 @@ class KayitFragment : Fragment() {
         super.onDetach()
         EventBus.getDefault().unregister(this)
     }
-
+//////////////////////////// EVENTBUS /////////////////////////////////
 
 }
