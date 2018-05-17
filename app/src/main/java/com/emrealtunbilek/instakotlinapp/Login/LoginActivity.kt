@@ -1,5 +1,6 @@
 package com.emrealtunbilek.instakotlinapp.Login
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -7,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
+import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.google.android.gms.tasks.OnCompleteListener
@@ -20,12 +22,17 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
+    lateinit var mAuthListener:FirebaseAuth.AuthStateListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        setupAuthListener()
+
+
         mAuth = FirebaseAuth.getInstance()
+
         mRef = FirebaseDatabase.getInstance().reference
         init()
 
@@ -39,9 +46,17 @@ class LoginActivity : AppCompatActivity() {
             //kullanıcı veritabanında aranır, bulunursa giriş yapma denemesi yapılır
             oturumAcacakKullaniciyiDenetle(etEmailTelorUsername.text.toString(), etSifre.text.toString())
         }
+
+        tvGirisYap.setOnClickListener {
+            var intent=Intent(this@LoginActivity,RegisterActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun oturumAcacakKullaniciyiDenetle(emailPhoneNumberUserName: String, sifre: String) {
+
+        var kullaniciBulundu=false
 
         mRef.child("users").orderByChild("email").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -56,18 +71,24 @@ class LoginActivity : AppCompatActivity() {
                     if (okunanKullanici!!.email!!.toString().equals(emailPhoneNumberUserName)) {
 
                         oturumAc(okunanKullanici, sifre, false)
+                        kullaniciBulundu=true
                         break
 
                     } else if (okunanKullanici!!.user_name!!.toString().equals(emailPhoneNumberUserName)) {
                         oturumAc(okunanKullanici, sifre, false)
+                        kullaniciBulundu=true
                         break
                     } else if (okunanKullanici!!.phone_number!!.toString().equals(emailPhoneNumberUserName)) {
 
                         oturumAc(okunanKullanici, sifre, true)
+                        kullaniciBulundu=true
                         break
                     }
 
+                }
 
+                if(kullaniciBulundu==false){
+                    Toast.makeText(this@LoginActivity,"Kullanıcı Bulunamadı", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -128,5 +149,36 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun setupAuthListener() {
+        mAuthListener=object : FirebaseAuth.AuthStateListener{
+            override fun onAuthStateChanged(p0: FirebaseAuth) {
+                var user=FirebaseAuth.getInstance().currentUser
+
+                if(user != null){
+
+                    var intent=Intent(this@LoginActivity,HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    startActivity(intent)
+                    finish()
+                }else {
+
+
+                }
+            }
+
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mAuth.addAuthStateListener(mAuthListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if(mAuthListener != null){
+            mAuth.removeAuthStateListener(mAuthListener)
+        }
     }
 }
