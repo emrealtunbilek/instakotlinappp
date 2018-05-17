@@ -26,4 +26,9 @@ class Users {
         this.user_id = user_id
     }
 
+    override fun toString(): String {
+        return "Users(email=$email, password=$password, user_name=$user_name, adi_soyadi=$adi_soyadi, phone_number=$phone_number, email_phone_number=$email_phone_number, user_id=$user_id)"
+    }
+
+
 }
