@@ -9,11 +9,13 @@ import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
+import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
 import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_profile.*
+import org.greenrobot.eventbus.EventBus
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -43,7 +45,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun kullaniciBilgileriniGetir() {
 
-        mRef.child("users").child(mUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+        mRef.child("users").child(mUser!!.uid).addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
             }
@@ -52,6 +54,9 @@ class ProfileActivity : AppCompatActivity() {
 
                 if(p0!!.getValue() != null){
                     var okunanKullaniciBilgileri=p0!!.getValue(Users::class.java)
+
+
+                    EventBus.getDefault().postSticky(EventbusDataEvents.KullaniciBilgileriniGonder(okunanKullaniciBilgileri))
 
                     tvProfilAdiToolbar.setText(okunanKullaniciBilgileri!!.user_name)
                     tvProfilGercekAdi.setText(okunanKullaniciBilgileri!!.adi_soyadi)

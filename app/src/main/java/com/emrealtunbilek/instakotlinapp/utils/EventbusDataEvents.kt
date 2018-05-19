@@ -1,5 +1,7 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
+import com.emrealtunbilek.instakotlinapp.Models.Users
+
 /**
  * Created by Emre on 1.05.2018.
  */
@@ -7,5 +9,7 @@ package com.emrealtunbilek.instakotlinapp.utils
 class EventbusDataEvents {
 
     internal class KayitBilgileriniGonder(var telNo:String?, var email:String?, var verificationID:String?, var code:String?, var emailkayit:Boolean )
+
+    internal class KullaniciBilgileriniGonder(var kullanici:Users?)
 
 }
