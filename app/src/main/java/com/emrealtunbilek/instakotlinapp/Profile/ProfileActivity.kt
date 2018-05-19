@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
+import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
 import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_profile.*
 
 
@@ -20,6 +23,8 @@ class ProfileActivity : AppCompatActivity() {
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+    lateinit var mUser:FirebaseUser
+    lateinit var mRef:DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +32,56 @@ class ProfileActivity : AppCompatActivity() {
 
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
+        mUser=mAuth.currentUser!!
+        mRef=FirebaseDatabase.getInstance().reference
+
 
         setupToolbar()
         setupNavigationView()
-        setupProfilePhoto()
+        kullaniciBilgileriniGetir()
     }
 
-    private fun setupProfilePhoto() {
+    private fun kullaniciBilgileriniGetir() {
 
-        val imgUrl="www.wallpaperup.com/uploads/wallpapers/2016/06/24/991808/9ab236cccae5470451c20329ca43ec6b-1400.jpg"
-        UniversalImageLoader.setImage(imgUrl,circleProfileImage,progressBar,"https://")
+        mRef.child("users").child(mUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+
+                if(p0!!.getValue() != null){
+                    var okunanKullaniciBilgileri=p0!!.getValue(Users::class.java)
+
+                    tvProfilAdiToolbar.setText(okunanKullaniciBilgileri!!.user_name)
+                    tvProfilGercekAdi.setText(okunanKullaniciBilgileri!!.adi_soyadi)
+                    tvFollowerSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.follower)
+                    tvFollowingSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.following)
+                    tvPostSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.post)
+
+                    var imgUrl:String=okunanKullaniciBilgileri!!.user_detail!!.profile_picture!!
+                    UniversalImageLoader.setImage(imgUrl,circleProfileImage,progressBar,"")
+
+                    if(!okunanKullaniciBilgileri!!.user_detail!!.biography!!.isNullOrEmpty()){
+                        tvBiyografi.visibility=View.VISIBLE
+                        tvBiyografi.setText(okunanKullaniciBilgileri!!.user_detail!!.biography!!)
+                    }
+                    if(!okunanKullaniciBilgileri!!.user_detail!!.web_site!!.isNullOrEmpty()){
+                        tvWebSitesi.visibility=View.VISIBLE
+                        tvWebSitesi.setText(okunanKullaniciBilgileri!!.user_detail!!.web_site!!)
+                    }
+
+                }
+
+
+
+            }
+
+
+        })
+
     }
+    
 
     private fun setupToolbar() {
        imgProfileSettings.setOnClickListener {
@@ -72,6 +116,9 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupAuthListener() {
+
+
+
         mAuthListener=object : FirebaseAuth.AuthStateListener{
             override fun onAuthStateChanged(p0: FirebaseAuth) {
                 var user=FirebaseAuth.getInstance().currentUser
@@ -85,6 +132,7 @@ class ProfileActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }else {
+
 
 
                 }

@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.emrealtunbilek.instakotlinapp.Models.UserDetails
 import com.emrealtunbilek.instakotlinapp.Models.Users
 
 import com.emrealtunbilek.instakotlinapp.R
@@ -50,9 +51,6 @@ class KayitFragment : Fragment() {
 
         mAuth= FirebaseAuth.getInstance()
 
-        if(mAuth.currentUser != null){
-            mAuth.signOut()
-        }
 
         view.tvGirisYap.setOnClickListener {
 
@@ -111,8 +109,10 @@ class KayitFragment : Fragment() {
                                                     Toast.makeText(activity,"Oturum email ile açıldı"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
 
                                                     var userID=mAuth.currentUser!!.uid.toString()
+
                                                     //oturum açan kullanıcın verilerini databaseye kaydedelim...
-                                                    var kaydedilecekKullanici=Users(gelenEmail,sifre,userName,adSoyad,"","",userID)
+                                                    var kaydedilecekKullaniciDetaylari=UserDetails("0","0","0","","","")
+                                                    var kaydedilecekKullanici=Users(gelenEmail,sifre,userName,adSoyad,"","",userID, kaydedilecekKullaniciDetaylari)
 
                                                     mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
                                                             .addOnCompleteListener(object : OnCompleteListener<Void>{
@@ -167,7 +167,8 @@ class KayitFragment : Fragment() {
 
 
                                                     //oturum açan kullanıcın verilerini databaseye kaydedelim...
-                                                    var kaydedilecekKullanici=Users("",sifre,userName,adSoyad,telNo,sahteEmail,userID)
+                                                    var kaydedilecekKullaniciDetaylari=UserDetails("0","0","0","","","")
+                                                    var kaydedilecekKullanici=Users("",sifre,userName,adSoyad,telNo,sahteEmail,userID,kaydedilecekKullaniciDetaylari)
 
                                                     mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
                                                             .addOnCompleteListener(object : OnCompleteListener<Void>{
