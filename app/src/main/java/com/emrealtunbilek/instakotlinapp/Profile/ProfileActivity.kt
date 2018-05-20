@@ -45,6 +45,9 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun kullaniciBilgileriniGetir() {
 
+        tvProfilDuzenleButon.isEnabled=false
+        imgProfileSettings.isEnabled=false
+
         mRef.child("users").child(mUser!!.uid).addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
@@ -57,6 +60,8 @@ class ProfileActivity : AppCompatActivity() {
 
 
                     EventBus.getDefault().postSticky(EventbusDataEvents.KullaniciBilgileriniGonder(okunanKullaniciBilgileri))
+                    tvProfilDuzenleButon.isEnabled=true
+                    imgProfileSettings.isEnabled=true
 
                     tvProfilAdiToolbar.setText(okunanKullaniciBilgileri!!.user_name)
                     tvProfilGercekAdi.setText(okunanKullaniciBilgileri!!.adi_soyadi)
