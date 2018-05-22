@@ -1,6 +1,7 @@
 package com.emrealtunbilek.instakotlinapp.Profile
 
 import android.content.Intent
+import android.icu.util.Calendar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.greenrobot.eventbus.EventBus
+import java.util.*
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -97,6 +99,8 @@ class ProfileActivity : AppCompatActivity() {
        imgProfileSettings.setOnClickListener {
            var intent=Intent(this,ProfileSettingsActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
            startActivity(intent)
+
+
        }
 
        tvProfilDuzenleButon.setOnClickListener {
