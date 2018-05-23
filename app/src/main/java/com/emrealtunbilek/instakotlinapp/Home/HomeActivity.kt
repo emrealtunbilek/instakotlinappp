@@ -29,6 +29,9 @@ class HomeActivity : AppCompatActivity() {
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
 
+
+
+
         initImageLoader()
         setupNavigationView()
         setupHomeViewPager()
