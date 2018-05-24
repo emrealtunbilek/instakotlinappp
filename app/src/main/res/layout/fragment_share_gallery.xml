@@ -54,6 +54,15 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageView9"
                 app:layout_constraintStart_toEndOf="@+id/imageView9"
                 app:layout_constraintTop_toTopOf="@+id/imageView9" />
+
+            <View
+                android:id="@+id/golgelik"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/golgelik"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"></View>
         </android.support.constraint.ConstraintLayout>
 
 
