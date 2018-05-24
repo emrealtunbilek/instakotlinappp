@@ -8,10 +8,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.DosyaIslemleri
+import com.emrealtunbilek.instakotlinapp.utils.ShareActivityGridViewAdapter
+import kotlinx.android.synthetic.main.fragment_share_gallery.*
 import kotlinx.android.synthetic.main.fragment_share_gallery.view.*
 
 
@@ -45,11 +48,29 @@ class ShareGalleryFragment : Fragment() {
 
         view.spnKlasorAdlari.adapter=spinnerArrayAdapter
 
-        var klasordekiDosyalar=DosyaIslemleri.klasordekiDosyalariGetir(kameraResimleri)
+        view.spnKlasorAdlari.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
 
-        for(str in klasordekiDosyalar){
-            Log.e("HATA",str)
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var klasordekiDosyalar=DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position))
+
+                var gridAdapter=ShareActivityGridViewAdapter(activity,R.layout.tek_sutun_grid_resim,klasordekiDosyalar)
+
+                gridResimler.adapter=gridAdapter
+
+
+
+                /*for(str in klasordekiDosyalar){
+                    Log.e("HATA",str)
+                }*/
+            }
+
         }
+
+
+
 
 
 
