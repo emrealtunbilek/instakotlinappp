@@ -82,24 +82,25 @@
             android:id="@+id/imgBuyukResim"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.7"
+            app:layout_constraintHeight_percent="0.75"
             app:layout_constraintBottom_toTopOf="@+id/gridResimler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" >
 
-            <com.naver.android.helloyako.imagecrop.view.ImageCropView
-                xmlns:imagecrop="http://schemas.android.com/apk/res-auto"
+            <com.naver.android.helloyako.imagecrop.view.ImageCropView xmlns:imagecrop="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/imgCropView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                android:id="@+id/imgCropView"
-                imagecrop:setInnerGridMode="on"
-                imagecrop:gridInnerStroke="1dp"
-                imagecrop:gridInnerColor="#66ffffff"
-                imagecrop:setOuterGridMode="on"
-                imagecrop:gridOuterStroke="1dp"
-                imagecrop:gridOuterColor="#ffffff"/>
+                android:adjustViewBounds="false"
+                android:cropToPadding="false"
+                android:scaleType="matrix"
+                android:visibility="visible"
+                imagecrop:gridInnerColor="#ffffff"
+                imagecrop:gridInnerStroke="1.5dp"
+                imagecrop:gridLeftRightMargin="0dp"
+                imagecrop:gridTopBottomMargin="0dp"
+                imagecrop:setInnerGridMode="on" />
 
             <com.universalvideoview.UniversalVideoView
                 android:id="@+id/videoView"
@@ -118,7 +119,7 @@
             android:id="@+id/gridResimler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintHeight_percent="0.25"
             android:numColumns="4"
             android:gravity="center"
             android:verticalSpacing="1dp"
@@ -128,4 +129,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgBuyukResim" />
     </android.support.constraint.ConstraintLayout>
+
 </android.support.constraint.ConstraintLayout>

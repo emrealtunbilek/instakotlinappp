@@ -115,6 +115,7 @@ class ShareGalleryFragment : Fragment() {
                 videoView.visibility=View.GONE
                 imgCropView.visibility=View.VISIBLE
                 UniversalImageLoader.setImage(dosyaYolu,imgCropView,null,"file://")
+
             }
         }
 
