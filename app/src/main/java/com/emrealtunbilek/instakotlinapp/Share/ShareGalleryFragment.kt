@@ -14,14 +14,18 @@ import android.widget.ArrayAdapter
 
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.DosyaIslemleri
+import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
 import com.emrealtunbilek.instakotlinapp.utils.ShareActivityGridViewAdapter
 import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
+import kotlinx.android.synthetic.main.activity_share.*
 import kotlinx.android.synthetic.main.fragment_share_gallery.*
 import kotlinx.android.synthetic.main.fragment_share_gallery.view.*
+import org.greenrobot.eventbus.EventBus
 
 
 class ShareGalleryFragment : Fragment() {
 
+    var secilenResimYolu:String?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -72,6 +76,21 @@ class ShareGalleryFragment : Fragment() {
         }
 
 
+        view.tvIleriButton.setOnClickListener {
+
+            activity!!.anaLayout.visibility= View.GONE
+            activity!!.fragmentContainerLayout.visibility=View.VISIBLE
+            var transaction=activity!!.supportFragmentManager.beginTransaction()
+
+            EventBus.getDefault().postSticky(EventbusDataEvents.PaylasilacakResmiGonder(secilenResimYolu))
+
+            transaction.replace(R.id.fragmentContainerLayout,ShareNextFragment())
+            transaction.addToBackStack("shareNextFragmentEklendi")
+            transaction.commit()
+
+
+
+        }
 
 
 
@@ -85,10 +104,12 @@ class ShareGalleryFragment : Fragment() {
         gridResimler.adapter=gridAdapter
 
         //ilk açıldıgında ilk dosya gösterilir
+        secilenResimYolu=secilenKlasordekiDosyalar.get(0)
         resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(0))
 
         gridResimler.setOnItemClickListener(object : AdapterView.OnItemClickListener{
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+               secilenResimYolu= secilenKlasordekiDosyalar.get(position)
                resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(position))
             }
 
