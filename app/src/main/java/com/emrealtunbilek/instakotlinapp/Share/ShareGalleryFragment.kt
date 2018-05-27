@@ -1,6 +1,7 @@
 package com.emrealtunbilek.instakotlinapp.Share
 
 
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
@@ -53,6 +54,9 @@ class ShareGalleryFragment : Fragment() {
 
         view.spnKlasorAdlari.adapter=spinnerArrayAdapter
 
+        //ilk açıldıgında en son dosya gösterilir
+        view.spnKlasorAdlari.setSelection(0)
+
         view.spnKlasorAdlari.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -61,6 +65,7 @@ class ShareGalleryFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
                 setupGridView(DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position)))
+
 
             }
 
@@ -79,12 +84,45 @@ class ShareGalleryFragment : Fragment() {
 
         gridResimler.adapter=gridAdapter
 
+        //ilk açıldıgında ilk dosya gösterilir
+        resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(0))
+
         gridResimler.setOnItemClickListener(object : AdapterView.OnItemClickListener{
             override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                UniversalImageLoader.setImage(secilenKlasordekiDosyalar.get(position),imgBuyukResim,null,"file:/")
+               resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(position))
             }
 
         })
+
+    }
+
+    private fun resimVeyaVideoGoster(dosyaYolu: String) {
+
+        var dosyaTuru=dosyaYolu.substring(dosyaYolu.lastIndexOf("."))
+        //file://asdsadasdas.mp4
+
+
+        if(dosyaTuru != null){
+            if(dosyaTuru.equals(".mp4")){
+
+                videoView.visibility=View.VISIBLE
+                imgCropView.visibility=View.GONE
+                videoView.setVideoURI(Uri.parse("file://"+dosyaYolu))
+                Log.e("HATA","Video : "+"file://"+dosyaYolu)
+                videoView.start()
+
+            }else {
+                videoView.visibility=View.GONE
+                imgCropView.visibility=View.VISIBLE
+                UniversalImageLoader.setImage(dosyaYolu,imgCropView,null,"file://")
+            }
+        }
+
+
+
+
+
+
 
     }
 
