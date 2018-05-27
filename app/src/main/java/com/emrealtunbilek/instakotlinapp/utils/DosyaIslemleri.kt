@@ -2,6 +2,8 @@ package com.emrealtunbilek.instakotlinapp.utils
 
 import android.util.Log
 import java.io.File
+import java.util.*
+import kotlin.Comparator
 
 /**
  * Created by Emre on 24.05.2018.
@@ -21,6 +23,23 @@ class DosyaIslemleri {
 
             //parametre olarak gönderdiğimiz klasor yolunda eleman olup olmadıgı kontrol edildi
             if(klasordekiTumDosyalar != null){
+
+                //galeriden getirilen resimlerin tarihe göre sondan basa listelenmesi
+                if(klasordekiTumDosyalar.size>1){
+
+                    Arrays.sort(klasordekiTumDosyalar, object : Comparator<File>{
+                        override fun compare(o1: File?, o2: File?): Int {
+
+                            if(o1!!.lastModified() > o2!!.lastModified()){
+                                return -1
+                            }else return 1
+
+                        }
+
+
+                    })
+
+                }
 
                 for (i in 0..klasordekiTumDosyalar.size-1){
 

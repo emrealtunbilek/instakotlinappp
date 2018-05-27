@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.DosyaIslemleri
 import com.emrealtunbilek.instakotlinapp.utils.ShareActivityGridViewAdapter
+import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
 import kotlinx.android.synthetic.main.fragment_share_gallery.*
 import kotlinx.android.synthetic.main.fragment_share_gallery.view.*
 
@@ -31,14 +32,18 @@ class ShareGalleryFragment : Fragment() {
 
         var root= Environment.getExternalStorageDirectory().path
 
+
+        var test=root+"/DCIM/TestKlasor"
         var kameraResimleri= root+"/DCIM/Camera"
         var indirilenResimler=root+"/Download"
         var whatsappResimleri=root+"/WhatsApp/Media/WhatsApp Images"
 
+        klasorPaths.add(test)
         klasorPaths.add(kameraResimleri)
         klasorPaths.add(indirilenResimler)
         klasorPaths.add(whatsappResimleri)
 
+        klasorAdlari.add("Test")
         klasorAdlari.add("Kamera")
         klasorAdlari.add("Indirilenler")
         klasorAdlari.add("Whatsapp")
@@ -54,17 +59,9 @@ class ShareGalleryFragment : Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                var klasordekiDosyalar=DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position))
 
-                var gridAdapter=ShareActivityGridViewAdapter(activity,R.layout.tek_sutun_grid_resim,klasordekiDosyalar)
+                setupGridView(DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position)))
 
-                gridResimler.adapter=gridAdapter
-
-
-
-                /*for(str in klasordekiDosyalar){
-                    Log.e("HATA",str)
-                }*/
             }
 
         }
@@ -75,6 +72,20 @@ class ShareGalleryFragment : Fragment() {
 
 
         return view
+    }
+
+    fun setupGridView(secilenKlasordekiDosyalar : ArrayList<String>){
+        var gridAdapter=ShareActivityGridViewAdapter(activity,R.layout.tek_sutun_grid_resim,secilenKlasordekiDosyalar)
+
+        gridResimler.adapter=gridAdapter
+
+        gridResimler.setOnItemClickListener(object : AdapterView.OnItemClickListener{
+            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                UniversalImageLoader.setImage(secilenKlasordekiDosyalar.get(position),imgBuyukResim,null,"file:/")
+            }
+
+        })
+
     }
 
 }
