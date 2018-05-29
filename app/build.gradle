@@ -58,6 +58,9 @@ dependencies {
 
     //crop image view
     compile 'com.naver.android.helloyako:imagecropview:1.2.0'
+
+    //runtime permission library
+    implementation 'com.karumi:dexter:4.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -61,6 +61,7 @@ class ShareGalleryFragment : Fragment() {
         //ilk açıldıgında en son dosya gösterilir
         view.spnKlasorAdlari.setSelection(0)
 
+
         view.spnKlasorAdlari.onItemSelectedListener=object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
