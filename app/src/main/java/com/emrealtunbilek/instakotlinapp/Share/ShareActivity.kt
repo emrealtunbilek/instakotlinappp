@@ -1,8 +1,12 @@
 package com.emrealtunbilek.instakotlinapp.Share
 
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
@@ -58,6 +62,30 @@ class ShareActivity : AppCompatActivity() {
                         }
                         if(report!!.isAnyPermissionPermanentlyDenied){
                             Log.e("HATA","izinlerden birine bidaha sorma denmiş")
+
+                            var builder=AlertDialog.Builder(this@ShareActivity)
+                            builder.setTitle("İzin Gerekli")
+                            builder.setMessage("Ayarlar kısmından uygulamaya izin vermeniz gerekiyor. Onaylar mısınız ?")
+                            builder.setPositiveButton("AYARLARA GİT", object : DialogInterface.OnClickListener{
+                                override fun onClick(dialog: DialogInterface?, which: Int) {
+                                    dialog!!.cancel()
+                                    var intent=Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    var uri= Uri.fromParts("package", packageName,null)
+                                    intent.setData(uri)
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                            })
+                            builder.setNegativeButton("IPTAL", object : DialogInterface.OnClickListener{
+                                override fun onClick(dialog: DialogInterface?, which: Int) {
+                                    dialog!!.cancel()
+                                    finish()
+                                }
+
+                            })
+                            builder.show()
+
                         }
 
                     }
@@ -65,8 +93,27 @@ class ShareActivity : AppCompatActivity() {
                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
 
                         Log.e("HATA","izinlerden biri reddedilmiş, kullanıcıyı ikna et")
-                        token!!.continuePermissionRequest()
-                       // token!!.cancelPermissionRequest()
+
+                        var builder=AlertDialog.Builder(this@ShareActivity)
+                        builder.setTitle("İzin Gerekli")
+                        builder.setMessage("Uygulamaya izin vermeniz gerekiyor. Onaylar mısınız ?")
+                        builder.setPositiveButton("ONAY VER", object : DialogInterface.OnClickListener{
+                            override fun onClick(dialog: DialogInterface?, which: Int) {
+                                dialog!!.cancel()
+                                token!!.continuePermissionRequest()
+                            }
+
+                        })
+                        builder.setNegativeButton("IPTAL", object : DialogInterface.OnClickListener{
+                            override fun onClick(dialog: DialogInterface?, which: Int) {
+                                dialog!!.cancel()
+                                token!!.cancelPermissionRequest()
+                                finish()
+                            }
+
+                        })
+                        builder.show()
+
 
                     }
 
@@ -80,6 +127,7 @@ class ShareActivity : AppCompatActivity() {
 
 
     }
+
 
     private fun setupShareViewPager() {
 
