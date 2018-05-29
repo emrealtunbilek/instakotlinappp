@@ -39,6 +39,9 @@ class ProfileActivity : AppCompatActivity() {
         mUser=mAuth.currentUser!!
         mRef=FirebaseDatabase.getInstance().reference
 
+        mRef.child("test").child(mUser.uid).setValue(Users("asd","sd","asd","as","as","s","as",null))
+        mRef.child("test").child(mUser.uid).child("email").setValue(ServerValue.TIMESTAMP)
+
 
         setupToolbar()
         setupNavigationView()
