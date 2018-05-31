@@ -89,6 +89,54 @@ class DosyaIslemleri {
 
         }
 
+        fun compressVideoDosya(fragment: Fragment, secilenDosyaYolu: String) {
+
+            VideoCompressAsyncTask(fragment).execute(secilenDosyaYolu)
+
+        }
+
+
+    }
+
+    internal class VideoCompressAsyncTask(fragment: Fragment):AsyncTask<String,String,String>(){
+
+        var myFragment=fragment
+        var compressFragment=YukleniyorFragment()
+
+        override fun onPreExecute() {
+            compressFragment.show(myFragment.activity!!.supportFragmentManager,"compressDialogBasladi")
+            compressFragment.isCancelable=false
+            super.onPreExecute()
+        }
+
+        override fun doInBackground(vararg params: String?): String? {
+
+            var yeniOlusanDosyaninKlasoru=File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/TestKlasor/compressedVideo/")
+
+            if(yeniOlusanDosyaninKlasoru.isDirectory || yeniOlusanDosyaninKlasoru.mkdirs()){
+                var yeniDosyaninPath= SiliCompressor.with(myFragment.context).compressVideo(params[0],yeniOlusanDosyaninKlasoru.path)
+                return yeniDosyaninPath
+            }
+
+            return null
+
+        }
+
+        override fun onPostExecute(yeniDosyaninPath: String?) {
+
+            if(!yeniDosyaninPath.isNullOrEmpty()){
+
+                compressFragment.dismiss()
+                (myFragment as ShareNextFragment).uploadStorage(yeniDosyaninPath)
+
+
+            }
+
+            super.onPostExecute(yeniDosyaninPath)
+        }
+
+
+
 
     }
 

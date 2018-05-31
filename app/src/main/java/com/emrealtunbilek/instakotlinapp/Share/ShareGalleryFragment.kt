@@ -85,7 +85,7 @@ class ShareGalleryFragment : Fragment() {
             var transaction=activity!!.supportFragmentManager.beginTransaction()
 
             EventBus.getDefault().postSticky(EventbusDataEvents.PaylasilacakResmiGonder(secilenResimYolu,dosyaTuruResimMi))
-
+            videoView.stopPlayback()
             transaction.replace(R.id.fragmentContainerLayout,ShareNextFragment())
             transaction.addToBackStack("shareNextFragmentEklendi")
             transaction.commit()

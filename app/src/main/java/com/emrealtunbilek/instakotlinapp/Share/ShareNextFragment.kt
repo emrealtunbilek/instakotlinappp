@@ -39,7 +39,7 @@ import java.lang.Exception
 
 class ShareNextFragment : Fragment() {
 
-    var secilenResimYolu: String? = null
+    var secilenDosyaYolu: String? = null
     var dosyaTuruResimMi: Boolean? = null
     lateinit var photoURI: Uri
 
@@ -54,9 +54,7 @@ class ShareNextFragment : Fragment() {
 
         var view = inflater.inflate(R.layout.fragment_share_next, container, false)
 
-        UniversalImageLoader.setImage(secilenResimYolu!!, view!!.imgSecilenResim, null, "file://")
-
-        //  photoURI= Uri.parse("file://"+secilenResimYolu)
+        UniversalImageLoader.setImage(secilenDosyaYolu!!, view!!.imgSecilenResim, null, "file://")
 
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!
@@ -69,11 +67,13 @@ class ShareNextFragment : Fragment() {
             //resim dosyasını sıkıstır
             if (dosyaTuruResimMi == true) {
 
-                DosyaIslemleri.compressResimDosya(this, secilenResimYolu)
+                DosyaIslemleri.compressResimDosya(this, secilenDosyaYolu)
 
             }
             //video dosyasını sıkıstır
             else if (dosyaTuruResimMi == false) {
+
+                DosyaIslemleri.compressVideoDosya(this,secilenDosyaYolu!!)
 
             }
 
@@ -97,8 +97,8 @@ class ShareNextFragment : Fragment() {
 
     //////////////////////////// EVENTBUS /////////////////////////////////
     @Subscribe(sticky = true)
-    internal fun onSecilenResimEvent(secilenResim: EventbusDataEvents.PaylasilacakResmiGonder) {
-        secilenResimYolu = secilenResim!!.resimYolu!!
+    internal fun onSecilenDosyaEvent(secilenResim: EventbusDataEvents.PaylasilacakResmiGonder) {
+        secilenDosyaYolu = secilenResim!!.dosyaYolu!!
         dosyaTuruResimMi = secilenResim!!.dosyaTuruResimMi
     }
 
