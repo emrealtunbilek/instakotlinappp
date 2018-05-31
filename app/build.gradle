@@ -61,6 +61,9 @@ dependencies {
 
     //runtime permission library
     implementation 'com.karumi:dexter:4.2.0'
+
+    //silicompressor dosya sıkıştırma
+    compile 'com.iceteck.silicompressorr:silicompressor:2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

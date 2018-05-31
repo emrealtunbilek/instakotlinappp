@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,10 +25,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.fragment_share_next.*
 import kotlinx.android.synthetic.main.fragment_share_next.view.*
+import kotlinx.android.synthetic.main.fragment_yukleniyor.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import java.lang.Exception
@@ -36,6 +39,7 @@ import java.lang.Exception
 class ShareNextFragment : Fragment() {
 
     var secilenResimYolu:String?=null
+    var dosyaTuruResimMi:Boolean? = null
     lateinit var photoURI:Uri
 
     lateinit var mAuth: FirebaseAuth
@@ -65,6 +69,18 @@ class ShareNextFragment : Fragment() {
             dialogYukleniyor.show(activity!!.supportFragmentManager,"yukleniyorFragmenti")
             dialogYukleniyor.isCancelable=false
 
+
+            //resim dosyasını sıkıstır
+            if(dosyaTuruResimMi==true){
+
+            }
+            //video dosyasını sıkıstır
+            else if(dosyaTuruResimMi==false){
+
+            }
+
+
+
             var uploadTask=mStorageReference.child("users").child(mUser.uid).child(photoURI.lastPathSegment).putFile(photoURI)
                     .addOnCompleteListener(object : OnCompleteListener<UploadTask.TaskSnapshot>{
                         override fun onComplete(p0: Task<UploadTask.TaskSnapshot>) {
@@ -79,6 +95,16 @@ class ShareNextFragment : Fragment() {
                         override fun onFailure(p0: Exception) {
                            Toast.makeText(activity,"Hata oluştu"+p0!!.message,Toast.LENGTH_SHORT).show()
                         }
+
+                    })
+                    .addOnProgressListener(object : OnProgressListener<UploadTask.TaskSnapshot>{
+                        override fun onProgress(p0: UploadTask.TaskSnapshot?) {
+                            var progress= 100.0 * p0!!.bytesTransferred / p0!!.totalByteCount
+                            Log.e("HATA", "ILERLEME : "+progress)
+                            dialogYukleniyor.tvBilgi.text="%"+progress.toInt().toString()+" yüklendi.."
+
+                        }
+
 
                     })
 
@@ -108,6 +134,7 @@ class ShareNextFragment : Fragment() {
     @Subscribe(sticky = true)
     internal fun onSecilenResimEvent(secilenResim: EventbusDataEvents.PaylasilacakResmiGonder) {
         secilenResimYolu = secilenResim!!.resimYolu!!
+        dosyaTuruResimMi=secilenResim!!.dosyaTuruResimMi
     }
 
     override fun onAttach(context: Context?) {
