@@ -24,7 +24,7 @@
 
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/imgClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -41,9 +41,9 @@
                 android:text="Paylaş"
                 android:textColor="@color/mavi"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+                app:layout_constraintBottom_toBottomOf="@+id/imgClose"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView9" />
+                app:layout_constraintTop_toTopOf="@+id/imgClose" />
 
 
 
@@ -65,9 +65,9 @@
                 android:textColor="@color/siyah"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
-                app:layout_constraintStart_toEndOf="@+id/imageView9"
-                app:layout_constraintTop_toTopOf="@+id/imageView9" />
+                app:layout_constraintBottom_toBottomOf="@+id/imgClose"
+                app:layout_constraintStart_toEndOf="@+id/imgClose"
+                app:layout_constraintTop_toTopOf="@+id/imgClose" />
         </android.support.constraint.ConstraintLayout>
 
 

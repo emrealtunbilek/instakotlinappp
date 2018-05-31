@@ -23,7 +23,7 @@
 
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/imgClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -40,9 +40,9 @@
                 android:text="İleri"
                 android:textColor="@color/mavi"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+                app:layout_constraintBottom_toBottomOf="@+id/imgClose"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView9" />
+                app:layout_constraintTop_toTopOf="@+id/imgClose" />
 
             <Spinner
                 android:id="@+id/spnKlasorAdlari"
@@ -51,9 +51,9 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView9"
-                app:layout_constraintStart_toEndOf="@+id/imageView9"
-                app:layout_constraintTop_toTopOf="@+id/imageView9" />
+                app:layout_constraintBottom_toBottomOf="@+id/imgClose"
+                app:layout_constraintStart_toEndOf="@+id/imgClose"
+                app:layout_constraintTop_toTopOf="@+id/imgClose" />
 
             <View
                 android:id="@+id/golgelik"

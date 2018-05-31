@@ -64,6 +64,9 @@ dependencies {
 
     //silicompressor dosya sıkıştırma
     compile 'com.iceteck.silicompressorr:silicompressor:2.1'
+
+    //resim ve video view
+    compile 'com.otaliastudios:cameraview:1.5.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
