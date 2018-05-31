@@ -83,10 +83,10 @@ class ShareNextFragment : Fragment() {
         return view
     }
 
-    private fun veritabaninaBilgileriYaz(yuklenenFotoURL: String) {
+    private fun veritabaninaBilgileriYaz(yuklenenFileUrl: String) {
 
         var postID = mRef.child("posts").child(mUser.uid).push().key
-        var yuklenenPost = Posts(mUser.uid, postID, "", etPostAciklama.text.toString(), yuklenenFotoURL)
+        var yuklenenPost = Posts(mUser.uid, postID, "", etPostAciklama.text.toString(), yuklenenFileUrl)
 
 
         mRef.child("posts").child(mUser.uid).child(postID).setValue(yuklenenPost)
