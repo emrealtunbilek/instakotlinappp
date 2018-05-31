@@ -1,6 +1,12 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
+import android.os.AsyncTask
+import android.os.Environment
+import android.support.v4.app.Fragment
 import android.util.Log
+import com.emrealtunbilek.instakotlinapp.Profile.YukleniyorFragment
+import com.emrealtunbilek.instakotlinapp.Share.ShareNextFragment
+import com.iceteck.silicompressorr.SiliCompressor
 import java.io.File
 import java.util.*
 import kotlin.Comparator
@@ -74,6 +80,46 @@ class DosyaIslemleri {
 
             return tumDosyalar
 
+        }
+
+        fun compressResimDosya(fragment: Fragment, secilenResimYolu: String?) {
+
+            ResimCompressAsyncTask(fragment).execute(secilenResimYolu)
+
+
+        }
+
+
+    }
+
+    internal class ResimCompressAsyncTask(fragment: Fragment):AsyncTask<String,String,String>(){
+
+        var myFragment=fragment
+        var compressFragment=YukleniyorFragment()
+
+        override fun onPreExecute() {
+
+
+            compressFragment.show(myFragment.activity!!.supportFragmentManager,"compressDialogBasladi")
+            compressFragment.isCancelable=false
+            super.onPreExecute()
+        }
+
+        override fun doInBackground(vararg params: String?): String {
+
+            var yeniOlusanDosyaninKlasoru=File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/TestKlasor/compressed/")
+            var yeniDosyaYolu = SiliCompressor.with(myFragment.context).compress(params[0], yeniOlusanDosyaninKlasoru)
+
+            //sıkıstırılarak olusturulmus yeni  dosyanın yolunu verir
+            return yeniDosyaYolu
+        }
+
+        override fun onPostExecute(filePath: String?) {
+
+            Log.e("HATA","yENİ DOSYANIN PATHI : "+filePath)
+            compressFragment.dismiss()
+            (myFragment as ShareNextFragment).uploadStorage(filePath)
+            super.onPostExecute(filePath)
         }
 
 
