@@ -43,7 +43,7 @@ class ShareCameraFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.e("HATA2"," CAMERA FRAGMENTI ON DESTROY")
-        cameraView.destroy()
+       cameraView.destroy()
     }
 
 }

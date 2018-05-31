@@ -36,7 +36,7 @@ class ShareVideoFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         Log.e("HATA2"," VIDEO FRAGMENTI ON PAUSE")
-        videoView.stop()
+       videoView.stop()
     }
 
     override fun onDestroy() {
