@@ -28,10 +28,8 @@ import kotlinx.android.synthetic.main.activity_share.*
 
 class ShareActivity : AppCompatActivity() {
 
-    private val ACTIVITY_NO=2
-    private val TAG="ShareActivity"
-
-
+    private val ACTIVITY_NO = 2
+    private val TAG = "ShareActivity"
 
 
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
@@ -52,33 +50,34 @@ class ShareActivity : AppCompatActivity() {
 
         Dexter.withActivity(this)
                 .withPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                 android.Manifest.permission.CAMERA)
-                .withListener(object : MultiplePermissionsListener{
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.RECORD_AUDIO)
+                .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
 
-                        if(report!!.areAllPermissionsGranted()){
-                            Log.e("HATA","Tüm izinler verilmiş")
+                        if (report!!.areAllPermissionsGranted()) {
+                            Log.e("HATA", "Tüm izinler verilmiş")
                             setupShareViewPager()
                         }
-                        if(report!!.isAnyPermissionPermanentlyDenied){
-                            Log.e("HATA","izinlerden birine bidaha sorma denmiş")
+                        if (report!!.isAnyPermissionPermanentlyDenied) {
+                            Log.e("HATA", "izinlerden birine bidaha sorma denmiş")
 
-                            var builder=AlertDialog.Builder(this@ShareActivity)
+                            var builder = AlertDialog.Builder(this@ShareActivity)
                             builder.setTitle("İzin Gerekli")
                             builder.setMessage("Ayarlar kısmından uygulamaya izin vermeniz gerekiyor. Onaylar mısınız ?")
-                            builder.setPositiveButton("AYARLARA GİT", object : DialogInterface.OnClickListener{
+                            builder.setPositiveButton("AYARLARA GİT", object : DialogInterface.OnClickListener {
                                 override fun onClick(dialog: DialogInterface?, which: Int) {
                                     dialog!!.cancel()
-                                    var intent=Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                    var uri= Uri.fromParts("package", packageName,null)
+                                    var intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    var uri = Uri.fromParts("package", packageName, null)
                                     intent.setData(uri)
                                     startActivity(intent)
                                     finish()
                                 }
 
                             })
-                            builder.setNegativeButton("IPTAL", object : DialogInterface.OnClickListener{
+                            builder.setNegativeButton("IPTAL", object : DialogInterface.OnClickListener {
                                 override fun onClick(dialog: DialogInterface?, which: Int) {
                                     dialog!!.cancel()
                                     finish()
@@ -93,19 +92,19 @@ class ShareActivity : AppCompatActivity() {
 
                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
 
-                        Log.e("HATA","izinlerden biri reddedilmiş, kullanıcıyı ikna et")
+                        Log.e("HATA", "izinlerden biri reddedilmiş, kullanıcıyı ikna et")
 
-                        var builder=AlertDialog.Builder(this@ShareActivity)
+                        var builder = AlertDialog.Builder(this@ShareActivity)
                         builder.setTitle("İzin Gerekli")
                         builder.setMessage("Uygulamaya izin vermeniz gerekiyor. Onaylar mısınız ?")
-                        builder.setPositiveButton("ONAY VER", object : DialogInterface.OnClickListener{
+                        builder.setPositiveButton("ONAY VER", object : DialogInterface.OnClickListener {
                             override fun onClick(dialog: DialogInterface?, which: Int) {
                                 dialog!!.cancel()
                                 token!!.continuePermissionRequest()
                             }
 
                         })
-                        builder.setNegativeButton("IPTAL", object : DialogInterface.OnClickListener{
+                        builder.setNegativeButton("IPTAL", object : DialogInterface.OnClickListener {
                             override fun onClick(dialog: DialogInterface?, which: Int) {
                                 dialog!!.cancel()
                                 token!!.cancelPermissionRequest()
@@ -119,7 +118,7 @@ class ShareActivity : AppCompatActivity() {
                     }
 
                 })
-                .withErrorListener(object : PermissionRequestErrorListener{
+                .withErrorListener(object : PermissionRequestErrorListener {
                     override fun onError(error: DexterError?) {
                         Log.e("HATA", error!!.toString())
                     }
@@ -132,12 +131,12 @@ class ShareActivity : AppCompatActivity() {
 
     private fun setupShareViewPager() {
 
-        var tabAdlari=ArrayList<String>()
+        var tabAdlari = ArrayList<String>()
         tabAdlari.add("GALERI")
         tabAdlari.add("FOTOĞRAF")
         tabAdlari.add("VIDEO")
 
-        var sharePagerAdapter=SharePagerAdapter(supportFragmentManager,tabAdlari)
+        var sharePagerAdapter = SharePagerAdapter(supportFragmentManager, tabAdlari)
         sharePagerAdapter.addFragment(ShareGalleryFragment())
         sharePagerAdapter.addFragment(ShareCameraFragment())
         sharePagerAdapter.addFragment(ShareVideoFragment())
@@ -146,15 +145,15 @@ class ShareActivity : AppCompatActivity() {
 
 
 
-        shareViewPager.adapter=sharePagerAdapter
+        shareViewPager.adapter = sharePagerAdapter
 
-        shareViewPager.offscreenPageLimit=1
+        shareViewPager.offscreenPageLimit = 1
 
-        sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager,1)
-        sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager,2)
+        sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager, 1)
+        sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager, 2)
 
 
-        shareViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        shareViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -165,22 +164,22 @@ class ShareActivity : AppCompatActivity() {
 
             override fun onPageSelected(position: Int) {
 
-                if(position==0){
+                if (position == 0) {
 
-                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager,1)
-                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager,2)
-                    sharePagerAdapter.secilenFragmentiViewPageraEkle(shareViewPager,0)
+                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager, 1)
+                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager, 2)
+                    sharePagerAdapter.secilenFragmentiViewPageraEkle(shareViewPager, 0)
 
                 }
-                if(position==1){
-                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager,0)
-                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager,2)
-                    sharePagerAdapter.secilenFragmentiViewPageraEkle(shareViewPager,1)
+                if (position == 1) {
+                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager, 0)
+                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager, 2)
+                    sharePagerAdapter.secilenFragmentiViewPageraEkle(shareViewPager, 1)
                 }
-                if(position==2){
-                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager,0)
-                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager,1)
-                    sharePagerAdapter.secilenFragmentiViewPageraEkle(shareViewPager,2)
+                if (position == 2) {
+                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager, 0)
+                    sharePagerAdapter.secilenFragmentiViewPagerdanSil(shareViewPager, 1)
+                    sharePagerAdapter.secilenFragmentiViewPageraEkle(shareViewPager, 2)
                 }
 
             }
@@ -194,29 +193,27 @@ class ShareActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 
-        anaLayout.visibility= View.VISIBLE
-        fragmentContainerLayout.visibility=View.GONE
+        anaLayout.visibility = View.VISIBLE
+        fragmentContainerLayout.visibility = View.GONE
         super.onBackPressed()
     }
 
     private fun setupAuthListener() {
 
 
-
-        mAuthListener=object : FirebaseAuth.AuthStateListener{
+        mAuthListener = object : FirebaseAuth.AuthStateListener {
             override fun onAuthStateChanged(p0: FirebaseAuth) {
-                var user=FirebaseAuth.getInstance().currentUser
+                var user = FirebaseAuth.getInstance().currentUser
 
-                if(user == null){
+                if (user == null) {
 
-                    Log.e("HATA","Kullanıcı oturum açmamış, ProfileActivitydesin")
+                    Log.e("HATA", "Kullanıcı oturum açmamış, ProfileActivitydesin")
 
-                    var intent= Intent(this@ShareActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    var intent = Intent(this@ShareActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                     finish()
-                }else {
-
+                } else {
 
 
                 }

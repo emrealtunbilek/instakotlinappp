@@ -3,6 +3,7 @@ package com.emrealtunbilek.instakotlinapp.utils
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +66,7 @@ class ShareActivityGridViewAdapter(context: Context?, resource: Int, var klasord
             var videoSuresi=retriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
             var videoSuresiLong=videoSuresi.toLong()
 
+            Log.e("HATA6","VİDEO SURESı:"+videoSuresiLong)
 
             viewHolder.tvSure.setText(convertDuration(videoSuresiLong))
             UniversalImageLoader.setImage(klasordekiDosyalar.get(position), viewHolder.imageView, viewHolder.progressBar,"file:/")
@@ -85,36 +87,18 @@ class ShareActivityGridViewAdapter(context: Context?, resource: Int, var klasord
     }
 
     fun convertDuration(duration: Long): String {
-        var out: String? = null
-        var hours: Long = 0
-        try {
-            hours = duration / 3600000
-        } catch (e: Exception) {
-            // TODO Auto-generated catch block
-            e.printStackTrace()
-            return out!!
+        val second = duration / 1000 % 60
+        val minute = duration / (1000 * 60) % 60
+        val hour = duration / (1000 * 60 * 60) % 24
+
+        var time=""
+        if(hour>0){
+            time = String.format("%02d:%02d:%02d", hour, minute, second)
+        }else {
+            time = String.format("%02d:%02d", minute, second)
         }
 
-        val remaining_minutes = (duration - hours * 3600000) / 60000
-        var minutes = remaining_minutes.toString()
-        if (minutes.equals("0")) {
-            minutes = "00"
-        }
-        val remaining_seconds = duration - hours * 3600000 - remaining_minutes * 60000
-        var seconds = remaining_seconds.toString()
-        if (seconds.length < 2) {
-            seconds = "00"
-        } else {
-            seconds = seconds.substring(0, 2)
-        }
-
-        if (hours > 0) {
-            out = hours.toString() + ":" + minutes + ":" + seconds
-        } else {
-            out = minutes + ":" + seconds
-        }
-
-        return out
+        return time
 
     }
 
