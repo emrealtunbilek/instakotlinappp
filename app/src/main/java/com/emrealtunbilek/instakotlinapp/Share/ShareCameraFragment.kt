@@ -27,7 +27,7 @@ import java.io.OutputStream
 class ShareCameraFragment : Fragment() {
 
 
-    lateinit var cameraView:CameraView
+     var cameraView:CameraView?=null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -35,14 +35,14 @@ class ShareCameraFragment : Fragment() {
         var view=inflater.inflate(R.layout.fragment_share_camera, container, false)
 
         cameraView=view.videoView
-        cameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM)
-        cameraView.mapGesture(Gesture.TAP, GestureAction.FOCUS_WITH_MARKER)
+        cameraView!!.mapGesture(Gesture.PINCH, GestureAction.ZOOM)
+        cameraView!!.mapGesture(Gesture.TAP, GestureAction.FOCUS_WITH_MARKER)
 
         view.imgFotoCek.setOnClickListener {
-            cameraView.capturePicture()
+            cameraView!!.capturePicture()
         }
 
-        cameraView.addCameraListener(object : CameraListener(){
+        cameraView!!.addCameraListener(object : CameraListener(){
 
             override fun onPictureTaken(jpeg: ByteArray?) {
                 super.onPictureTaken(jpeg)
@@ -72,25 +72,32 @@ class ShareCameraFragment : Fragment() {
 
         })
 
+        view.imgClose.setOnClickListener {
+            activity!!.onBackPressed()
+        }
+
+
         return view
     }
 
     override fun onResume() {
         super.onResume()
         Log.e("HATA2"," CAMERA FRAGMENTI ON RESUME")
-        cameraView.start()
+        cameraView!!.start()
     }
 
     override fun onPause() {
         super.onPause()
         Log.e("HATA2"," CAMERA FRAGMENTI ON PAUSE")
-        cameraView.stop()
+        cameraView!!.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.e("HATA2"," CAMERA FRAGMENTI ON DESTROY")
-       cameraView.destroy()
+
+        if(cameraView!=null)
+         cameraView!!.destroy()
     }
 
 }

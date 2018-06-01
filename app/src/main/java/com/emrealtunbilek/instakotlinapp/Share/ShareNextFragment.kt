@@ -116,9 +116,9 @@ class ShareNextFragment : Fragment() {
 
         var fileUri = Uri.parse("file://"+filePath)
 
-        var dialogYukleniyor = YukleniyorFragment()
+        var dialogYukleniyor = CompressandLoadingFragment()
 
-        dialogYukleniyor.show(activity!!.supportFragmentManager, "yukleniyorFragmenti")
+        dialogYukleniyor.show(activity!!.supportFragmentManager, "compressLoadingFragmenti")
         dialogYukleniyor.isCancelable = false
 
         var uploadTask = mStorageReference.child("users").child(mUser.uid).child(fileUri.lastPathSegment).putFile(fileUri)

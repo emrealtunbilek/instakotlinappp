@@ -24,7 +24,7 @@ import java.io.File
 
 class ShareVideoFragment : Fragment() {
 
-    lateinit var videoView:CameraView
+    var videoView:CameraView?=null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +36,7 @@ class ShareVideoFragment : Fragment() {
         var olusacakVideoDosyaAdi=System.currentTimeMillis()
         var olusacakVideoDosya= File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/TestKlasor/"+olusacakVideoDosyaAdi+".mp4")
 
-        videoView.addCameraListener(object : CameraListener(){
+        videoView!!.addCameraListener(object : CameraListener(){
 
             override fun onVideoTaken(video: File?) {
                 super.onVideoTaken(video)
@@ -61,13 +61,13 @@ class ShareVideoFragment : Fragment() {
 
                 if(event!!.action==MotionEvent.ACTION_DOWN){
 
-                    videoView.startCapturingVideo(olusacakVideoDosya)
+                    videoView!!.startCapturingVideo(olusacakVideoDosya)
                     Toast.makeText(activity,"Video kaydediliyor",Toast.LENGTH_SHORT).show()
                     return true
 
                 }else if(event!!.action==MotionEvent.ACTION_UP){
                     Toast.makeText(activity,"Video kaydedildi",Toast.LENGTH_SHORT).show()
-                    videoView.stopCapturingVideo()
+                    videoView!!.stopCapturingVideo()
                     return true
                 }
 
@@ -76,6 +76,10 @@ class ShareVideoFragment : Fragment() {
 
         })
 
+        view.imgClose.setOnClickListener {
+            activity!!.onBackPressed()
+        }
+
 
         return view
     }
@@ -83,19 +87,20 @@ class ShareVideoFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.e("HATA2"," VIDEO FRAGMENTI ON RESUME")
-        videoView.start()
+        videoView!!.start()
     }
 
     override fun onPause() {
         super.onPause()
         Log.e("HATA2"," VIDEO FRAGMENTI ON PAUSE")
-       videoView.stop()
+       videoView!!.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.e("HATA2"," VIDEO FRAGMENTI ON DESTROY")
-        videoView.destroy()
+        if(videoView!=null)
+        videoView!!.destroy()
     }
 
 }

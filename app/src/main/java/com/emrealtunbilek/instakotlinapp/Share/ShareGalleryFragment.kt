@@ -94,6 +94,12 @@ class ShareGalleryFragment : Fragment() {
 
         }
 
+        view.imgClose.setOnClickListener {
+
+            activity!!.onBackPressed()
+
+        }
+
 
 
 
