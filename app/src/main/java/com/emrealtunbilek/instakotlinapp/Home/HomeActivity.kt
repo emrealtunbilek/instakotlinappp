@@ -1,9 +1,13 @@
 package com.emrealtunbilek.instakotlinapp.Home
 
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.WindowManager
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
@@ -14,10 +18,10 @@ import com.emrealtunbilek.instakotlinapp.utils.HomePagerAdapter
 import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.*
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
 import com.nostra13.universalimageloader.core.ImageLoader
 import kotlinx.android.synthetic.main.activity_home.*
@@ -63,8 +67,8 @@ class HomeActivity : AppCompatActivity() {
 
         //viewpagerın homefragment ile baslamasını sagladık
         homeViewPager.setCurrentItem(1)
-        homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager,0)
-        homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager,2)
+        homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager, 0)
+        homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager, 2)
 
         homeViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -81,14 +85,11 @@ class HomeActivity : AppCompatActivity() {
                     this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
 
 
+                    storageVeKameraIzniIste()
 
-
-                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager,1)
-                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager,2)
-                    kameraIzniIste()
-                    homePagerAdapter.secilenFragmentiViewPageraEkle(homeViewPager,0)
-
-
+                        homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager, 1)
+                        homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager, 2)
+                        homePagerAdapter.secilenFragmentiViewPageraEkle(homeViewPager, 0)
 
                 }
 
@@ -96,18 +97,18 @@ class HomeActivity : AppCompatActivity() {
                     this@HomeActivity.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
                     this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
-                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager,0)
-                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager,2)
-                    homePagerAdapter.secilenFragmentiViewPageraEkle(homeViewPager,1)
+                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager, 0)
+                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager, 2)
+                    homePagerAdapter.secilenFragmentiViewPageraEkle(homeViewPager, 1)
                 }
 
                 if (position == 2) {
                     this@HomeActivity.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
                     this@HomeActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
-                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager,0)
-                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager,1)
-                    homePagerAdapter.secilenFragmentiViewPageraEkle(homeViewPager,2)
+                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager, 0)
+                    homePagerAdapter.secilenFragmentiViewPagerdanSil(homeViewPager, 1)
+                    homePagerAdapter.secilenFragmentiViewPageraEkle(homeViewPager, 2)
                 }
             }
 
@@ -116,24 +117,96 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    private fun kameraIzniIste() {
+    private fun storageVeKameraIzniIste() {
+
+
+
         Dexter.withActivity(this)
-                .withPermission(android.Manifest.permission.CAMERA)
-                .withListener(object : PermissionListener{
-                    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                        EventBus.getDefault().postSticky(EventbusDataEvents.KameraIzinBilgisiGonder(true))
+                .withPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.CAMERA)
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+
+                        if (report!!.areAllPermissionsGranted()) {
+                            Log.e("HATA", "Tüm izinler verilmiş")
+
+                            EventBus.getDefault().postSticky(EventbusDataEvents.KameraIzinBilgisiGonder(true))
+                        }
+                        if (report!!.isAnyPermissionPermanentlyDenied) {
+                            Log.e("HATA", "izinlerden birine bidaha sorma denmiş")
+
+                            var builder = AlertDialog.Builder(this@HomeActivity)
+                            builder.setTitle("İzin Gerekli")
+                            builder.setMessage("Ayarlar kısmından uygulamaya izin vermeniz gerekiyor. Onaylar mısınız ?")
+                            builder.setPositiveButton("AYARLARA GİT", object : DialogInterface.OnClickListener {
+                                override fun onClick(dialog: DialogInterface?, which: Int) {
+                                    dialog!!.cancel()
+                                    var intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    var uri = Uri.fromParts("package", packageName, null)
+                                    intent.setData(uri)
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                            })
+                            builder.setNegativeButton("IPTAL", object : DialogInterface.OnClickListener {
+                                override fun onClick(dialog: DialogInterface?, which: Int) {
+                                    dialog!!.cancel()
+
+                                    homeViewPager.setCurrentItem(1)
+                                    finish()
+                                }
+
+                            })
+                            builder.show()
+
+                        }
+
                     }
 
-                    override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
-                        token!!.continuePermissionRequest()
+                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+
+                        Log.e("HATA", "izinlerden biri reddedilmiş, kullanıcıyı ikna et")
+
+                        var builder = AlertDialog.Builder(this@HomeActivity)
+                        builder.setTitle("İzin Gerekli")
+                        builder.setMessage("Uygulamaya izin vermeniz gerekiyor. Onaylar mısınız ?")
+                        builder.setPositiveButton("ONAY VER", object : DialogInterface.OnClickListener {
+                            override fun onClick(dialog: DialogInterface?, which: Int) {
+                                dialog!!.cancel()
+
+                                token!!.continuePermissionRequest()
+                                homeViewPager.setCurrentItem(1)
+                            }
+
+                        })
+                        builder.setNegativeButton("IPTAL", object : DialogInterface.OnClickListener {
+                            override fun onClick(dialog: DialogInterface?, which: Int) {
+                                dialog!!.cancel()
+
+                                token!!.cancelPermissionRequest()
+                                homeViewPager.setCurrentItem(1)
+
+                            }
+
+                        })
+                        builder.show()
+
+
                     }
 
-                    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-                        homeViewPager.setCurrentItem(1)
+                })
+                .withErrorListener(object : PermissionRequestErrorListener {
+                    override fun onError(error: DexterError?) {
+                        Log.e("HATA", error!!.toString())
                     }
 
                 }).check()
+
+
     }
+
 
     private fun initImageLoader() {
 
