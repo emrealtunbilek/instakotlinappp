@@ -16,4 +16,6 @@ class EventbusDataEvents {
 
     internal class GalerySecilenDosyaYolunuGonder(var dosyaYolu:String?)
 
+    internal class KameraIzinBilgisiGonder(var kameraIzniVerildiMi: Boolean?)
+
 }

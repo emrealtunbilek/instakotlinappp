@@ -6,13 +6,19 @@
     android:background="@android:color/holo_orange_light"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CAMERA FRAGMENT"
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/camera_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cameraFlash="auto"
+        app:cameraJpegQuality="100"
+        app:cameraPlaySounds="true"
+        app:cameraSessionType="picture"
+        app:cameraWhiteBalance="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"></com.otaliastudios.cameraview.CameraView>
+
+
 </android.support.constraint.ConstraintLayout>
