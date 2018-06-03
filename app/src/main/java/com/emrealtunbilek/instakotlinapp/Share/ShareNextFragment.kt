@@ -2,6 +2,7 @@ package com.emrealtunbilek.instakotlinapp.Share
 
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.Models.Posts
 import com.emrealtunbilek.instakotlinapp.Profile.YukleniyorFragment
 
@@ -80,6 +82,12 @@ class ShareNextFragment : Fragment() {
 
         }
 
+        view.imgClose.setOnClickListener {
+
+            this.activity!!.onBackPressed()
+
+        }
+
         return view
     }
 
@@ -91,6 +99,9 @@ class ShareNextFragment : Fragment() {
 
         mRef.child("posts").child(mUser.uid).child(postID).setValue(yuklenenPost)
         mRef.child("posts").child(mUser.uid).child(postID).child("yuklenme_tarih").setValue(ServerValue.TIMESTAMP) //2424564564
+
+        var intent=Intent(activity,HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        startActivity(intent)
 
     }
 

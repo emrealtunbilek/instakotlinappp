@@ -18,12 +18,12 @@ class NewsActivity : AppCompatActivity() {
         //setupNavigationView()
     }
 
-    fun setupNavigationView(){
+   /* fun setupNavigationView(){
 
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
         BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView)
         var menu=bottomNavigationView.menu
         var menuItem=menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
-    }
+    }*/
 }

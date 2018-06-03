@@ -38,17 +38,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        setupNavigationView()
         super.onResume()
     }
 
-    fun setupNavigationView(){
-        BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
-        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView)
-        var menu=bottomNavigationView.menu
-        var menuItem=menu.getItem(ACTIVITY_NO)
-        menuItem.setChecked(true)
-    }
+
 
     private fun setupHomeViewPager() {
         var homePagerAdapter=HomePagerAdapter(supportFragmentManager)

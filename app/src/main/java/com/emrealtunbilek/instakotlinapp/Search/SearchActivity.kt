@@ -15,15 +15,15 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        setupNavigationView()
+        //setupNavigationView()
     }
 
-    fun setupNavigationView(){
+    /*fun setupNavigationView(){
 
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
         BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView)
         var menu=bottomNavigationView.menu
         var menuItem=menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
-    }
+    }*/
 }
