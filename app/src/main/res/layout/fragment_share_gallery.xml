@@ -83,7 +83,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="0.75"
-            app:layout_constraintBottom_toTopOf="@+id/gridResimler"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerViewDosyalar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" >
@@ -115,12 +115,11 @@
 
         </FrameLayout>
 
-        <GridView
-            android:id="@+id/gridResimler"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewDosyalar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="0.25"
-            android:numColumns="4"
             android:gravity="center"
             android:verticalSpacing="1dp"
             android:horizontalSpacing="1dp"

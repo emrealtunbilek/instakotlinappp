@@ -14,4 +14,6 @@ class EventbusDataEvents {
 
     internal class PaylasilacakResmiGonder(var dosyaYolu:String?, var dosyaTuruResimMi:Boolean?)
 
+    internal class GalerySecilenDosyaYolunuGonder(var dosyaYolu:String?)
+
 }

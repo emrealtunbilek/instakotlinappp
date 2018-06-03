@@ -9,8 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.emrealtunbilek.instakotlinapp.R
 import kotlinx.android.synthetic.main.tek_sutun_grid_resim.view.*
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by Emre on 3.06.2018.
@@ -63,9 +65,11 @@ class ShareGalleryRecyclerAdapter(var klasordekiDosyalar:ArrayList<String>, var 
             holder.videoSure.visibility=View.GONE
             UniversalImageLoader.setImage(dosyaYolu, holder.dosyaResim, holder.dosyaProgressBar,"file:/")
 
-
         }
 
+        holder.tekSutunDosya.setOnClickListener {
+            EventBus.getDefault().post(EventbusDataEvents.GalerySecilenDosyaYolunuGonder(dosyaYolu))
+        }
 
     }
 
@@ -77,6 +81,7 @@ class ShareGalleryRecyclerAdapter(var klasordekiDosyalar:ArrayList<String>, var 
         var dosyaResim=tekSutunDosya.imgTekSutunImage
         var videoSure=tekSutunDosya.tvSure
         var dosyaProgressBar=tekSutunDosya.progressBar
+
 
 
     }
