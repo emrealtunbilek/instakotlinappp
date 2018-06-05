@@ -41,8 +41,8 @@
 
     <com.emrealtunbilek.instakotlinapp.utils.GridImageView
         android:id="@+id/imgPostResim"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
