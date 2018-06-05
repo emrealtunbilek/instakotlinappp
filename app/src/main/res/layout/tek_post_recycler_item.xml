@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgUserProfile"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvKullaniciAdiBaslik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textColor="@color/siyah"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imgUserProfile"
+        app:layout_constraintStart_toEndOf="@+id/imgUserProfile"
+        app:layout_constraintTop_toTopOf="@+id/imgUserProfile" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgUserProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imgUserProfile"
+        app:srcCompat="@drawable/ic_profile_options" />
+
+    <com.emrealtunbilek.instakotlinapp.utils.GridImageView
+        android:id="@+id/imgPostResim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgUserProfile" />
+
+    <ImageView
+        android:id="@+id/imgBegen"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
+        app:srcCompat="@drawable/ic_begen" />
+
+    <ImageView
+        android:id="@+id/imgYorum"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/imgBegen"
+        app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
+        app:srcCompat="@drawable/ic_yorum" />
+
+    <ImageView
+        android:id="@+id/imgGonder"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="center"
+        app:layout_constraintStart_toEndOf="@+id/imgYorum"
+        app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
+        app:srcCompat="@drawable/ic_gonder" />
+
+    <TextView
+        android:id="@+id/tvKullaniciAdi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="ealtunbilek"
+        android:textColor="@color/siyah"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBegen" />
+
+    <TextView
+        android:id="@+id/tvPostAciklama"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Açıklama"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvKullaniciAdi"
+        app:layout_constraintTop_toBottomOf="@+id/imgBegen" />
+
+</android.support.constraint.ConstraintLayout>
