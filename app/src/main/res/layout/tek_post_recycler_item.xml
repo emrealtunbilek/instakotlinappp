@@ -39,10 +39,11 @@
         app:layout_constraintTop_toTopOf="@+id/imgUserProfile"
         app:srcCompat="@drawable/ic_profile_options" />
 
-    <com.emrealtunbilek.instakotlinapp.utils.GridImageView
+    <ImageView
         android:id="@+id/imgPostResim"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxHeight="350dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,26 +51,35 @@
 
     <ImageView
         android:id="@+id/imgBegen"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
-        app:srcCompat="@drawable/ic_begen" />
+        app:srcCompat="@drawable/ic_like" />
 
     <ImageView
         android:id="@+id/imgYorum"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
         app:layout_constraintStart_toEndOf="@+id/imgBegen"
         app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
-        app:srcCompat="@drawable/ic_yorum" />
+        app:srcCompat="@drawable/ic_comment" />
 
     <ImageView
         android:id="@+id/imgGonder"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
         app:layout_constraintStart_toEndOf="@+id/imgYorum"
         app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
         app:srcCompat="@drawable/ic_gonder" />
@@ -78,12 +88,11 @@
         android:id="@+id/tvKullaniciAdi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:text="ealtunbilek"
         android:textColor="@color/siyah"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgBegen" />
 
@@ -91,13 +100,25 @@
         android:id="@+id/tvPostAciklama"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Açıklama"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/tvKullaniciAdi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvKullaniciAdi"
-        app:layout_constraintTop_toBottomOf="@+id/imgBegen" />
+        app:layout_constraintTop_toTopOf="@+id/tvKullaniciAdi" />
+
+    <TextView
+        android:id="@+id/tvKacZamanOnce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:text="3 GÜN ÖNCE"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdi" />
 
 </android.support.constraint.ConstraintLayout>
