@@ -3,6 +3,7 @@ package com.emrealtunbilek.instakotlinapp.Home
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
+import com.emrealtunbilek.instakotlinapp.utils.HomeFragmentRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -48,8 +50,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun kullaniciPostlariniGetir(kullaniciID: String) {
-
-
 
         mRef.child("users").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -88,12 +88,7 @@ class HomeFragment : Fragment() {
                             }
                         }
 
-                        Log.e("HATA","boyut : "+tumGonderiler.size)
-                        for (item in tumGonderiler){
-
-                            Log.e("HATA",item.toString())
-                        }
-
+                        setupRecyclerView()
 
                     }
 
@@ -109,6 +104,15 @@ class HomeFragment : Fragment() {
 
 
 
+    }
+
+    private fun setupRecyclerView() {
+        var recyclerView=fragmentView.recyclerview
+        var recyclerAdapter=HomeFragmentRecyclerAdapter(this.activity!!,tumGonderiler)
+
+        recyclerView.adapter=recyclerAdapter
+
+        recyclerView.layoutManager=LinearLayoutManager(this.activity!!,LinearLayoutManager.VERTICAL,true)
     }
 
 

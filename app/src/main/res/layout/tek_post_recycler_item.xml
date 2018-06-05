@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -41,8 +41,8 @@
 
     <com.emrealtunbilek.instakotlinapp.utils.GridImageView
         android:id="@+id/imgPostResim"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
         app:srcCompat="@drawable/ic_begen" />
@@ -62,7 +61,6 @@
         android:id="@+id/imgYorum"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/imgBegen"
         app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
         app:srcCompat="@drawable/ic_yorum" />
@@ -71,7 +69,6 @@
         android:id="@+id/imgGonder"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
         android:scaleType="center"
         app:layout_constraintStart_toEndOf="@+id/imgYorum"
         app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
@@ -81,11 +78,12 @@
         android:id="@+id/tvKullaniciAdi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="ealtunbilek"
         android:textColor="@color/siyah"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgBegen" />
 
@@ -93,10 +91,11 @@
         android:id="@+id/tvPostAciklama"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Açıklama"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvKullaniciAdi"
         app:layout_constraintTop_toBottomOf="@+id/imgBegen" />

@@ -117,7 +117,7 @@ class ShareGalleryFragment : Fragment() {
         recyclerViewDosyalar.layoutManager=layoutManager!!
 
         recyclerViewDosyalar.setHasFixedSize(true);
-        recyclerViewDosyalar.setItemViewCacheSize(30);
+        recyclerViewDosyalar.setItemViewCacheSize(10);
         recyclerViewDosyalar.setDrawingCacheEnabled(true);
         recyclerViewDosyalar.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
 
