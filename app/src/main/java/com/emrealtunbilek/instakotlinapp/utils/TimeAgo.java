@@ -41,4 +41,34 @@ public class TimeAgo {
             return diff / DAY_MILLIS + " GÜN ÖNCE";
         }
     }
+
+    public static String getTimeAgoForComments(long time) {
+        if (time < 1000000000000L) {
+            // if timestamp given in seconds, convert to millis
+            time *= 1000;
+        }
+
+        long now = System.currentTimeMillis();
+        if (time > now || time <= 0) {
+            return null;
+        }
+
+        // TODO: localize
+        final long diff = now - time;
+        if (diff < MINUTE_MILLIS) {
+            return "AZ ÖNCE";
+        } else if (diff < 2 * MINUTE_MILLIS) {
+            return "1d";
+        } else if (diff < 50 * MINUTE_MILLIS) {
+            return diff / MINUTE_MILLIS + "d";
+        } else if (diff < 90 * MINUTE_MILLIS) {
+            return "1s";
+        } else if (diff < 24 * HOUR_MILLIS) {
+            return diff / HOUR_MILLIS + "s";
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "DÜN";
+        } else {
+            return diff / DAY_MILLIS + "g";
+        }
+    }
 }

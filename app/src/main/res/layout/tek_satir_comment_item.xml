@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="@+id/yorumYapanUserProfile" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imgBegen"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="8dp"
@@ -45,7 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/yorumYapanUserProfile" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/tvBegenmeSayisi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -63,7 +63,7 @@
         android:background="@color/golgelik"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21"></View>
+        app:layout_constraintTop_toBottomOf="@+id/tvBegenmeSayisi"></View>
 
 
 </android.support.constraint.ConstraintLayout>
