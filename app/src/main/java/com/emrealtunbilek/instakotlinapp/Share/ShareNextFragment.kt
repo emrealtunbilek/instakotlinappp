@@ -100,6 +100,17 @@ class ShareNextFragment : Fragment() {
         mRef.child("posts").child(mUser.uid).child(postID).setValue(yuklenenPost)
         mRef.child("posts").child(mUser.uid).child(postID).child("yuklenme_tarih").setValue(ServerValue.TIMESTAMP) //2424564564
 
+        //gönderi açıklamasını yorum düğümüne ekleyelim
+        if(!etPostAciklama.text.toString().isNullOrEmpty()){
+
+            //var yorumKey=mRef.child("comments").child(postID).push().key
+            mRef.child("comments").child(postID).child(postID).child("user_id").setValue(mUser.uid)
+            mRef.child("comments").child(postID).child(postID).child("yorum_tarih").setValue(ServerValue.TIMESTAMP)
+            mRef.child("comments").child(postID).child(postID).child("yorum").setValue(etPostAciklama.text.toString())
+            mRef.child("comments").child(postID).child(postID).child("yorum_begeni").setValue("0")
+
+        }
+
         var intent=Intent(activity,HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         startActivity(intent)
 

@@ -49,6 +49,7 @@ class HomeFragment : Fragment() {
         fragmentView.imgTabCamera.setOnClickListener {
 
             (activity as HomeActivity).homeViewPager.setCurrentItem(0)
+
         }
 
         fragmentView.imgTabDirectMessage.setOnClickListener {
@@ -61,6 +62,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun kullaniciPostlariniGetir(kullaniciID: String) {
+
+
 
         mRef.child("users").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {

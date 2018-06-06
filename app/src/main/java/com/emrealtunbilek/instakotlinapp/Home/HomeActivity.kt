@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.R
@@ -207,6 +208,20 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+
+        if(homeViewPager.currentItem == 1){
+
+            homeViewPager.visibility=View.VISIBLE
+            homeFragmentContainer.visibility=View.GONE
+            super.onBackPressed()
+        }else {
+            homeViewPager.visibility=View.VISIBLE
+            homeFragmentContainer.visibility=View.GONE
+            homeViewPager.setCurrentItem(1)
+        }
+
+    }
 
     private fun initImageLoader() {
 
