@@ -52,6 +52,7 @@ dependencies {
 
     //firebase ui
     implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
+    implementation 'com.firebaseui:firebase-ui-database:3.3.1'
 
     //universal video view
     compile 'com.linsea:universalvideoview:1.1.0@aar'

@@ -12,6 +12,7 @@ import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.R
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.tek_post_recycler_item.view.*
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 import kotlin.Comparator
 
@@ -73,12 +74,14 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
             yorumYap.setOnClickListener {
 
+                EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
+
                 (myHomeActivity as HomeActivity).homeViewPager.visibility=View.INVISIBLE
                 (myHomeActivity as HomeActivity).homeFragmentContainer.visibility=View.VISIBLE
 
 
                 var transaction=(myHomeActivity as HomeActivity).supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.homeFragmentContainer,CommentFragment())
+                transaction.replace(R.id.homeFragmentContainer, CommentFragment())
                 transaction.addToBackStack("commentFragmentEklendi")
                 transaction.commit()
             }
