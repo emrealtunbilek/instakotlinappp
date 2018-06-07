@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,6 +69,11 @@ class CommentFragment : Fragment() {
 
         }
 
+        fragmentView.imgClose.setOnClickListener {
+
+            activity!!.onBackPressed()
+        }
+
 
         return fragmentView
     }
@@ -94,6 +100,17 @@ class CommentFragment : Fragment() {
 
             override fun onBindViewHolder(holder: CommentViewHolder, position: Int, model: Comments) {
                 holder.setData(model)
+
+                Log.e("HATA","YORUM YAPILACAK FOTO:"+yorumYapilacakGonderininID)
+                Log.e("HATA","yorum ıd:"+getRef(0).key)
+                //ilk yorum foto paylasırken yapılan acıklama ise begen iconu kaldırılır
+                if(position==0 && (yorumYapilacakGonderininID!!.equals(getRef(0).key))){
+                    holder.yorumBegen.visibility=View.INVISIBLE
+                }
+
+                holder.setBegenOlayi(yorumYapilacakGonderininID, getRef(position).key)
+
+                holder.setBegenmeDurumu(yorumYapilacakGonderininID, getRef(position).key)
             }
 
         }
@@ -134,6 +151,11 @@ class CommentFragment : Fragment() {
 
             kullaniciBilgileriniGetir(oanOlusturulanYorum.user_id, oanOlusturulanYorum.yorum)
 
+            yorumBegen.setOnClickListener {
+
+
+            }
+
         }
 
         private fun kullaniciBilgileriniGetir(user_id: String?, yorum: String?) {
@@ -161,6 +183,74 @@ class CommentFragment : Fragment() {
 
             })
 
+        }
+
+        fun setBegenOlayi(yorumYapilacakGonderininID: String?, begenilecekYorumID: String?) {
+
+           var mRef=FirebaseDatabase.getInstance().reference.child("comments").child(yorumYapilacakGonderininID).child(begenilecekYorumID)
+
+           yorumBegen.setOnClickListener {
+
+
+            mRef.child("begenenler").addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                   if(p0!!.hasChild(FirebaseAuth.getInstance().currentUser!!.uid)){
+
+                       mRef.child("begenenler").child(FirebaseAuth.getInstance().currentUser!!.uid).removeValue()
+                       yorumBegen.setImageResource(R.drawable.ic_like)
+
+                   }else {
+                       mRef.child("begenenler").child(FirebaseAuth.getInstance().currentUser!!.uid).setValue(FirebaseAuth.getInstance().currentUser!!.uid)
+                       yorumBegen.setImageResource(R.drawable.ic_begen_kirmizi)
+                   }
+                }
+
+
+            })
+
+
+
+           }
+
+
+
+
+        }
+
+        fun setBegenmeDurumu(yorumYapilacakGonderininID: String?, begenilecekYorumID: String?) {
+            var mRef=FirebaseDatabase.getInstance().reference.child("comments").child(yorumYapilacakGonderininID).child(begenilecekYorumID)
+
+            mRef.child("begenenler").addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+
+                    if(p0!!.exists()){
+
+                        yorumBegenmeSayisi.visibility=View.VISIBLE
+                        yorumBegenmeSayisi.text=p0!!.childrenCount.toString()+" beğenme"
+                    }else {
+                        yorumBegenmeSayisi.visibility=View.INVISIBLE
+                    }
+
+                    if(p0!!.hasChild(FirebaseAuth.getInstance().currentUser!!.uid)){
+
+                        yorumBegen.setImageResource(R.drawable.ic_begen_kirmizi)
+
+                    }else {
+
+                        yorumBegen.setImageResource(R.drawable.ic_like)
+                    }
+                }
+
+
+            })
         }
 
 
