@@ -87,12 +87,16 @@
 
             android:layout_height="30dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/etYorum"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/yorumlarRecyclerView" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/etYorum"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="4dp"
@@ -103,27 +107,27 @@
             android:inputType="textPersonName"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView5"
+            app:layout_constraintEnd_toStartOf="@+id/tvYorumYapButton"
             app:layout_constraintStart_toEndOf="@+id/circleImageView"
             app:layout_constraintTop_toTopOf="@+id/circleImageView" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/tvYorumYapButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="Paylaş"
             android:textColor="@color/mavi"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/editText"
+            app:layout_constraintBottom_toBottomOf="@+id/etYorum"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editText" />
+            app:layout_constraintTop_toTopOf="@+id/etYorum" />
 
         <View
             android:id="@+id/golgelik1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/golgelik"
             app:layout_constraintBottom_toTopOf="@+id/circleImageView"
             app:layout_constraintEnd_toEndOf="parent"
