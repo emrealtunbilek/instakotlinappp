@@ -1,23 +1,24 @@
 package com.emrealtunbilek.instakotlinapp.Profile
 
 import android.content.Intent
-import android.icu.util.Calendar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
+import com.emrealtunbilek.instakotlinapp.Models.Posts
+import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
-import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
-import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
-import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
+import com.emrealtunbilek.instakotlinapp.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.greenrobot.eventbus.EventBus
-import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -29,6 +30,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var mUser:FirebaseUser
     lateinit var mRef:DatabaseReference
+    lateinit var tumGonderiler: ArrayList<UserPosts>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +41,25 @@ class ProfileActivity : AppCompatActivity() {
         mUser=mAuth.currentUser!!
         mRef=FirebaseDatabase.getInstance().reference
 
+        tumGonderiler=ArrayList<UserPosts>()
         setupToolbar()
 
+
         kullaniciBilgileriniGetir()
+
+        kullaniciPostlariniGetir(mUser.uid)
+
+        imgGrid.setOnClickListener {
+
+            setupRecyclerView(1)
+
+        }
+
+        imgList.setOnClickListener {
+
+            setupRecyclerView(2)
+        }
+
     }
 
     private fun kullaniciBilgileriniGetir() {
@@ -127,6 +145,86 @@ class ProfileActivity : AppCompatActivity() {
         var menu=bottomNavigationView.menu
         var menuItem=menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
+    }
+
+    private fun kullaniciPostlariniGetir(kullaniciID: String) {
+
+
+
+        mRef.child("users").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                var userID = kullaniciID
+                var kullaniciAdi = p0!!.getValue(Users::class.java)!!.user_name
+                var kullaniciFotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
+
+
+                mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot?) {
+
+                        if(p0!!.hasChildren())
+                        {
+                            Log.e("HATA","COCUK VAR")
+                            for (ds in p0!!.children){
+
+                                var eklenecekUserPosts= UserPosts()
+                                eklenecekUserPosts.userID=userID
+                                eklenecekUserPosts.userName=kullaniciAdi
+                                eklenecekUserPosts.userPhotoURL=kullaniciFotoURL
+                                eklenecekUserPosts.postID=ds.getValue(Posts::class.java)!!.post_id
+                                eklenecekUserPosts.postURL=ds.getValue(Posts::class.java)!!.file_url
+                                eklenecekUserPosts.postAciklama=ds.getValue(Posts::class.java)!!.aciklama
+                                eklenecekUserPosts.postYuklenmeTarih=ds.getValue(Posts::class.java)!!.yuklenme_tarih
+
+                                tumGonderiler.add(eklenecekUserPosts)
+
+                            }
+                        }
+
+                        setupRecyclerView(1)
+
+                    }
+
+                })
+
+
+
+
+            }
+
+
+        })
+
+
+
+    }
+
+    //1 ise grid 2 ise list view şeklinde veriler gösterilir
+    private fun setupRecyclerView(layoutCesidi: Int) {
+
+        if(layoutCesidi==1){
+
+            var kullaniciPostListe=profileRecyclerView
+            kullaniciPostListe.adapter=ProfilePostGridRecyclerAdapter(tumGonderiler,this)
+
+            kullaniciPostListe.layoutManager=GridLayoutManager(this,3)
+
+        }else if(layoutCesidi==2){
+
+            var kullaniciPostListe=profileRecyclerView
+            kullaniciPostListe.adapter=ProfilePostListRecyclerAdapter(this,tumGonderiler)
+
+            kullaniciPostListe.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+
+        }
+
     }
 
     override fun onBackPressed() {
