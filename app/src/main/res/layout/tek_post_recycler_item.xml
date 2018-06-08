@@ -53,7 +53,6 @@
         android:id="@+id/imgYorum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="false"
         android:cropToPadding="false"
@@ -65,7 +64,6 @@
         android:id="@+id/imgGonder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
@@ -74,28 +72,14 @@
         app:srcCompat="@drawable/ic_gonder" />
 
     <TextView
-        android:id="@+id/tvKullaniciAdi"
+        android:id="@+id/tvKullaniciAdiveAciklama"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:text="ealtunbilek"
-        android:textColor="@color/siyah"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgBegen" />
-
-    <TextView
-        android:id="@+id/tvPostAciklama"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Açıklama"
-        app:layout_constraintBottom_toBottomOf="@+id/tvKullaniciAdi"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvKullaniciAdi"
-        app:layout_constraintTop_toTopOf="@+id/tvKullaniciAdi" />
+        app:layout_constraintTop_toBottomOf="@+id/tvBegenmeSayisi" />
 
     <TextView
         android:id="@+id/tvKacZamanOnce"
@@ -108,7 +92,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdi" />
+        app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdiveAciklama" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -133,10 +117,22 @@
             android:id="@+id/insta_like_view"
             android:layout_width="128dp"
             android:layout_height="128dp"
-            app:likeColor="@color/kirmizi"
             android:layout_gravity="center"
+            app:likeColor="@color/kirmizi"
             app:likeSize="128dp"
             app:likeSrc="@drawable/ic_begen_kirmizi" />
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvBegenmeSayisi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="@color/siyah"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBegen" />
 
 </android.support.constraint.ConstraintLayout>

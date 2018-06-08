@@ -1,9 +1,11 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
 import android.content.Context
+import android.os.Build
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
-import android.util.Log
+import android.text.Html
+import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,21 +62,29 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         var profileImage = tumLayout.imgUserProfile
         var userNameTitle = tumLayout.tvKullaniciAdiBaslik
         var gonderi = tumLayout.imgPostResim
-        var userName = tumLayout.tvKullaniciAdi
-        var gonderiAciklama = tumLayout.tvPostAciklama
+        var userNameveAciklama = tumLayout.tvKullaniciAdiveAciklama
         var gonderiKacZamanOnce = tumLayout.tvKacZamanOnce
-        var yorumYap=tumLayout.imgYorum
-        var gonderiBegen=tumLayout.imgBegen
-        var myHomeActivity=myHomeActivity
-        var mInstaLikeView=tumLayout.insta_like_view
+        var yorumYap = tumLayout.imgYorum
+        var gonderiBegen = tumLayout.imgBegen
+        var myHomeActivity = myHomeActivity
+        var mInstaLikeView = tumLayout.insta_like_view
+        var begenmeSayisi = tumLayout.tvBegenmeSayisi
 
 
         fun setData(position: Int, oankiGonderi: UserPosts) {
 
             userNameTitle.setText(oankiGonderi.userName)
             UniversalImageLoader.setImage(oankiGonderi.postURL!!, gonderi, null, "")
-            userName.setText(oankiGonderi.userName)
-            gonderiAciklama.setText(oankiGonderi.postAciklama)
+
+            var userNameveAciklamaText="<font color=#000>"+oankiGonderi.userName.toString()+"</font>"+" "+oankiGonderi.postAciklama
+            var sonuc:Spanned?=null
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                sonuc= Html.fromHtml(userNameveAciklamaText,Html.FROM_HTML_MODE_LEGACY)
+            }else {
+                sonuc=Html.fromHtml(userNameveAciklamaText)
+            }
+            userNameveAciklama.setText(sonuc)
+
             UniversalImageLoader.setImage(oankiGonderi.userPhotoURL!!, profileImage, null, "")
             gonderiKacZamanOnce.setText(TimeAgo.getTimeAgo(oankiGonderi.postYuklenmeTarih!!))
 
@@ -85,11 +95,11 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
                 EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
 
-                (myHomeActivity as HomeActivity).homeViewPager.visibility=View.INVISIBLE
-                (myHomeActivity as HomeActivity).homeFragmentContainer.visibility=View.VISIBLE
+                (myHomeActivity as HomeActivity).homeViewPager.visibility = View.INVISIBLE
+                (myHomeActivity as HomeActivity).homeFragmentContainer.visibility = View.VISIBLE
 
 
-                var transaction=(myHomeActivity as HomeActivity).supportFragmentManager.beginTransaction()
+                var transaction = (myHomeActivity as HomeActivity).supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.homeFragmentContainer, CommentFragment())
                 transaction.addToBackStack("commentFragmentEklendi")
                 transaction.commit()
@@ -97,23 +107,26 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
             gonderiBegen.setOnClickListener {
 
-                var mRef=FirebaseDatabase.getInstance().reference
-                var userID=FirebaseAuth.getInstance().currentUser!!.uid
-                mRef.child("likes").child(oankiGonderi.postID).addListenerForSingleValueEvent(object : ValueEventListener{
+                var mRef = FirebaseDatabase.getInstance().reference
+                var userID = FirebaseAuth.getInstance().currentUser!!.uid
+                mRef.child("likes").child(oankiGonderi.postID).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError?) {
 
                     }
 
                     override fun onDataChange(p0: DataSnapshot?) {
-                        if(p0!!.hasChild(userID)){
+                        if (p0!!.hasChild(userID)) {
 
                             mRef.child("likes").child(oankiGonderi.postID).child(userID).removeValue()
                             gonderiBegen.setImageResource(R.drawable.ic_like)
 
-                        }else {
+                        } else {
 
                             mRef.child("likes").child(oankiGonderi.postID).child(userID).setValue(userID)
                             gonderiBegen.setImageResource(R.drawable.ic_begen_kirmizi)
+                            mInstaLikeView.start()
+                            begenmeSayisi.visibility=View.VISIBLE
+                            begenmeSayisi.setText(""+p0!!.childrenCount!!.toString()+" beğenme")
                         }
                     }
 
@@ -123,45 +136,51 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
             }
 
-            var ilkTiklama:Long=0
-            var sonTiklama:Long=0
+            var ilkTiklama: Long = 0
+            var sonTiklama: Long = 0
 
             gonderi.setOnClickListener {
 
-                ilkTiklama=sonTiklama
-                sonTiklama=System.currentTimeMillis()
+                ilkTiklama = sonTiklama
+                sonTiklama = System.currentTimeMillis()
 
-                if(sonTiklama - ilkTiklama < 300){
+                if (sonTiklama - ilkTiklama < 300) {
                     mInstaLikeView.start()
 
                     FirebaseDatabase.getInstance().getReference().child("likes").child(oankiGonderi.postID)
                             .child(FirebaseAuth.getInstance().currentUser!!.uid).setValue(FirebaseAuth.getInstance().currentUser!!.uid)
 
 
-                    sonTiklama=0
+                    sonTiklama = 0
                 }
 
 
             }
 
 
-
-
         }
 
         fun begeniKontrol(oankiGonderi: UserPosts) {
 
-            var mRef=FirebaseDatabase.getInstance().reference
-            var userID=FirebaseAuth.getInstance().currentUser!!.uid
-            mRef.child("likes").child(oankiGonderi.postID).addValueEventListener(object : ValueEventListener{
+            var mRef = FirebaseDatabase.getInstance().reference
+            var userID = FirebaseAuth.getInstance().currentUser!!.uid
+            mRef.child("likes").child(oankiGonderi.postID).addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError?) {
 
                 }
 
                 override fun onDataChange(p0: DataSnapshot?) {
-                    if(p0!!.hasChild(userID)){
+
+                    if(p0!!.getValue()!=null){
+                        begenmeSayisi.visibility=View.VISIBLE
+                        begenmeSayisi.setText(""+p0!!.childrenCount!!.toString()+" beğenme")
+                    }else {
+                        begenmeSayisi.visibility=View.GONE
+                    }
+
+                    if (p0!!.hasChild(userID)) {
                         gonderiBegen.setImageResource(R.drawable.ic_begen_kirmizi)
-                    }else{
+                    } else {
                         gonderiBegen.setImageResource(R.drawable.ic_like)
                     }
                 }
