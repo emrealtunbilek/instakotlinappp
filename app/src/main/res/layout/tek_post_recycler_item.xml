@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -40,16 +39,6 @@
         app:srcCompat="@drawable/ic_profile_options" />
 
     <ImageView
-        android:id="@+id/imgPostResim"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="350dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgUserProfile" />
-
-    <ImageView
         android:id="@+id/imgBegen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +46,7 @@
         android:layout_marginTop="8dp"
         android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:srcCompat="@drawable/ic_like" />
 
     <ImageView
@@ -69,7 +58,7 @@
         android:adjustViewBounds="false"
         android:cropToPadding="false"
         app:layout_constraintStart_toEndOf="@+id/imgBegen"
-        app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:srcCompat="@drawable/ic_comment" />
 
     <ImageView
@@ -81,7 +70,7 @@
         android:adjustViewBounds="true"
         android:cropToPadding="true"
         app:layout_constraintStart_toEndOf="@+id/imgYorum"
-        app:layout_constraintTop_toBottomOf="@+id/imgPostResim"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:srcCompat="@drawable/ic_gonder" />
 
     <TextView
@@ -120,5 +109,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdi" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgUserProfile">
+
+        <ImageView
+            android:id="@+id/imgPostResim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="350dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="166dp" />
+
+        <com.github.kshitij_jain.instalike.InstaLikeView
+            android:id="@+id/insta_like_view"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            app:likeColor="@color/kirmizi"
+            android:layout_gravity="center"
+            app:likeSize="128dp"
+            app:likeSrc="@drawable/ic_begen_kirmizi" />
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

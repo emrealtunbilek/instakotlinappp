@@ -3,6 +3,7 @@ package com.emrealtunbilek.instakotlinapp.utils
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,11 @@ import com.emrealtunbilek.instakotlinapp.Generic.CommentFragment
 import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.tek_post_recycler_item.view.*
 import org.greenrobot.eventbus.EventBus
@@ -58,7 +64,9 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         var gonderiAciklama = tumLayout.tvPostAciklama
         var gonderiKacZamanOnce = tumLayout.tvKacZamanOnce
         var yorumYap=tumLayout.imgYorum
+        var gonderiBegen=tumLayout.imgBegen
         var myHomeActivity=myHomeActivity
+        var mInstaLikeView=tumLayout.insta_like_view
 
 
         fun setData(position: Int, oankiGonderi: UserPosts) {
@@ -70,6 +78,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
             UniversalImageLoader.setImage(oankiGonderi.userPhotoURL!!, profileImage, null, "")
             gonderiKacZamanOnce.setText(TimeAgo.getTimeAgo(oankiGonderi.postYuklenmeTarih!!))
 
+            begeniKontrol(oankiGonderi)
 
 
             yorumYap.setOnClickListener {
@@ -85,6 +94,81 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
                 transaction.addToBackStack("commentFragmentEklendi")
                 transaction.commit()
             }
+
+            gonderiBegen.setOnClickListener {
+
+                var mRef=FirebaseDatabase.getInstance().reference
+                var userID=FirebaseAuth.getInstance().currentUser!!.uid
+                mRef.child("likes").child(oankiGonderi.postID).addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot?) {
+                        if(p0!!.hasChild(userID)){
+
+                            mRef.child("likes").child(oankiGonderi.postID).child(userID).removeValue()
+                            gonderiBegen.setImageResource(R.drawable.ic_like)
+
+                        }else {
+
+                            mRef.child("likes").child(oankiGonderi.postID).child(userID).setValue(userID)
+                            gonderiBegen.setImageResource(R.drawable.ic_begen_kirmizi)
+                        }
+                    }
+
+
+                })
+
+
+            }
+
+            var ilkTiklama:Long=0
+            var sonTiklama:Long=0
+
+            gonderi.setOnClickListener {
+
+                ilkTiklama=sonTiklama
+                sonTiklama=System.currentTimeMillis()
+
+                if(sonTiklama - ilkTiklama < 300){
+                    mInstaLikeView.start()
+
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(oankiGonderi.postID)
+                            .child(FirebaseAuth.getInstance().currentUser!!.uid).setValue(FirebaseAuth.getInstance().currentUser!!.uid)
+
+
+                    sonTiklama=0
+                }
+
+
+            }
+
+
+
+
+        }
+
+        fun begeniKontrol(oankiGonderi: UserPosts) {
+
+            var mRef=FirebaseDatabase.getInstance().reference
+            var userID=FirebaseAuth.getInstance().currentUser!!.uid
+            mRef.child("likes").child(oankiGonderi.postID).addValueEventListener(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                    if(p0!!.hasChild(userID)){
+                        gonderiBegen.setImageResource(R.drawable.ic_begen_kirmizi)
+                    }else{
+                        gonderiBegen.setImageResource(R.drawable.ic_like)
+                    }
+                }
+
+
+            })
+
 
         }
 

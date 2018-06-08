@@ -68,6 +68,9 @@ dependencies {
 
     //resim ve video view
     compile 'com.otaliastudios:cameraview:1.5.1'
+
+    //çift tıklayarak begenme animasyonu
+    compile 'com.github.Kshitij-Jain:InstaLikeView:1.05'
 }
 
 apply plugin: 'com.google.gms.google-services'
