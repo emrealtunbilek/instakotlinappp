@@ -8,297 +8,344 @@
 
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/profileRoot"
+        android:id="@+id/tumlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvProfilAdiToolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="emre_altunbilek"
-            android:textColor="@color/siyah"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imgProfileSettings"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imgProfileSettings" />
-
-        <ImageView
-            android:id="@+id/imgProfileSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_profile_options" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imgProfileSettings"
-            app:layout_constraintEnd_toStartOf="@+id/imgProfileSettings"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_discover_people" />
-
-        <View
-            android:id="@+id/golgelik"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/golgelik"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"></View>
-
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/circleProfileImage"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_profile"
-            app:civ_border_color="@color/golgelik"
-            app:civ_border_width="1dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/golgelik" />
-
-        <TextView
-            android:id="@+id/tvPostSayisi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="65"
-            android:textAlignment="center"
-            android:textColor="@color/siyah"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/tvFollowerSayisi"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/circleProfileImage"
-            app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
-            app:layout_constraintEnd_toEndOf="@+id/circleProfileImage"
-            app:layout_constraintHorizontal_bias="0.531"
-            app:layout_constraintStart_toStartOf="@+id/circleProfileImage"
-            app:layout_constraintTop_toTopOf="@+id/circleProfileImage"
-            app:layout_constraintVertical_bias="0.265" />
-
-        <TextView
-            android:id="@+id/tvFollowerSayisi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="775"
-            android:textColor="@color/siyah"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/tvFollowingSayisi"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvPostSayisi"
-            app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
-
-        <TextView
-            android:id="@+id/tvFollowingSayisi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:text="279"
-            android:textAlignment="center"
-            android:textColor="@color/siyah"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvFollowerSayisi"
-            app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:text="gönderi"
-            app:layout_constraintEnd_toEndOf="@+id/tvPostSayisi"
-            app:layout_constraintStart_toStartOf="@+id/tvPostSayisi"
-            app:layout_constraintTop_toBottomOf="@+id/tvPostSayisi" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:text="takipçi"
-            app:layout_constraintEnd_toEndOf="@+id/tvFollowerSayisi"
-            app:layout_constraintStart_toStartOf="@+id/tvFollowerSayisi"
-            app:layout_constraintTop_toBottomOf="@+id/tvFollowerSayisi" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:text="takip"
-            app:layout_constraintEnd_toEndOf="@+id/tvFollowingSayisi"
-            app:layout_constraintStart_toStartOf="@+id/tvFollowingSayisi"
-            app:layout_constraintTop_toBottomOf="@+id/tvFollowingSayisi" />
-
-        <TextView
-            android:id="@+id/tvProfilDuzenleButon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/edit_profile_button_background"
-            android:padding="6dp"
-            android:text="Profili Düzenle"
-            android:textAlignment="center"
-            android:textColor="@color/siyah"
-            app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/circleProfileImage" />
-
-        <TextView
-            android:id="@+id/tvProfilGercekAdi"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Emre Altunbilek"
-            android:textColor="@color/siyah"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circleProfileImage" />
-
-        <TextView
-            android:id="@+id/tvBiyografi"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:text="Ekinler baş vermeden kör buzağı topallamaz !!!!!!"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvProfilGercekAdi" />
-
-        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
-            android:id="@+id/bottomNavigationView"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedContainer"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNaviContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_navigation_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+            app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:background="@color/golgelik"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/profileRoot"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/bottomNaviContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvProfilAdiToolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="emre_altunbilek"
+                    android:textColor="@color/siyah"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imgProfileSettings"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imgProfileSettings" />
+
+                <ImageView
+                    android:id="@+id/imgProfileSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_profile_options" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imgProfileSettings"
+                    app:layout_constraintEnd_toStartOf="@+id/imgProfileSettings"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_discover_people" />
+
+                <View
+                    android:id="@+id/golgelik"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/golgelik"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView2"></View>
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/circleProfileImage"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_profile"
+                    app:civ_border_color="@color/golgelik"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/golgelik" />
+
+                <TextView
+                    android:id="@+id/tvPostSayisi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="65"
+                    android:textAlignment="center"
+                    android:textColor="@color/siyah"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/tvFollowerSayisi"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/circleProfileImage"
+                    app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
+                    app:layout_constraintEnd_toEndOf="@+id/circleProfileImage"
+                    app:layout_constraintHorizontal_bias="0.531"
+                    app:layout_constraintStart_toStartOf="@+id/circleProfileImage"
+                    app:layout_constraintTop_toTopOf="@+id/circleProfileImage"
+                    app:layout_constraintVertical_bias="0.265" />
+
+                <TextView
+                    android:id="@+id/tvFollowerSayisi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="775"
+                    android:textColor="@color/siyah"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/tvFollowingSayisi"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tvPostSayisi"
+                    app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
+
+                <TextView
+                    android:id="@+id/tvFollowingSayisi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="279"
+                    android:textAlignment="center"
+                    android:textColor="@color/siyah"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tvFollowerSayisi"
+                    app:layout_constraintTop_toTopOf="@+id/circleProfileImage" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:text="gönderi"
+                    app:layout_constraintEnd_toEndOf="@+id/tvPostSayisi"
+                    app:layout_constraintStart_toStartOf="@+id/tvPostSayisi"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPostSayisi" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:text="takipçi"
+                    app:layout_constraintEnd_toEndOf="@+id/tvFollowerSayisi"
+                    app:layout_constraintStart_toStartOf="@+id/tvFollowerSayisi"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFollowerSayisi" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:text="takip"
+                    app:layout_constraintEnd_toEndOf="@+id/tvFollowingSayisi"
+                    app:layout_constraintStart_toStartOf="@+id/tvFollowingSayisi"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFollowingSayisi" />
+
+                <View
+                    android:id="@+id/golgelik3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/golgelik"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgList"></View>
+
+                <TextView
+                    android:id="@+id/tvProfilDuzenleButon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/edit_profile_button_background"
+                    android:padding="6dp"
+                    android:text="Profili Düzenle"
+                    android:textAlignment="center"
+                    android:textColor="@color/siyah"
+                    app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/circleProfileImage" />
+
+                <TextView
+                    android:id="@+id/tvProfilGercekAdi"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Emre Altunbilek"
+                    android:textColor="@color/siyah"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/circleProfileImage" />
+
+                <TextView
+                    android:id="@+id/tvBiyografi"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Ekinler baş vermeden kör buzağı topallamaz !!!!!!"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProfilGercekAdi" />
+
+
+                <TextView
+                    android:id="@+id/tvWebSitesi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:text="TextView"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/tvBiyografi"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBiyografi" />
+
+                <View
+                    android:id="@+id/golgelik2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/golgelik"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"></View>
+
+                <ImageView
+                    android:id="@+id/imgGrid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/imgList"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
+                    app:srcCompat="@drawable/ic_grid_view" />
+
+                <ImageView
+                    android:id="@+id/imgList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView10"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imgGrid"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
+                    app:srcCompat="@drawable/ic_list_view" />
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView11"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imgList"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
+                    app:srcCompat="@drawable/ic_map" />
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView10"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
+                    app:srcCompat="@drawable/ic_tagged" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/profileRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/golgelik3" />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/bottomNaviContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-        </View>
+            <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+                android:id="@+id/bottomNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:menu="@menu/bottom_navigation_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
-        <TextView
-            android:id="@+id/tvWebSitesi"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:text="TextView"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/tvBiyografi"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvBiyografi" />
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="@color/golgelik"
+                app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-        <View
-            android:id="@+id/golgelik2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:background="@color/golgelik"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"></View>
+            </View>
 
-        <ImageView
-            android:id="@+id/imgGrid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/imgList"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
-            app:srcCompat="@drawable/ic_grid_view" />
-
-        <ImageView
-            android:id="@+id/imgList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView10"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imgGrid"
-            app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
-            app:srcCompat="@drawable/ic_list_view" />
-
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView11"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imgList"
-            app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
-            app:srcCompat="@drawable/ic_map" />
-
-        <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView10"
-            app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
-            app:srcCompat="@drawable/ic_tagged" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/profileRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgGrid" />
-
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
 

@@ -1,8 +1,10 @@
 package com.emrealtunbilek.instakotlinapp.Profile
 
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -122,7 +124,8 @@ class ProfileActivity : AppCompatActivity() {
 
        tvProfilDuzenleButon.setOnClickListener {
 
-           profileRoot.visibility= View.GONE
+           tumlayout.visibility= View.GONE
+           profileContainer.visibility=View.VISIBLE
            var transaction=supportFragmentManager.beginTransaction()
            transaction.replace(R.id.profileContainer,ProfileEditFragment())
            transaction.addToBackStack("editProfileFragmentEklendi")
@@ -210,14 +213,16 @@ class ProfileActivity : AppCompatActivity() {
     private fun setupRecyclerView(layoutCesidi: Int) {
 
         if(layoutCesidi==1){
-
+            imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
+            imgList.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
             var kullaniciPostListe=profileRecyclerView
             kullaniciPostListe.adapter=ProfilePostGridRecyclerAdapter(tumGonderiler,this)
 
             kullaniciPostListe.layoutManager=GridLayoutManager(this,3)
 
         }else if(layoutCesidi==2){
-
+            imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
+            imgList.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
             var kullaniciPostListe=profileRecyclerView
             kullaniciPostListe.adapter=ProfilePostListRecyclerAdapter(this,tumGonderiler)
 
@@ -228,7 +233,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        profileRoot.visibility= View.VISIBLE
+        tumlayout.visibility= View.VISIBLE
         super.onBackPressed()
     }
 

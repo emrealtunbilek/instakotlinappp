@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Generic.CommentFragment
 import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
+import com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity
 import com.emrealtunbilek.instakotlinapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.tek_post_recycler_item.view.*
 import org.greenrobot.eventbus.EventBus
 import java.util.*
@@ -56,7 +58,7 @@ class ProfilePostListRecyclerAdapter(var context: Context, var tumGonderiler: Ar
     }
 
 
-    class MyViewHolder(itemView: View?, myHomeActivity: Context) : RecyclerView.ViewHolder(itemView) {
+    class MyViewHolder(itemView: View?, myProfileActivity: Context) : RecyclerView.ViewHolder(itemView) {
 
         var tumLayout = itemView as ConstraintLayout
         var profileImage = tumLayout.imgUserProfile
@@ -66,7 +68,7 @@ class ProfilePostListRecyclerAdapter(var context: Context, var tumGonderiler: Ar
         var gonderiKacZamanOnce = tumLayout.tvKacZamanOnce
         var yorumYap = tumLayout.imgYorum
         var gonderiBegen = tumLayout.imgBegen
-        var myHomeActivity = myHomeActivity
+        var myProfileActivity = myProfileActivity
         var mInstaLikeView = tumLayout.insta_like_view
         var begenmeSayisi = tumLayout.tvBegenmeSayisi
 
@@ -95,12 +97,12 @@ class ProfilePostListRecyclerAdapter(var context: Context, var tumGonderiler: Ar
 
                 EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
 
-                (myHomeActivity as HomeActivity).homeViewPager.visibility = View.INVISIBLE
-                (myHomeActivity as HomeActivity).homeFragmentContainer.visibility = View.VISIBLE
+                (myProfileActivity as ProfileActivity).tumlayout.visibility = View.INVISIBLE
+                (myProfileActivity as ProfileActivity).profileContainer.visibility = View.VISIBLE
 
 
-                var transaction = (myHomeActivity as HomeActivity).supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.homeFragmentContainer, CommentFragment())
+                var transaction = (myProfileActivity as ProfileActivity).supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.profileContainer, CommentFragment())
                 transaction.addToBackStack("commentFragmentEklendi")
                 transaction.commit()
             }
