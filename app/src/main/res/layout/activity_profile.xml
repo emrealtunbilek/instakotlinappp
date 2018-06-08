@@ -227,12 +227,13 @@
 
                 <TextView
                     android:id="@+id/tvBiyografi"
-                    android:layout_width="250dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
+                    android:maxWidth="250dp"
                     android:text="Ekinler baş vermeden kör buzağı topallamaz !!!!!!"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvProfilGercekAdi" />
 
@@ -242,10 +243,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
                     android:text="TextView"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@+id/tvBiyografi"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@+id/tvProfilGercekAdi"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvBiyografi" />
 

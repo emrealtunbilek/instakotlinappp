@@ -34,6 +34,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var mRef:DatabaseReference
     lateinit var tumGonderiler: ArrayList<UserPosts>
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
@@ -96,10 +97,14 @@ class ProfileActivity : AppCompatActivity() {
                     if(!okunanKullaniciBilgileri!!.user_detail!!.biography!!.isNullOrEmpty()){
                         tvBiyografi.visibility=View.VISIBLE
                         tvBiyografi.setText(okunanKullaniciBilgileri!!.user_detail!!.biography!!)
+                    }else{
+                        tvBiyografi.visibility=View.GONE
                     }
                     if(!okunanKullaniciBilgileri!!.user_detail!!.web_site!!.isNullOrEmpty()){
                         tvWebSitesi.visibility=View.VISIBLE
                         tvWebSitesi.setText(okunanKullaniciBilgileri!!.user_detail!!.web_site!!)
+                    }else{
+                        tvWebSitesi.visibility=View.GONE
                     }
 
                 }
@@ -124,7 +129,7 @@ class ProfileActivity : AppCompatActivity() {
 
        tvProfilDuzenleButon.setOnClickListener {
 
-           tumlayout.visibility= View.GONE
+           tumlayout.visibility= View.INVISIBLE
            profileContainer.visibility=View.VISIBLE
            var transaction=supportFragmentManager.beginTransaction()
            transaction.replace(R.id.profileContainer,ProfileEditFragment())
@@ -234,6 +239,8 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         tumlayout.visibility= View.VISIBLE
+        profileContainer.visibility=View.INVISIBLE
+
         super.onBackPressed()
     }
 
