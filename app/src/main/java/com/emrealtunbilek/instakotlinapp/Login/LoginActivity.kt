@@ -59,38 +59,42 @@ class LoginActivity : AppCompatActivity() {
 
         var kullaniciBulundu=false
 
-        mRef.child("users").orderByChild("email").addListenerForSingleValueEvent(object : ValueEventListener {
+        mRef.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
 
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
-                for (ds in p0!!.children) {
 
-                    var okunanKullanici = ds.getValue(Users::class.java)
+               if(p0!!.getValue() != null ){
+                   for (ds in p0!!.children) {
 
-                    if (okunanKullanici!!.email!!.toString().equals(emailPhoneNumberUserName)) {
+                       var okunanKullanici = ds.getValue(Users::class.java)
 
-                        oturumAc(okunanKullanici, sifre, false)
-                        kullaniciBulundu=true
-                        break
+                       if (!okunanKullanici!!.email!!.isNullOrEmpty() && okunanKullanici!!.email!!.toString().equals(emailPhoneNumberUserName)) {
 
-                    } else if (okunanKullanici!!.user_name!!.toString().equals(emailPhoneNumberUserName)) {
-                        oturumAc(okunanKullanici, sifre, false)
-                        kullaniciBulundu=true
-                        break
-                    } else if (okunanKullanici!!.phone_number!!.toString().equals(emailPhoneNumberUserName)) {
+                           oturumAc(okunanKullanici, sifre, false)
+                           kullaniciBulundu=true
+                           break
 
-                        oturumAc(okunanKullanici, sifre, true)
-                        kullaniciBulundu=true
-                        break
-                    }
+                       } else if (!okunanKullanici!!.user_name!!.isNullOrEmpty() && okunanKullanici!!.user_name!!.toString().equals(emailPhoneNumberUserName)) {
+                           oturumAc(okunanKullanici, sifre, false)
+                           kullaniciBulundu=true
+                           break
+                       } else if (!okunanKullanici!!.phone_number!!.isNullOrEmpty() && okunanKullanici!!.phone_number!!.toString().equals(emailPhoneNumberUserName)) {
 
-                }
+                           oturumAc(okunanKullanici, sifre, true)
+                           kullaniciBulundu=true
+                           break
+                       }
 
-                if(kullaniciBulundu==false){
-                    Toast.makeText(this@LoginActivity,"Kullanıcı Bulunamadı", Toast.LENGTH_SHORT).show()
-                }
+                   }
+
+                   if(kullaniciBulundu==false){
+                       Toast.makeText(this@LoginActivity,"Kullanıcı Bulunamadı", Toast.LENGTH_SHORT).show()
+                   }
+               }
+
             }
 
 

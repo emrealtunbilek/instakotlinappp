@@ -1,4 +1,4 @@
-package com.emrealtunbilek.instakotlinapp.Profile
+package com.emrealtunbilek.instakotlinapp.Generic
 
 import android.content.Intent
 import android.graphics.PorterDuff
@@ -13,44 +13,44 @@ import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.Models.Posts
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Models.Users
+import com.emrealtunbilek.instakotlinapp.Profile.ProfileEditFragment
+
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_user_profile.*
 import org.greenrobot.eventbus.EventBus
-import kotlin.collections.ArrayList
 
-
-class ProfileActivity : AppCompatActivity() {
+class UserProfileActivity : AppCompatActivity() {
 
     private val ACTIVITY_NO=4
     private val TAG="ProfileActivity"
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-    lateinit var mUser:FirebaseUser
-    lateinit var mRef:DatabaseReference
+    lateinit var mUser: FirebaseUser
+    lateinit var mRef: DatabaseReference
     lateinit var tumGonderiler: ArrayList<UserPosts>
-
+    lateinit var secilenUserID:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
+        setContentView(R.layout.activity_user_profile)
 
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
         mUser=mAuth.currentUser!!
-        mRef=FirebaseDatabase.getInstance().reference
-
+        mRef= FirebaseDatabase.getInstance().reference
+        secilenUserID=intent.getStringExtra("secilenUserID")
         tumGonderiler=ArrayList<UserPosts>()
         setupToolbar()
 
 
         kullaniciBilgileriniGetir()
 
-        kullaniciPostlariniGetir(mUser.uid)
+        kullaniciPostlariniGetir(secilenUserID)
 
         imgGrid.setOnClickListener {
 
@@ -63,6 +63,7 @@ class ProfileActivity : AppCompatActivity() {
             setupRecyclerView(2)
         }
 
+        
     }
 
     private fun kullaniciBilgileriniGetir() {
@@ -70,7 +71,7 @@ class ProfileActivity : AppCompatActivity() {
         tvProfilDuzenle.isEnabled=false
         imgProfileSettings.isEnabled=false
 
-        mRef.child("users").child(mUser!!.uid).addValueEventListener(object : ValueEventListener{
+        mRef.child("users").child(secilenUserID).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
 
             }
@@ -95,16 +96,16 @@ class ProfileActivity : AppCompatActivity() {
                     UniversalImageLoader.setImage(imgUrl,circleProfileImage,progressBar,"")
 
                     if(!okunanKullaniciBilgileri!!.user_detail!!.biography!!.isNullOrEmpty()){
-                        tvBiyografi.visibility=View.VISIBLE
+                        tvBiyografi.visibility= View.VISIBLE
                         tvBiyografi.setText(okunanKullaniciBilgileri!!.user_detail!!.biography!!)
                     }else{
-                        tvBiyografi.visibility=View.GONE
+                        tvBiyografi.visibility= View.GONE
                     }
                     if(!okunanKullaniciBilgileri!!.user_detail!!.web_site!!.isNullOrEmpty()){
-                        tvWebSitesi.visibility=View.VISIBLE
+                        tvWebSitesi.visibility= View.VISIBLE
                         tvWebSitesi.setText(okunanKullaniciBilgileri!!.user_detail!!.web_site!!)
                     }else{
-                        tvWebSitesi.visibility=View.GONE
+                        tvWebSitesi.visibility= View.GONE
                     }
 
                 }
@@ -117,26 +118,28 @@ class ProfileActivity : AppCompatActivity() {
         })
 
     }
-    
+
 
     private fun setupToolbar() {
-       imgProfileSettings.setOnClickListener {
-           var intent=Intent(this,ProfileSettingsActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-           startActivity(intent)
+        imgProfileSettings.setOnClickListener {
 
+        }
 
-       }
+        imgBack.setOnClickListener {
 
-       tvProfilDuzenle.setOnClickListener {
+            onBackPressed()
+        }
 
-           tumlayout.visibility= View.INVISIBLE
-           profileContainer.visibility=View.VISIBLE
-           var transaction=supportFragmentManager.beginTransaction()
-           transaction.replace(R.id.profileContainer,ProfileEditFragment())
-           transaction.addToBackStack("editProfileFragmentEklendi")
-           transaction.commit()
+        tvProfilDuzenle.setOnClickListener {
 
-       }
+            tumlayout.visibility= View.INVISIBLE
+            profileContainer.visibility= View.VISIBLE
+            var transaction=supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.profileContainer, ProfileEditFragment())
+            transaction.addToBackStack("editProfileFragmentEklendi")
+            transaction.commit()
+
+        }
 
     }
 
@@ -170,7 +173,7 @@ class ProfileActivity : AppCompatActivity() {
                 var kullaniciFotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
 
 
-                mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener{
+                mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError?) {
 
                     }
@@ -218,29 +221,26 @@ class ProfileActivity : AppCompatActivity() {
     private fun setupRecyclerView(layoutCesidi: Int) {
 
         if(layoutCesidi==1){
-            imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
-            imgList.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
+            imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.mavi), PorterDuff.Mode.SRC_IN)
+            imgList.setColorFilter(ContextCompat.getColor(this,R.color.siyah), PorterDuff.Mode.SRC_IN)
             var kullaniciPostListe=profileRecyclerView
-            kullaniciPostListe.setHasFixedSize(true)
-            kullaniciPostListe.adapter=ProfilePostGridRecyclerAdapter(tumGonderiler,this)
+            kullaniciPostListe.adapter= ProfilePostGridRecyclerAdapter(tumGonderiler,this)
 
-            kullaniciPostListe.layoutManager=GridLayoutManager(this,3)
+            kullaniciPostListe.layoutManager= GridLayoutManager(this,3)
 
         }else if(layoutCesidi==2){
-            imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
-            imgList.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
+            imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.siyah), PorterDuff.Mode.SRC_IN)
+            imgList.setColorFilter(ContextCompat.getColor(this,R.color.mavi), PorterDuff.Mode.SRC_IN)
             var kullaniciPostListe=profileRecyclerView
-            kullaniciPostListe.adapter=ProfilePostListRecyclerAdapter(this,tumGonderiler)
+            kullaniciPostListe.adapter= ProfilePostListRecyclerAdapter(this,tumGonderiler)
 
-            kullaniciPostListe.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+            kullaniciPostListe.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
 
         }
 
     }
 
     override fun onBackPressed() {
-        tumlayout.visibility= View.VISIBLE
-        profileContainer.visibility=View.INVISIBLE
 
         super.onBackPressed()
     }
@@ -257,7 +257,7 @@ class ProfileActivity : AppCompatActivity() {
 
                     Log.e("HATA","Kullanıcı oturum açmamış, ProfileActivitydesin")
 
-                    var intent= Intent(this@ProfileActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    var intent= Intent(this@UserProfileActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                     finish()

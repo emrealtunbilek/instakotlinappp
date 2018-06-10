@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity">
+    tools:context="com.emrealtunbilek.instakotlinapp.Generic.UserProfileActivity">
 
 
     <android.support.constraint.ConstraintLayout
@@ -37,14 +37,15 @@
                 <TextView
                     android:id="@+id/tvProfilAdiToolbar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="8dp"
                     android:text="emre_altunbilek"
                     android:textColor="@color/siyah"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/imgProfileSettings"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imgProfileSettings" />
+                    app:layout_constraintStart_toEndOf="@+id/imgBack"
+                    app:layout_constraintTop_toTopOf="@+id/imgProfileSettings"
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <ImageView
                     android:id="@+id/imgProfileSettings"
@@ -56,17 +57,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_profile_options" />
 
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imgProfileSettings"
-                    app:layout_constraintEnd_toStartOf="@+id/imgProfileSettings"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_discover_people" />
-
                 <View
                     android:id="@+id/golgelik"
                     android:layout_width="0dp"
@@ -75,7 +65,7 @@
                     android:background="@color/golgelik"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView2"></View>
+                    app:layout_constraintTop_toBottomOf="@+id/tvProfilAdiToolbar"></View>
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/circleProfileImage"
@@ -204,11 +194,11 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/edit_profile_button_background"
+                    android:background="@drawable/register_button_aktif"
                     android:padding="6dp"
-                    android:text="Profili Düzenle"
+                    android:text="Takip Et"
                     android:textAlignment="center"
-                    android:textColor="@color/siyah"
+                    android:textColor="@color/beyaz"
                     app:layout_constraintBottom_toBottomOf="@+id/circleProfileImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/circleProfileImage" />
@@ -244,6 +234,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="TextView"
+                    android:textColor="@color/mavi"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="@+id/tvProfilGercekAdi"
                     app:layout_constraintStart_toStartOf="parent"
@@ -307,12 +298,23 @@
                     android:id="@+id/profileRecyclerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:nestedScrollingEnabled="false"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/golgelik3" />
+
+                <ImageView
+                    android:id="@+id/imgBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_back" />
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>

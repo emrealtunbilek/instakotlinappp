@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Home.HomeActivity"></activity>
+        <activity android:name=".Home.HomeActivity" />
         <activity android:name=".News.NewsActivity" />
         <activity android:name=".Profile.ProfileActivity" />
         <activity android:name=".Search.SearchActivity" />
@@ -29,7 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Search.AlgoliaSearchActivity"></activity>
+        <activity android:name=".Search.AlgoliaSearchActivity" />
+        <activity android:name=".Generic.UserProfileActivity"></activity>
     </application>
 
 </manifest>
