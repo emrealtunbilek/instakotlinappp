@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.EventBus
 class UserProfileActivity : AppCompatActivity() {
 
     private val ACTIVITY_NO=4
-    private val TAG="ProfileActivity"
+    private val TAG="UserProfileActivity"
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
@@ -45,7 +45,9 @@ class UserProfileActivity : AppCompatActivity() {
         mRef= FirebaseDatabase.getInstance().reference
         secilenUserID=intent.getStringExtra("secilenUserID")
         tumGonderiler=ArrayList<UserPosts>()
-        setupToolbar()
+
+
+        setupButtons()
 
 
         kullaniciBilgileriniGetir()
@@ -63,12 +65,12 @@ class UserProfileActivity : AppCompatActivity() {
             setupRecyclerView(2)
         }
 
-        
+
     }
 
     private fun kullaniciBilgileriniGetir() {
 
-        tvProfilDuzenle.isEnabled=false
+        tvTakip.isEnabled=false
         imgProfileSettings.isEnabled=false
 
         mRef.child("users").child(secilenUserID).addValueEventListener(object : ValueEventListener {
@@ -83,7 +85,7 @@ class UserProfileActivity : AppCompatActivity() {
 
 
                     EventBus.getDefault().postSticky(EventbusDataEvents.KullaniciBilgileriniGonder(okunanKullaniciBilgileri))
-                    tvProfilDuzenle.isEnabled=true
+                    tvTakip.isEnabled=true
                     imgProfileSettings.isEnabled=true
 
                     tvProfilAdiToolbar.setText(okunanKullaniciBilgileri!!.user_name)
@@ -110,6 +112,7 @@ class UserProfileActivity : AppCompatActivity() {
 
                 }
 
+                takipBilgisiniGetir()
 
 
             }
@@ -119,8 +122,38 @@ class UserProfileActivity : AppCompatActivity() {
 
     }
 
+    private fun takipBilgisiniGetir() {
+        mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
 
-    private fun setupToolbar() {
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+               if(p0!!.hasChild(secilenUserID)){
+                  takibiBirakButonOzellikleri()
+               }else {
+                  takipEtButonOzellikleri()
+               }
+            }
+
+
+        })
+    }
+
+    fun takipEtButonOzellikleri(){
+        tvTakip.setText("Takip Et")
+        tvTakip.setTextColor(ContextCompat.getColor(this@UserProfileActivity,R.color.beyaz))
+        tvTakip.setBackgroundResource(R.drawable.register_button_aktif)
+    }
+
+    fun takibiBirakButonOzellikleri(){
+        tvTakip.setText("Takipi Bırak")
+        tvTakip.setTextColor(ContextCompat.getColor(this@UserProfileActivity,R.color.siyah))
+        tvTakip.setBackgroundResource(R.drawable.takip_et_beyaz)
+    }
+
+
+    private fun setupButtons() {
         imgProfileSettings.setOnClickListener {
 
         }
@@ -130,16 +163,32 @@ class UserProfileActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        tvProfilDuzenle.setOnClickListener {
+        tvTakip.setOnClickListener {
 
-            tumlayout.visibility= View.INVISIBLE
-            profileContainer.visibility= View.VISIBLE
-            var transaction=supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.profileContainer, ProfileEditFragment())
-            transaction.addToBackStack("editProfileFragmentEklendi")
-            transaction.commit()
+            mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                    if(p0!!.hasChild(secilenUserID)){
+                        mRef.child("following").child(mUser.uid).child(secilenUserID).removeValue()
+                        mRef.child("follower").child(secilenUserID).child(mUser.uid).removeValue()
+                        takipEtButonOzellikleri()
+
+                    }else {
+                        mRef.child("following").child(mUser.uid).child(secilenUserID).setValue(secilenUserID)
+                        mRef.child("follower").child(secilenUserID).child(mUser.uid).setValue(mUser.uid)
+                        takibiBirakButonOzellikleri()
+
+                    }
+                }
+
+
+            })
 
         }
+
 
     }
 
@@ -255,7 +304,7 @@ class UserProfileActivity : AppCompatActivity() {
 
                 if(user == null){
 
-                    Log.e("HATA","Kullanıcı oturum açmamış, ProfileActivitydesin")
+                    Log.e("HATA","Kullanıcı oturum açmamış, UserProfileActivitydesin")
 
                     var intent= Intent(this@UserProfileActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -273,7 +322,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA","ProfileActivitydesin")
+        Log.e("HATA","UserProfileActivitydesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 
