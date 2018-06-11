@@ -68,6 +68,7 @@ class HomeFragment : Fragment() {
     private fun tumTakipEttiklerimiGetir() {
 
         tumTakipEttiklerim.add(mUser.uid)
+        Log.e("HATA9","benim uidim ekleniyor..."+mUser.uid)
 
         mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
@@ -85,8 +86,11 @@ class HomeFragment : Fragment() {
                     kullaniciPostlariniGetir()
 
                 }else {
-
+                    Log.e("HATA9","hiç takip ettiğim yok,sadece kendi gönderilerimi görücem")
+                    kullaniciPostlariniGetir()
                 }
+
+
             }
 
         })
@@ -100,6 +104,7 @@ class HomeFragment : Fragment() {
         for (i in 0..tumTakipEttiklerim.size-1){
 
             var kullaniciID=tumTakipEttiklerim.get(i)
+            Log.e("HATA9",kullaniciID+" idli kullanıcı resimleri getiriliyor")
 
             mRef.child("users").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError?) {
@@ -220,7 +225,7 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA", "ProfileActivitydesin")
+        Log.e("HATA", "HomeFragmenttesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 
