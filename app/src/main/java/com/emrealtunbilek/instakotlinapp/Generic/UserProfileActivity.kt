@@ -174,11 +174,13 @@ class UserProfileActivity : AppCompatActivity() {
                     if(p0!!.hasChild(secilenUserID)){
                         mRef.child("following").child(mUser.uid).child(secilenUserID).removeValue()
                         mRef.child("follower").child(secilenUserID).child(mUser.uid).removeValue()
+                        takipciSayilariniGuncelle()
                         takipEtButonOzellikleri()
 
                     }else {
                         mRef.child("following").child(mUser.uid).child(secilenUserID).setValue(secilenUserID)
                         mRef.child("follower").child(secilenUserID).child(mUser.uid).setValue(mUser.uid)
+                        takipciSayilariniGuncelle()
                         takibiBirakButonOzellikleri()
 
                     }
@@ -189,6 +191,37 @@ class UserProfileActivity : AppCompatActivity() {
 
         }
 
+
+    }
+
+    private fun takipciSayilariniGuncelle() {
+
+        mRef=FirebaseDatabase.getInstance().reference
+
+        mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                var takipEttikleriminSayisi=p0!!.childrenCount.toString()
+
+                mRef.child("follower").child(secilenUserID).addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot?) {
+                        var takipEdenlerinSayisi= p0!!.childrenCount.toString()
+
+                        mRef.child("users").child(mUser.uid).child("user_detail").child("following").setValue(takipEttikleriminSayisi)
+                        mRef.child("users").child(secilenUserID).child("user_detail").child("follower").setValue(takipEdenlerinSayisi)
+                    }
+
+                })
+            }
+
+        })
 
     }
 
