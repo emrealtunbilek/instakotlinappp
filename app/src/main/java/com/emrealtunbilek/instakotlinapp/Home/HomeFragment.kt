@@ -28,6 +28,7 @@ class HomeFragment : Fragment() {
     private val ACTIVITY_NO = 0
 
     lateinit var tumGonderiler: ArrayList<UserPosts>
+    lateinit var tumTakipEttiklerim:ArrayList<String>
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
@@ -43,8 +44,11 @@ class HomeFragment : Fragment() {
         mUser = mAuth.currentUser!!
         mRef = FirebaseDatabase.getInstance().reference
         tumGonderiler = ArrayList<UserPosts>()
+        tumTakipEttiklerim=ArrayList<String>()
 
-        kullaniciPostlariniGetir(mUser.uid!!)
+        tumTakipEttiklerimiGetir()
+
+
 
         fragmentView.imgTabCamera.setOnClickListener {
 
@@ -61,60 +65,104 @@ class HomeFragment : Fragment() {
         return fragmentView
     }
 
-    private fun kullaniciPostlariniGetir(kullaniciID: String) {
+    private fun tumTakipEttiklerimiGetir() {
 
+        tumTakipEttiklerim.add(mUser.uid)
 
-
-        mRef.child("users").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
+        mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
-                var userID = kullaniciID
-                var kullaniciAdi = p0!!.getValue(Users::class.java)!!.user_name
-                var kullaniciFotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
+                if(p0!!.getValue()!=null){
 
-
-                mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener{
-                    override fun onCancelled(p0: DatabaseError?) {
-
+                    for(ds in p0!!.children){
+                        tumTakipEttiklerim.add(ds.key)
                     }
 
-                    override fun onDataChange(p0: DataSnapshot?) {
+                    Log.e("HATA","TÜM TAKIP ETTİKLERİM:"+tumTakipEttiklerim.toString())
+                    kullaniciPostlariniGetir()
 
-                        if(p0!!.hasChildren())
-                        {
-                            Log.e("HATA","COCUK VAR")
-                            for (ds in p0!!.children){
+                }else {
 
-                                var eklenecekUserPosts=UserPosts()
-                                eklenecekUserPosts.userID=userID
-                                eklenecekUserPosts.userName=kullaniciAdi
-                                eklenecekUserPosts.userPhotoURL=kullaniciFotoURL
-                                eklenecekUserPosts.postID=ds.getValue(Posts::class.java)!!.post_id
-                                eklenecekUserPosts.postURL=ds.getValue(Posts::class.java)!!.file_url
-                                eklenecekUserPosts.postAciklama=ds.getValue(Posts::class.java)!!.aciklama
-                                eklenecekUserPosts.postYuklenmeTarih=ds.getValue(Posts::class.java)!!.yuklenme_tarih
-
-                                tumGonderiler.add(eklenecekUserPosts)
-
-                            }
-                        }
-
-                        setupRecyclerView()
-
-                    }
-
-                })
-
-
-
-
+                }
             }
 
-
         })
+
+    }
+
+    private fun kullaniciPostlariniGetir() {
+
+        mRef=FirebaseDatabase.getInstance().reference
+
+        for (i in 0..tumTakipEttiklerim.size-1){
+
+            var kullaniciID=tumTakipEttiklerim.get(i)
+
+            mRef.child("users").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                    var userID = kullaniciID
+                    var kullaniciAdi = p0!!.getValue(Users::class.java)!!.user_name
+                    var kullaniciFotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
+
+
+                    mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onCancelled(p0: DatabaseError?) {
+
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot?) {
+
+                            if(p0!!.hasChildren())
+                            {
+                                Log.e("HATA",kullaniciID+" idli kişinin fotoları var")
+                                for (ds in p0!!.children){
+
+                                    var eklenecekUserPosts=UserPosts()
+                                    eklenecekUserPosts.userID=userID
+                                    eklenecekUserPosts.userName=kullaniciAdi
+                                    eklenecekUserPosts.userPhotoURL=kullaniciFotoURL
+                                    eklenecekUserPosts.postID=ds.getValue(Posts::class.java)!!.post_id
+                                    eklenecekUserPosts.postURL=ds.getValue(Posts::class.java)!!.file_url
+                                    eklenecekUserPosts.postAciklama=ds.getValue(Posts::class.java)!!.aciklama
+                                    eklenecekUserPosts.postYuklenmeTarih=ds.getValue(Posts::class.java)!!.yuklenme_tarih
+
+                                    tumGonderiler.add(eklenecekUserPosts)
+
+                                }
+                            }else {
+                                Log.e("HATA",kullaniciID+" idli kişinin fotoları yok")
+                            }
+
+                            Log.e("HATA",kullaniciID+" idli kişinin fotoları var, sayisi:"+tumGonderiler.size)
+
+                            if(i >= tumTakipEttiklerim.size-1)
+                            setupRecyclerView()
+
+                        }
+
+                    })
+
+
+
+
+                }
+
+
+            })
+
+
+
+        }
+
+
+
 
 
 

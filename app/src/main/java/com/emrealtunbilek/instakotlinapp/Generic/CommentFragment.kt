@@ -151,10 +151,6 @@ class CommentFragment : Fragment() {
 
             kullaniciBilgileriniGetir(oanOlusturulanYorum.user_id, oanOlusturulanYorum.yorum)
 
-            yorumBegen.setOnClickListener {
-
-
-            }
 
         }
 

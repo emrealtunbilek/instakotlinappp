@@ -69,6 +69,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         var myHomeActivity = myHomeActivity
         var mInstaLikeView = tumLayout.insta_like_view
         var begenmeSayisi = tumLayout.tvBegenmeSayisi
+        var yorumlariGoster = tumLayout.tvYorumlariGoster
 
 
         fun setData(position: Int, oankiGonderi: UserPosts) {
@@ -89,20 +90,16 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
             gonderiKacZamanOnce.setText(TimeAgo.getTimeAgo(oankiGonderi.postYuklenmeTarih!!))
 
             begeniKontrol(oankiGonderi)
+            yorumlariGoruntule(position, oankiGonderi)
 
 
             yorumYap.setOnClickListener {
 
-                EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
+               yorumlarFragmentiniBaslat(oankiGonderi)
+            }
 
-                (myHomeActivity as HomeActivity).homeViewPager.visibility = View.INVISIBLE
-                (myHomeActivity as HomeActivity).homeFragmentContainer.visibility = View.VISIBLE
-
-
-                var transaction = (myHomeActivity as HomeActivity).supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.homeFragmentContainer, CommentFragment())
-                transaction.addToBackStack("commentFragmentEklendi")
-                transaction.commit()
+            yorumlariGoster.setOnClickListener {
+                yorumlarFragmentiniBaslat(oankiGonderi)
             }
 
             gonderiBegen.setOnClickListener {
@@ -157,6 +154,51 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
             }
 
+
+        }
+
+        fun yorumlarFragmentiniBaslat(oankiGonderi: UserPosts) {
+            EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
+
+            (myHomeActivity as HomeActivity).homeViewPager.visibility = View.INVISIBLE
+            (myHomeActivity as HomeActivity).homeFragmentContainer.visibility = View.VISIBLE
+
+
+            var transaction = (myHomeActivity as HomeActivity).supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.homeFragmentContainer, CommentFragment())
+            transaction.addToBackStack("commentFragmentEklendi")
+            transaction.commit()
+        }
+
+        fun yorumlariGoruntule(position: Int, oankiGonderi: UserPosts){
+
+            var mRef=FirebaseDatabase.getInstance().reference
+            mRef.child("comments").child(oankiGonderi!!.postID).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                    var yorumSayisi=0
+
+                    for(ds in p0!!.children){
+                        if(!ds!!.key.toString().equals(oankiGonderi!!.postID)){
+                            yorumSayisi++
+                        }
+                    }
+
+
+                    if(yorumSayisi >= 1){
+                        yorumlariGoster.visibility=View.VISIBLE
+                        yorumlariGoster.setText(yorumSayisi.toString()+" yorumun tümünü gör")
+                    }else {
+                        yorumlariGoster.visibility=View.GONE
+                    }
+
+                }
+
+
+            })
 
         }
 

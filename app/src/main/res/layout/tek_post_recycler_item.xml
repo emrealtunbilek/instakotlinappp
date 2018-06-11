@@ -87,12 +87,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
         android:text="3 GÜN ÖNCE"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdiveAciklama" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -135,5 +133,18 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgBegen" />
+
+    <TextView
+        android:id="@+id/tvYorumlariGoster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="12 yorumun tümünü gör"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/tvKacZamanOnce"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvKullaniciAdiveAciklama" />
 
 </android.support.constraint.ConstraintLayout>
