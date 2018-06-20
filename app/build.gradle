@@ -79,6 +79,9 @@ dependencies {
 
     //algolia search
     compile 'com.algolia:instantsearch-android:1.8.4'
+
+    compile 'com.danikula:videocache:2.7.0'
+    compile project(path: ':autoplayvideorecyclerview')
 }
 
 apply plugin: 'com.google.gms.google-services'

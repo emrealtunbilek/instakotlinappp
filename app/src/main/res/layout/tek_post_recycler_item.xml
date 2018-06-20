@@ -101,6 +101,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgUserProfile">
 
+        <com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.VideoView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/videoView"/>
+
+
         <ImageView
             android:id="@+id/imgPostResim"
             android:layout_width="match_parent"

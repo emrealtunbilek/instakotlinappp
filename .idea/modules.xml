@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/InstaKotlinApp.iml" filepath="$PROJECT_DIR$/InstaKotlinApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/autoplayvideorecyclerview/autoplayvideorecyclerview.iml" filepath="$PROJECT_DIR$/autoplayvideorecyclerview/autoplayvideorecyclerview.iml" />
     </modules>
   </component>
 </project>

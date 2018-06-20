@@ -174,6 +174,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+
+
         var recyclerView=fragmentView.recyclerview
         var recyclerAdapter=HomeFragmentRecyclerAdapter(this.activity!!,tumGonderiler)
 
