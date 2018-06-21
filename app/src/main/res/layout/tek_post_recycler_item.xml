@@ -104,7 +104,16 @@
         <com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.VideoView
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:id="@+id/videoView"/>
+            android:id="@+id/videoView">
+
+            <com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.CameraAnimation
+                android:id="@+id/cameraAnimation"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@drawable/fram_camera" />
+        </com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.VideoView>
 
 
         <ImageView

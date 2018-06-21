@@ -13,11 +13,14 @@ import com.emrealtunbilek.instakotlinapp.Generic.CommentFragment
 import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.Video
+import com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.VideoView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.hoanganhtuan95ptit.autoplayvideorecyclerview.VideoHolder
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.tek_post_recycler_item.view.*
 import org.greenrobot.eventbus.EventBus
@@ -52,11 +55,53 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.setData(position, tumGonderiler.get(position))
+
+        var videoMu=false
+        var dosyaYolu=tumGonderiler.get(position).postURL
+        //https://asdasdasdasdasdasd.mp4
+        var dosyaTuru=dosyaYolu!!.substring(dosyaYolu.lastIndexOf("."), dosyaYolu.lastIndexOf(".")+4)
+
+        if(dosyaTuru.equals(".mp4")) {
+            videoMu=true
+        }
+
+        holder.setData(position, tumGonderiler.get(position),videoMu)
     }
 
 
-    class MyViewHolder(itemView: View?, myHomeActivity: Context) : RecyclerView.ViewHolder(itemView) {
+    class MyViewHolder(itemView: View?, myHomeActivity: Context) : VideoHolder(itemView) {
+
+        var olusturulanElemanVideoMu=false
+
+        override fun getVideoLayout(): View? {
+
+            if(olusturulanElemanVideoMu){
+                return myVideo
+            } else return null
+
+        }
+
+        override fun playVideo() {
+            if(olusturulanElemanVideoMu){
+
+                videoCameraAnim.start()
+
+                myVideo.play(object : VideoView.OnPreparedListener{
+                    override fun onPrepared() {
+                        gonderi.visibility=View.GONE
+                        videoCameraAnim.stop()
+                    }
+
+                })
+            }
+        }
+
+        override fun stopVideo() {
+            if(olusturulanElemanVideoMu){
+                videoCameraAnim.stop()
+                myVideo.stop()
+            }
+        }
 
         var tumLayout = itemView as ConstraintLayout
         var profileImage = tumLayout.imgUserProfile
@@ -70,12 +115,25 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         var mInstaLikeView = tumLayout.insta_like_view
         var begenmeSayisi = tumLayout.tvBegenmeSayisi
         var yorumlariGoster = tumLayout.tvYorumlariGoster
+        var myVideo = tumLayout.videoView
+        var videoCameraAnim = tumLayout.cameraAnimation
 
 
-        fun setData(position: Int, oankiGonderi: UserPosts) {
+        fun setData(position: Int, oankiGonderi: UserPosts, videoMu: Boolean) {
+
+            olusturulanElemanVideoMu=videoMu
+            if(olusturulanElemanVideoMu){
+                myVideo.visibility=View.VISIBLE
+                gonderi.visibility=View.GONE
+                myVideo.setVideo(Video(oankiGonderi.postURL,0))
+            }else {
+                myVideo.visibility=View.GONE
+                gonderi.visibility=View.VISIBLE
+                UniversalImageLoader.setImage(oankiGonderi.postURL!!, gonderi, null, "")
+            }
 
             userNameTitle.setText(oankiGonderi.userName)
-            UniversalImageLoader.setImage(oankiGonderi.postURL!!, gonderi, null, "")
+
 
             var userNameveAciklamaText="<font color=#000>"+oankiGonderi.userName.toString()+"</font>"+" "+oankiGonderi.postAciklama
             var sonuc:Spanned?=null
