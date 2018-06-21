@@ -85,10 +85,11 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
             if(olusturulanElemanVideoMu){
 
                 videoCameraAnim.start()
+                videoKaranlikImage.visibility=View.VISIBLE
 
                 myVideo.play(object : VideoView.OnPreparedListener{
                     override fun onPrepared() {
-                        gonderi.visibility=View.GONE
+                        videoKaranlikImage.visibility=View.GONE
                         videoCameraAnim.stop()
                     }
 
@@ -117,6 +118,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         var yorumlariGoster = tumLayout.tvYorumlariGoster
         var myVideo = tumLayout.videoView
         var videoCameraAnim = tumLayout.cameraAnimation
+        var videoKaranlikImage=tumLayout.videoKaranlik
 
 
         fun setData(position: Int, oankiGonderi: UserPosts, videoMu: Boolean) {
@@ -195,6 +197,24 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
             var sonTiklama: Long = 0
 
             gonderi.setOnClickListener {
+
+                ilkTiklama = sonTiklama
+                sonTiklama = System.currentTimeMillis()
+
+                if (sonTiklama - ilkTiklama < 300) {
+                    mInstaLikeView.start()
+
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(oankiGonderi.postID)
+                            .child(FirebaseAuth.getInstance().currentUser!!.uid).setValue(FirebaseAuth.getInstance().currentUser!!.uid)
+
+
+                    sonTiklama = 0
+                }
+
+
+            }
+
+            myVideo.setOnClickListener {
 
                 ilkTiklama = sonTiklama
                 sonTiklama = System.currentTimeMillis()

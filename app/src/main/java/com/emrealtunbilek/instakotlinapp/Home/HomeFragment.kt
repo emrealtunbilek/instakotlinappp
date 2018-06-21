@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.emrealtunbilek.instakotlinapp.utils.HomeFragmentRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
@@ -34,6 +36,7 @@ class HomeFragment : Fragment() {
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var mUser: FirebaseUser
     lateinit var mRef: DatabaseReference
+    var mRecyclerView: AutoPlayVideoRecyclerView?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -45,6 +48,8 @@ class HomeFragment : Fragment() {
         mRef = FirebaseDatabase.getInstance().reference
         tumGonderiler = ArrayList<UserPosts>()
         tumTakipEttiklerim=ArrayList<String>()
+
+
 
         tumTakipEttiklerimiGetir()
 
@@ -176,12 +181,12 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView() {
 
 
-        var recyclerView=fragmentView.recyclerview
+        mRecyclerView=fragmentView.recyclerview
         var recyclerAdapter=HomeFragmentRecyclerAdapter(this.activity!!,tumGonderiler)
 
-        recyclerView.adapter=recyclerAdapter
+        mRecyclerView!!.adapter=recyclerAdapter
 
-        recyclerView.layoutManager=LinearLayoutManager(this.activity!!,LinearLayoutManager.VERTICAL,false)
+        mRecyclerView!!.layoutManager=LinearLayoutManager(this.activity!!,LinearLayoutManager.VERTICAL,false)
     }
 
 
@@ -194,6 +199,7 @@ class HomeFragment : Fragment() {
         var menu = fragmentBottomNavView.menu
         var menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
+
     }
 
     private fun setupAuthListener() {
@@ -223,6 +229,19 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         setupNavigationView()
         super.onResume()
+        if (mRecyclerView?.getHandingVideoHolder() != null) {
+            mRecyclerView!!.getHandingVideoHolder().playVideo();
+            Log.e("HATA","RESUME CALISIYO")
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mRecyclerView!!.getHandingVideoHolder() != null){
+            mRecyclerView!!.getHandingVideoHolder().stopVideo();
+            Log.e("HATA","PAUSE CALISIYO")
+        }
     }
 
     override fun onStart() {

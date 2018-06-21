@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.widget.RelativeLayout;
@@ -62,6 +63,7 @@ public class VideoView extends RelativeLayout implements TextureView.SurfaceText
             String proxyUrl = proxy.getProxyUrl(video.getUrlVideo());
             mediaPlayer.setDataSource(proxyUrl);
         } catch (Exception e) {
+            Log.e("HATA BRUADA 2", "HATA"+e.getCause());
             e.printStackTrace();
         }
     }
@@ -87,13 +89,20 @@ public class VideoView extends RelativeLayout implements TextureView.SurfaceText
             this.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
-                    mediaPlayer.seekTo(video.getSeekTo());
+                  //  mediaPlayer.seekTo(video.getSeekTo());
                     mediaPlayer.setLooping(true);
-                    mediaPlayer.start();
+                    if(!mediaPlayer.isPlaying()){
+
+                        mediaPlayer.start();
+
+                    }
                     if (onPreparedListener != null) onPreparedListener.onPrepared();
+
+
                 }
             });
         } catch (Exception e) {
+            Log.e("HATA BRUADA 1", "HATA"+e.getCause());
             e.printStackTrace();
         }
     }
@@ -101,9 +110,13 @@ public class VideoView extends RelativeLayout implements TextureView.SurfaceText
     public void stop() {
         if (!isPlaying) return;
         isPlaying = false;
-        video.setSeekTo(mediaPlayer.getCurrentPosition() >= mediaPlayer.getDuration() ? 0 : mediaPlayer.getCurrentPosition());
-        mediaPlayer.pause();
-        mediaPlayer.stop();
+      //  video.setSeekTo(mediaPlayer.getCurrentPosition() >= mediaPlayer.getDuration() ? 0 : mediaPlayer.getCurrentPosition());
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+            mediaPlayer.stop();
+
+        }
+
     }
 
     public interface OnCompletionListener {

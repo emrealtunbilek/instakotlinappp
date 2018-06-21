@@ -101,11 +101,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgUserProfile">
 
+
         <com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.VideoView
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:id="@+id/videoView">
 
+            <View
+                android:id="@+id/videoKaranlik"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@color/siyah"
+                android:visibility="gone" />
             <com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.CameraAnimation
                 android:id="@+id/cameraAnimation"
                 android:layout_width="40dp"
