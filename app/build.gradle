@@ -82,6 +82,10 @@ dependencies {
 
     compile 'com.danikula:videocache:2.7.0'
     compile project(path: ':autoplayvideorecyclerview')
+
+    //social textview
+    compile 'com.hendraanggrian:socialview-core:0.18'
+    compile 'com.hendraanggrian:socialview-commons:0.18' // optional
 }
 
 apply plugin: 'com.google.gms.google-services'

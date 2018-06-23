@@ -15,11 +15,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.hendraanggrian.widget.SocialTextView
         android:id="@+id/tvUsernameAndYorum"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:textColor="@color/siyah"
         android:text="username ve de acıklama"
         app:layout_constraintStart_toEndOf="@+id/yorumYapanUserProfile"
         app:layout_constraintTop_toTopOf="@+id/yorumYapanUserProfile" />

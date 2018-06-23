@@ -95,7 +95,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/yorumlarRecyclerView" />
 
-        <EditText
+        <com.hendraanggrian.widget.SocialAutoCompleteTextView
             android:id="@+id/etYorum"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -103,6 +103,8 @@
             android:layout_marginStart="2dp"
             android:background="@null"
             android:ems="10"
+            app:hashtagColor="@color/mavi"
+            app:mentionColor="@color/mavi"
             android:hint="Yorum Ekle ... "
             android:inputType="textPersonName"
             android:textSize="14sp"

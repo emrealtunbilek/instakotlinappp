@@ -136,15 +136,18 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
             userNameTitle.setText(oankiGonderi.userName)
 
+            /*
+                     var userNameveAciklamaText="<font color=#000>"+oankiGonderi.userName.toString()+"</font>"+" "+oankiGonderi.postAciklama
 
-            var userNameveAciklamaText="<font color=#000>"+oankiGonderi.userName.toString()+"</font>"+" "+oankiGonderi.postAciklama
-            var sonuc:Spanned?=null
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                sonuc= Html.fromHtml(userNameveAciklamaText,Html.FROM_HTML_MODE_LEGACY)
-            }else {
-                sonuc=Html.fromHtml(userNameveAciklamaText)
-            }
-            userNameveAciklama.setText(sonuc)
+
+                     var sonuc:Spanned?=null
+                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                         sonuc= Html.fromHtml(userNameveAciklamaText,Html.FROM_HTML_MODE_LEGACY)
+                     }else {
+                         sonuc=Html.fromHtml(userNameveAciklamaText)
+                     }
+                     */
+            userNameveAciklama.setText(oankiGonderi.userName.toString()+" "+oankiGonderi.postAciklama.toString())
 
             UniversalImageLoader.setImage(oankiGonderi.userPhotoURL!!, profileImage, null, "")
             gonderiKacZamanOnce.setText(TimeAgo.getTimeAgo(oankiGonderi.postYuklenmeTarih!!))

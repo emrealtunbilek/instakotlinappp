@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MultiAutoCompleteTextView
 import com.emrealtunbilek.instakotlinapp.Models.Comments
 import com.emrealtunbilek.instakotlinapp.Models.Users
 
@@ -26,6 +27,8 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.hendraanggrian.widget.Mention
+import com.hendraanggrian.widget.MentionAdapter
 import kotlinx.android.synthetic.main.fragment_comment.*
 import kotlinx.android.synthetic.main.fragment_comment.view.*
 import kotlinx.android.synthetic.main.tek_satir_comment_item.view.*
@@ -74,6 +77,50 @@ class CommentFragment : Fragment() {
             activity!!.onBackPressed()
         }
 
+        var myMentionAdapter=MentionAdapter(activity!!)
+
+        fragmentView.etYorum.setMentionTextChangedListener { view, s ->
+
+            FirebaseDatabase.getInstance().getReference().child("users").orderByChild("user_name").startAt(s).endAt(s+"\uf8ff")
+                    .addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onCancelled(p0: DatabaseError?) {
+
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot?) {
+                            if(p0!!.getValue() != null){
+
+                                for (user in p0!!.children){
+
+                                    myMentionAdapter.clear()
+
+                                    var okunanuser=user.getValue(Users::class.java)
+                                    var userName=okunanuser!!.user_name.toString()
+                                    var adiSoyadi=okunanuser!!.adi_soyadi.toString()
+                                    var photo=okunanuser!!.user_detail!!.profile_picture!!
+                                    var profilPicture=if(!photo.isNullOrEmpty()) photo else "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+
+                                    myMentionAdapter.add(Mention(userName,adiSoyadi,profilPicture))
+
+
+                                }
+
+
+
+                            }
+                        }
+
+
+                    })
+            //emre06
+            //hasoo
+            //Ironma
+
+
+        }
+        fragmentView.etYorum.mentionAdapter=myMentionAdapter
+
+
 
         return fragmentView
     }
@@ -117,6 +164,7 @@ class CommentFragment : Fragment() {
 
         fragmentView.yorumlarRecyclerView.adapter=myAdapter
         fragmentView.yorumlarRecyclerView.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+
     }
 
     private fun setupProfilPicture() {

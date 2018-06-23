@@ -71,15 +71,18 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:srcCompat="@drawable/ic_gonder" />
 
-    <TextView
+    <com.hendraanggrian.widget.SocialTextView
         android:id="@+id/tvKullaniciAdiveAciklama"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:text="ealtunbilek"
+        android:textColor="@color/siyah"
+        app:hashtagColor="@color/mavi"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvBegenmeSayisi" />
+        app:layout_constraintTop_toBottomOf="@+id/tvBegenmeSayisi"
+        app:mentionColor="@color/mavi" />
 
     <TextView
         android:id="@+id/tvKacZamanOnce"
