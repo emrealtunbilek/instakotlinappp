@@ -303,7 +303,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvWebSitesi"
                     app:srcCompat="@drawable/ic_tagged" />
 
-                <android.support.v7.widget.RecyclerView
+                <com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
                     android:id="@+id/profileRecyclerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

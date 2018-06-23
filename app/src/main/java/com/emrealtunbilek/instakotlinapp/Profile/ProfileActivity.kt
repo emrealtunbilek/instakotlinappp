@@ -14,6 +14,7 @@ import com.emrealtunbilek.instakotlinapp.Models.Posts
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.CenterLayoutManager
 import com.emrealtunbilek.instakotlinapp.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -196,7 +197,7 @@ class ProfileActivity : AppCompatActivity() {
                             }
                         }
 
-                        setupRecyclerView(1)
+                        setupRecyclerView(2)
 
                     }
 
@@ -230,9 +231,10 @@ class ProfileActivity : AppCompatActivity() {
             imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
             imgList.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
             var kullaniciPostListe=profileRecyclerView
+            kullaniciPostListe.layoutManager=CenterLayoutManager(this,LinearLayoutManager.VERTICAL,false)
             kullaniciPostListe.adapter=ProfilePostListRecyclerAdapter(this,tumGonderiler)
 
-            kullaniciPostListe.layoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+
 
         }
 

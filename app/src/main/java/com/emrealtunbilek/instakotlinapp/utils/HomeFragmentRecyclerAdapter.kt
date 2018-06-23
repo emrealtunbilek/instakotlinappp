@@ -62,6 +62,8 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         var dosyaTuru=dosyaYolu!!.substring(dosyaYolu.lastIndexOf("."), dosyaYolu.lastIndexOf(".")+4)
 
         if(dosyaTuru.equals(".mp4")) {
+            holder.videoCameraAnim.start()
+            holder.videoKaranlikImage.visibility=View.VISIBLE
             videoMu=true
         }
 
@@ -84,8 +86,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         override fun playVideo() {
             if(olusturulanElemanVideoMu){
 
-                videoCameraAnim.start()
-                videoKaranlikImage.visibility=View.VISIBLE
+
 
                 myVideo.play(object : VideoView.OnPreparedListener{
                     override fun onPrepared() {
