@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 
 import java.util.concurrent.TimeUnit;
@@ -203,7 +204,8 @@ public class AutoPlayVideoRecyclerView extends RecyclerView {
             ViewHolder viewHolder = findViewHolderForAdapterPosition(i);
             if (!(viewHolder instanceof VideoHolder)) continue;
             float percentViewHolder = getPercentViewHolderInScreen((VideoHolder) viewHolder);
-            if (percentViewHolder > percentMax && percentViewHolder >= 50) {
+            if (percentViewHolder > percentMax && percentViewHolder >= 60) {
+
                 percentMax = percentViewHolder;
                 viewHolderMax = (VideoHolder) viewHolder;
                 newPosition = i;

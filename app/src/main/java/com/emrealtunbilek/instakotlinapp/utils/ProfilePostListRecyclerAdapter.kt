@@ -72,7 +72,7 @@ class ProfilePostListRecyclerAdapter(var context: Context, var tumGonderiler: Ar
     }
 
 
-    class MyViewHolder(itemView: View?, myHomeActivity: Context) : VideoHolder(itemView) {
+    class MyViewHolder(itemView: View?, myProfileActivity: Context) : VideoHolder(itemView) {
 
         var olusturulanElemanVideoMu=false
 
@@ -114,7 +114,7 @@ class ProfilePostListRecyclerAdapter(var context: Context, var tumGonderiler: Ar
         var gonderiKacZamanOnce = tumLayout.tvKacZamanOnce
         var yorumYap = tumLayout.imgYorum
         var gonderiBegen = tumLayout.imgBegen
-        var myHomeActivity = myHomeActivity
+        var myProfileActivity = myProfileActivity
         var mInstaLikeView = tumLayout.insta_like_view
         var begenmeSayisi = tumLayout.tvBegenmeSayisi
         var yorumlariGoster = tumLayout.tvYorumlariGoster
@@ -243,12 +243,11 @@ class ProfilePostListRecyclerAdapter(var context: Context, var tumGonderiler: Ar
         fun yorumlarFragmentiniBaslat(oankiGonderi: UserPosts) {
             EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
 
-           // (myHomeActivity as HomeActivity).homeViewPager.visibility = View.INVISIBLE
-           // (myHomeActivity as HomeActivity).homeFragmentContainer.visibility = View.VISIBLE
+            (myProfileActivity as ProfileActivity).profileContainer.visibility=View.VISIBLE
+            (myProfileActivity as ProfileActivity).tumlayout.visibility=View.INVISIBLE
 
-
-            var transaction = (myHomeActivity as HomeActivity).supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.homeFragmentContainer, CommentFragment())
+            var transaction = (myProfileActivity as ProfileActivity).supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.profileContainer, CommentFragment())
             transaction.addToBackStack("commentFragmentEklendi")
             transaction.commit()
         }

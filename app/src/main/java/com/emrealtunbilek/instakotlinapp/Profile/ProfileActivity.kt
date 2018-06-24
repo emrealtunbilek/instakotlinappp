@@ -19,6 +19,7 @@ import com.emrealtunbilek.instakotlinapp.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
 import kotlinx.android.synthetic.main.activity_profile.*
 import org.greenrobot.eventbus.EventBus
 import kotlin.collections.ArrayList
@@ -34,6 +35,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var mUser:FirebaseUser
     lateinit var mRef:DatabaseReference
     lateinit var tumGonderiler: ArrayList<UserPosts>
+    var myRecyclerView: AutoPlayVideoRecyclerView?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,10 +143,7 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
-    override fun onResume() {
-        setupNavigationView()
-        super.onResume()
-    }
+
 
 
     fun setupNavigationView(){
@@ -221,18 +220,18 @@ class ProfileActivity : AppCompatActivity() {
         if(layoutCesidi==1){
             imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
             imgList.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
-            var kullaniciPostListe=profileRecyclerView
-            kullaniciPostListe.setHasFixedSize(true)
-            kullaniciPostListe.adapter=ProfilePostGridRecyclerAdapter(tumGonderiler,this)
+            myRecyclerView=profileRecyclerView
+            myRecyclerView!!.setHasFixedSize(true)
+            myRecyclerView!!.adapter=ProfilePostGridRecyclerAdapter(tumGonderiler,this)
 
-            kullaniciPostListe.layoutManager=GridLayoutManager(this,3)
+            myRecyclerView!!.layoutManager=GridLayoutManager(this,3)
 
         }else if(layoutCesidi==2){
             imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
             imgList.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
-            var kullaniciPostListe=profileRecyclerView
-            kullaniciPostListe.layoutManager=CenterLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-            kullaniciPostListe.adapter=ProfilePostListRecyclerAdapter(this,tumGonderiler)
+            myRecyclerView=profileRecyclerView
+            myRecyclerView!!.layoutManager=CenterLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+            myRecyclerView!!.adapter=ProfilePostListRecyclerAdapter(this,tumGonderiler)
 
 
 
@@ -283,6 +282,24 @@ class ProfileActivity : AppCompatActivity() {
         super.onStop()
         if(mAuthListener != null){
             mAuth.removeAuthStateListener(mAuthListener)
+        }
+    }
+
+    override fun onResume() {
+        setupNavigationView()
+        super.onResume()
+        if (myRecyclerView?.getHandingVideoHolder() != null) {
+            myRecyclerView!!.getHandingVideoHolder().playVideo();
+            Log.e("HATA","RESUME CALISIYO")
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (myRecyclerView!!.getHandingVideoHolder() != null){
+            myRecyclerView!!.getHandingVideoHolder().stopVideo();
+            Log.e("HATA","PAUSE CALISIYO")
         }
     }
 }
