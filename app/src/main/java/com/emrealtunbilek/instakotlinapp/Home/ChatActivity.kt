@@ -3,9 +3,12 @@ package com.emrealtunbilek.instakotlinapp.Home
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
+import com.emrealtunbilek.instakotlinapp.Models.Mesaj
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
@@ -20,6 +23,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var mRef:DatabaseReference
+    lateinit var tumMesajlar:ArrayList<Mesaj>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,25 +40,44 @@ class ChatActivity : AppCompatActivity() {
 
         Toast.makeText(this,"Secilen id :"+sohbetEdilecekUserId,Toast.LENGTH_SHORT).show()
 
+        mesajlariGetir()
+
         tvMesajGonderButton.setOnClickListener {
 
-            var mesaj=HashMap<String,Any>()
-            mesaj.put("mesaj",etMesaj.text.toString())
-            mesaj.put("goruldu",false)
-            mesaj.put("time",ServerValue.TIMESTAMP)
-            mesaj.put("type","text")
+            var mesajText=etMesaj.text.toString()
+            var mesajAtan=HashMap<String,Any>()
+            mesajAtan.put("mesaj",mesajText)
+            mesajAtan.put("goruldu",true)
+            mesajAtan.put("time",ServerValue.TIMESTAMP)
+            mesajAtan.put("type","text")
+            mesajAtan.put("user_id",mesajGonderenUserId)
 
-            mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).push().setValue(mesaj)
-            mRef.child("mesajlar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).push().setValue(mesaj)
+            mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).push().setValue(mesajAtan)
+
+            var mesajAlan=HashMap<String,Any>()
+            mesajAlan.put("mesaj",mesajText)
+            mesajAlan.put("goruldu",false)
+            mesajAlan.put("time",ServerValue.TIMESTAMP)
+            mesajAlan.put("type","text")
+            mesajAlan.put("user_id",mesajGonderenUserId)
+            mRef.child("mesajlar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).push().setValue(mesajAlan)
 
 
 
-            var konusma=HashMap<String,Any>()
-            konusma.put("time",ServerValue.TIMESTAMP)
-            konusma.put("goruldu",false)
+            var konusmaMesajAtan=HashMap<String,Any>()
+            konusmaMesajAtan.put("time",ServerValue.TIMESTAMP)
+            konusmaMesajAtan.put("goruldu",true)
+            konusmaMesajAtan.put("son_mesaj",mesajText)
 
-            mRef.child("konusmalar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).setValue(konusma)
-            mRef.child("konusmalar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).setValue(konusma)
+            mRef.child("konusmalar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).setValue(konusmaMesajAtan)
+
+            var konusmaMesajAlan=HashMap<String,Any>()
+            konusmaMesajAlan.put("time",ServerValue.TIMESTAMP)
+            konusmaMesajAlan.put("goruldu",false)
+            konusmaMesajAlan.put("son_mesaj",mesajText)
+
+
+            mRef.child("konusmalar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).setValue(konusmaMesajAlan)
 
 
             etMesaj.setText("")
@@ -62,6 +85,46 @@ class ChatActivity : AppCompatActivity() {
 
 
         }
+
+    }
+
+    private fun mesajlariGetir() {
+
+        tumMesajlar=ArrayList<Mesaj>()
+
+        mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+
+                if(p0!!.getValue() != null){
+
+                    for (mesaj in p0!!.children){
+
+                        var okunanMesaj=mesaj.getValue(Mesaj::class.java)
+                        tumMesajlar.add(okunanMesaj!!)
+
+                    }
+
+                    setupMesajlarRecyclerView()
+
+
+                }
+
+            }
+
+
+        })
+
+
+    }
+
+    private fun setupMesajlarRecyclerView() {
+        var myLinearLayoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        var myRecyclerview=rvSohbet
+        myRecyclerview.layoutManager=myLinearLayoutManager
 
     }
 
