@@ -58,7 +58,7 @@ class CommentFragment : Fragment() {
 
         setupProfilPicture()
 
-        fragmentView.tvMesajGonderButton.setOnClickListener {
+        fragmentView.tvYorumGonderButton.setOnClickListener {
 
          //   var yeniYorum=Comments(mUser.uid,etYorum.text.toString(),"0",0)
             var yeniYorum= hashMapOf<String,Any>("user_id" to mUser.uid,
