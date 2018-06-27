@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.MultiAutoCompleteTextView
 import com.emrealtunbilek.instakotlinapp.Models.Comments
 import com.emrealtunbilek.instakotlinapp.Models.Users
 
@@ -59,15 +58,15 @@ class CommentFragment : Fragment() {
 
         setupProfilPicture()
 
-        fragmentView.tvYorumYapButton.setOnClickListener {
+        fragmentView.tvMesajGonderButton.setOnClickListener {
 
          //   var yeniYorum=Comments(mUser.uid,etYorum.text.toString(),"0",0)
             var yeniYorum= hashMapOf<String,Any>("user_id" to mUser.uid,
-                    "yorum" to etYorum.text.toString(), "yorum_begeni" to "0", "yorum_tarih" to ServerValue.TIMESTAMP)
+                    "yorum" to etMesaj.text.toString(), "yorum_begeni" to "0", "yorum_tarih" to ServerValue.TIMESTAMP)
 
             FirebaseDatabase.getInstance().getReference().child("comments").child(yorumYapilacakGonderininID).push().setValue(yeniYorum)
 
-            etYorum.setText("")
+            etMesaj.setText("")
 
 
         }
@@ -79,7 +78,7 @@ class CommentFragment : Fragment() {
 
         var myMentionAdapter=MentionAdapter(activity!!)
 
-        fragmentView.etYorum.setMentionTextChangedListener { view, s ->
+        fragmentView.etMesaj.setMentionTextChangedListener { view, s ->
 
             FirebaseDatabase.getInstance().getReference().child("users").orderByChild("user_name").startAt(s).endAt(s+"\uf8ff")
                     .addListenerForSingleValueEvent(object : ValueEventListener{
@@ -118,7 +117,7 @@ class CommentFragment : Fragment() {
 
 
         }
-        fragmentView.etYorum.mentionAdapter=myMentionAdapter
+        fragmentView.etMesaj.mentionAdapter=myMentionAdapter
 
 
 

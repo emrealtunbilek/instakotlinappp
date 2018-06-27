@@ -91,12 +91,12 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/etYorum"
+            app:layout_constraintEnd_toStartOf="@+id/etMesaj"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/yorumlarRecyclerView" />
 
         <com.hendraanggrian.widget.SocialAutoCompleteTextView
-            android:id="@+id/etYorum"
+            android:id="@+id/etMesaj"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="4dp"
@@ -109,21 +109,21 @@
             android:inputType="textPersonName"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tvYorumYapButton"
+            app:layout_constraintEnd_toStartOf="@+id/tvMesajGonderButton"
             app:layout_constraintStart_toEndOf="@+id/circleImageView"
             app:layout_constraintTop_toTopOf="@+id/circleImageView" />
 
         <TextView
-            android:id="@+id/tvYorumYapButton"
+            android:id="@+id/tvMesajGonderButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="Paylaş"
             android:textColor="@color/mavi"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/etYorum"
+            app:layout_constraintBottom_toBottomOf="@+id/etMesaj"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/etYorum" />
+            app:layout_constraintTop_toTopOf="@+id/etMesaj" />
 
         <View
             android:id="@+id/golgelik1"
