@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Models.Mesaj
+import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.tek_satir_mesaj_gonderen.view.*
+import kotlinx.android.synthetic.main.tek_satir_mesaj_alan.view.*
 
-/**
- * Created by Emre on 28.06.2018.
- */
-class MesajRecyclerViewAdapter(var tumMesajlar:ArrayList<Mesaj>, var myContext:Context) : RecyclerView.Adapter<MesajRecyclerViewAdapter.MyMesajViewHolder>() {
+
+class MesajRecyclerViewAdapter(var tumMesajlar:ArrayList<Mesaj>, var myContext:Context, var sohbetEdilecekUser:Users?) : RecyclerView.Adapter<MesajRecyclerViewAdapter.MyMesajViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):MyMesajViewHolder {
@@ -23,13 +22,12 @@ class MesajRecyclerViewAdapter(var tumMesajlar:ArrayList<Mesaj>, var myContext:C
 
         if(viewType==1){
             myView=LayoutInflater.from(myContext).inflate(R.layout.tek_satir_mesaj_gonderen,parent,false)
+            return MyMesajViewHolder(myView, null)
 
-
-        }else if(viewType==2) {
+        }else  {
             myView=LayoutInflater.from(myContext).inflate(R.layout.tek_satir_mesaj_alan,parent,false)
+            return MyMesajViewHolder(myView, sohbetEdilecekUser!!)
         }
-
-        return MyMesajViewHolder(myView)
 
     }
 
@@ -49,14 +47,19 @@ class MesajRecyclerViewAdapter(var tumMesajlar:ArrayList<Mesaj>, var myContext:C
 
 
 
-    class MyMesajViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    class MyMesajViewHolder(itemView: View?, var sohbetEdilecekUser: Users?) : RecyclerView.ViewHolder(itemView) {
 
         var tumlayout=itemView as ConstraintLayout
         var mesajText=tumlayout.tvMesaj
-
+        var profilePicture=tumlayout.mesajUserProfilePic
 
 
         fun setData(oankiMesaj: Mesaj) {
+
+            if(sohbetEdilecekUser!=null){
+                UniversalImageLoader.setImage(sohbetEdilecekUser!!.user_detail!!.profile_picture!!,profilePicture,null,"")
+            }
+
             mesajText.text=oankiMesaj.mesaj
         }
 
