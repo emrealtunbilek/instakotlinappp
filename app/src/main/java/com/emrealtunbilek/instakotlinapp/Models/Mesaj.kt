@@ -5,11 +5,11 @@ package com.emrealtunbilek.instakotlinapp.Models
  */
 class Mesaj {
 
-    private var mesaj:String? = null
-    private var goruldu:Boolean? =null
-    private var time:Long? = null
-    private var type:String? = null
-    private var user_id:String? = null
+     var mesaj:String? = null
+     var goruldu:Boolean? =null
+     var time:Long? = null
+     var type:String? = null
+     var user_id:String? = null
 
     constructor(){}
     constructor(mesaj: String?, goruldu: Boolean?, time: Long?, type: String?, user_id: String?) {

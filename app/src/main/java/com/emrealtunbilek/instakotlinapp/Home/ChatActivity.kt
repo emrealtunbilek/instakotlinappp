@@ -11,6 +11,7 @@ import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.Models.Mesaj
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.utils.MesajRecyclerViewAdapter
 import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -23,7 +24,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var mRef:DatabaseReference
-    lateinit var tumMesajlar:ArrayList<Mesaj>
+    var tumMesajlar:ArrayList<Mesaj> = ArrayList<Mesaj>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +91,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun mesajlariGetir() {
 
-        tumMesajlar=ArrayList<Mesaj>()
+
 
         mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
@@ -98,6 +99,8 @@ class ChatActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
+
+                tumMesajlar.clear()
 
                 if(p0!!.getValue() != null){
 
@@ -123,8 +126,12 @@ class ChatActivity : AppCompatActivity() {
 
     private fun setupMesajlarRecyclerView() {
         var myLinearLayoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        myLinearLayoutManager.stackFromEnd=true
         var myRecyclerview=rvSohbet
+
+        var myAdapter=MesajRecyclerViewAdapter(tumMesajlar, this)
         myRecyclerview.layoutManager=myLinearLayoutManager
+        myRecyclerview.adapter=myAdapter
 
     }
 
