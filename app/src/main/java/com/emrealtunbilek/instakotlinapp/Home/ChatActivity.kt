@@ -32,7 +32,7 @@ class ChatActivity : AppCompatActivity() {
     var sohbetEdilecekUser:Users? = null
 
     //sayfalamaiçin
-    val SAYFA_BASI_GONDERI_SAYISI = 5
+    val SAYFA_BASI_GONDERI_SAYISI = 3
     var sayfaNumarasi=1
 
     var mesajPos=0
