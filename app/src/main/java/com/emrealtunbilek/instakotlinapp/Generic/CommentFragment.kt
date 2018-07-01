@@ -66,7 +66,12 @@ class CommentFragment : Fragment() {
 
             FirebaseDatabase.getInstance().getReference().child("comments").child(yorumYapilacakGonderininID).push().setValue(yeniYorum)
 
+
             etMesaj.setText("")
+
+            fragmentView.yorumlarRecyclerView.smoothScrollToPosition(fragmentView.yorumlarRecyclerView.adapter.itemCount)
+
+
 
 
         }
@@ -124,6 +129,8 @@ class CommentFragment : Fragment() {
         return fragmentView
     }
 
+
+
     private fun setupCommentsRecyclerview() {
         mRef=FirebaseDatabase.getInstance().reference.child("comments").child(yorumYapilacakGonderininID)
 
@@ -135,6 +142,8 @@ class CommentFragment : Fragment() {
         myAdapter=object : FirebaseRecyclerAdapter<Comments,CommentViewHolder>(options){
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
+
+
                 /*
                 var layoutService=LayoutInflater.from(parent!!.context)
                 layoutService.inflate()
@@ -157,12 +166,19 @@ class CommentFragment : Fragment() {
                 holder.setBegenOlayi(yorumYapilacakGonderininID, getRef(position).key)
 
                 holder.setBegenmeDurumu(yorumYapilacakGonderininID, getRef(position).key)
+
+
             }
 
         }
 
-        fragmentView.yorumlarRecyclerView.adapter=myAdapter
         fragmentView.yorumlarRecyclerView.layoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+        fragmentView.yorumlarRecyclerView.adapter=myAdapter
+
+
+
+
+
 
     }
 
@@ -326,5 +342,7 @@ class CommentFragment : Fragment() {
         super.onStop()
         myAdapter.stopListening()
     }
+
+
 
 }

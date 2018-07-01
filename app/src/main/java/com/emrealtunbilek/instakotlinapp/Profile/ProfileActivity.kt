@@ -218,6 +218,13 @@ class ProfileActivity : AppCompatActivity() {
     private fun setupRecyclerView(layoutCesidi: Int) {
 
         if(layoutCesidi==1){
+
+            if (myRecyclerView!= null && myRecyclerView!!.getHandingVideoHolder() != null){
+                myRecyclerView!!.getHandingVideoHolder().stopVideo();
+                Log.e("HATA","Gridlayout aktif, videoları durdur")
+            }
+
+
             imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
             imgList.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
             myRecyclerView=profileRecyclerView
@@ -227,6 +234,12 @@ class ProfileActivity : AppCompatActivity() {
             myRecyclerView!!.layoutManager=GridLayoutManager(this,3)
 
         }else if(layoutCesidi==2){
+
+            if (myRecyclerView!= null && myRecyclerView?.getHandingVideoHolder() != null) {
+                myRecyclerView!!.getHandingVideoHolder().playVideo();
+                Log.e("HATA","Listview aktif, varsa bekleyen videoyu oynat")
+            }
+
             imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
             imgList.setColorFilter(ContextCompat.getColor(this,R.color.mavi),PorterDuff.Mode.SRC_IN)
             myRecyclerView=profileRecyclerView
@@ -288,7 +301,7 @@ class ProfileActivity : AppCompatActivity() {
     override fun onResume() {
         setupNavigationView()
         super.onResume()
-        if (myRecyclerView?.getHandingVideoHolder() != null) {
+        if (myRecyclerView!= null && myRecyclerView?.getHandingVideoHolder() != null) {
             myRecyclerView!!.getHandingVideoHolder().playVideo();
             Log.e("HATA","RESUME CALISIYO")
         }
@@ -297,7 +310,7 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (myRecyclerView!!.getHandingVideoHolder() != null){
+        if (myRecyclerView!= null && myRecyclerView!!.getHandingVideoHolder() != null){
             myRecyclerView!!.getHandingVideoHolder().stopVideo();
             Log.e("HATA","PAUSE CALISIYO")
         }

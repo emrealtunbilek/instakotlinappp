@@ -159,10 +159,16 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
             yorumYap.setOnClickListener {
 
+               if(myVideo.visibility == View.VISIBLE){
+                   myVideo.stop()
+               }
                yorumlarFragmentiniBaslat(oankiGonderi)
             }
 
             yorumlariGoster.setOnClickListener {
+                if(myVideo.visibility == View.VISIBLE){
+                    myVideo.stop()
+                }
                 yorumlarFragmentiniBaslat(oankiGonderi)
             }
 

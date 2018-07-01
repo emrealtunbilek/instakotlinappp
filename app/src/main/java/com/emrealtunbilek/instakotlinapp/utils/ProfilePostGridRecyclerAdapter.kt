@@ -2,7 +2,6 @@ package com.emrealtunbilek.instakotlinapp.utils
 
 import android.content.Context
 import android.media.MediaMetadataRetriever
-import android.net.Uri
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -12,10 +11,9 @@ import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.R
 import kotlinx.android.synthetic.main.tek_sutun_grid_resim_profil.view.*
-import org.greenrobot.eventbus.EventBus
 import android.os.Build
 import android.graphics.Bitmap
-
+import android.os.AsyncTask
 
 
 /**
@@ -56,9 +54,8 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
         if(dosyaTuru.equals(".mp4")){
             Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
             holder.videoIcon.visibility=View.VISIBLE
-            var thumnnailFoto=videodanThumbnailOlustur(dosyaYolu)
-            holder.dosyaResim.setImageBitmap(thumnnailFoto)
-            holder.dosyaProgressBar.visibility=View.GONE
+            VideodanThumbOlustur(holder).execute(dosyaYolu)
+
         }else {
             Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
             holder.videoIcon.visibility=View.GONE
@@ -68,30 +65,49 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
 
     }
 
-    @Throws(Throwable::class)
-    fun videodanThumbnailOlustur(videoPath: String): Bitmap? {
-        var bitmap: Bitmap? = null
-        var mediaMetadataRetriever: MediaMetadataRetriever? = null
-        try {
-            mediaMetadataRetriever = MediaMetadataRetriever()
-            if (Build.VERSION.SDK_INT >= 14)
-                mediaMetadataRetriever.setDataSource(videoPath, HashMap())
-            else
-                mediaMetadataRetriever.setDataSource(videoPath)
+    class VideodanThumbOlustur(var holder: MyViewHolder) : AsyncTask<String,Void,Bitmap>(){
 
-            bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw Throwable(
-                    "Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+        override fun onPreExecute() {
+            super.onPreExecute()
 
-        } finally {
-            if (mediaMetadataRetriever != null) {
-                mediaMetadataRetriever.release()
-            }
+            holder.dosyaProgressBar.visibility=View.VISIBLE
         }
-        return bitmap
+
+        override fun doInBackground(vararg p0: String?): Bitmap {
+
+            var videoPath=p0[0]
+
+            var bitmap: Bitmap? = null
+            var mediaMetadataRetriever: MediaMetadataRetriever? = null
+            try {
+                mediaMetadataRetriever = MediaMetadataRetriever()
+                if (Build.VERSION.SDK_INT >= 14)
+                    mediaMetadataRetriever.setDataSource(videoPath, HashMap())
+                else
+                    mediaMetadataRetriever.setDataSource(videoPath)
+
+                bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                throw Throwable(
+                        "Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+
+            } finally {
+                if (mediaMetadataRetriever != null) {
+                    mediaMetadataRetriever.release()
+                }
+            }
+            return bitmap!!
+        }
+
+        override fun onPostExecute(result: Bitmap?) {
+            super.onPostExecute(result)
+            holder.dosyaProgressBar.visibility=View.GONE
+            holder.dosyaResim.setImageBitmap(result)
+        }
+
     }
+
 
 
     class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
