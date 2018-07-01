@@ -38,9 +38,11 @@ class ChatActivity : AppCompatActivity() {
     var mesajPos=0
     var dahaFazlaMesajPos=0
     var ilkGetirilenMesajID=""
+    var zatenListedeOlanMesajID=""
 
     lateinit var childEventListener:ChildEventListener
     lateinit var childListenerDahaFazla:ChildEventListener
+
 
 
 
@@ -60,11 +62,24 @@ class ChatActivity : AppCompatActivity() {
         refreshLayout.setOnRefreshListener(object : RecyclerRefreshLayout.OnRefreshListener{
             override fun onRefresh() {
 
-                sayfaNumarasi++
-                dahaFazlaMesajPos=0
 
-               // mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
-                dahaFazlaMesajGetir()
+                mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).addValueEventListener(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot?) {
+                       if(p0!!.childrenCount>tumMesajlar.size){
+                           dahaFazlaMesajPos=0
+
+                           // mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
+                           dahaFazlaMesajGetir()
+                       }
+                    }
+
+
+                })
+
 
 
             refreshLayout.setRefreshing(false)
@@ -125,7 +140,8 @@ class ChatActivity : AppCompatActivity() {
 
     private fun dahaFazlaMesajGetir(){
 
-      childListenerDahaFazla= mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId)
+
+        childListenerDahaFazla= mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId)
                                                     .orderByKey().endAt(ilkGetirilenMesajID).limitToLast(SAYFA_BASI_GONDERI_SAYISI)
                                                     .addChildEventListener(object : ChildEventListener{
                   override fun onCancelled(p0: DatabaseError?) {
@@ -143,18 +159,30 @@ class ChatActivity : AppCompatActivity() {
                   override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
 
                       var okunanMesaj=p0!!.getValue(Mesaj::class.java)
-                      if(dahaFazlaMesajPos==0){
+
+                      if(!zatenListedeOlanMesajID.equals(p0!!.key)){
+                          tumMesajlar.add(dahaFazlaMesajPos++,okunanMesaj!!)
+                      }else {
+
+                          zatenListedeOlanMesajID=ilkGetirilenMesajID
+
+                      }
+
+                      if(dahaFazlaMesajPos==1){
 
                           ilkGetirilenMesajID=p0!!.key
 
                       }
-                      tumMesajlar.add(dahaFazlaMesajPos++,okunanMesaj!!)
+
+
+                      Log.e("KONTROL","ZATEN LİSTEDEKI ID:"+zatenListedeOlanMesajID+" ILK GETIRILIEN ID:"+ilkGetirilenMesajID+" mesaj id:"+p0!!.key)
+
 
 
                       myRecyclerViewAdapter.notifyDataSetChanged()
                       myRecyclerView.scrollToPosition(SAYFA_BASI_GONDERI_SAYISI)
 
-                      Log.e("KONTROL","İLK OKUNAN MESAJ ID :"+ilkGetirilenMesajID)
+
 
                   }
 
@@ -202,7 +230,7 @@ class ChatActivity : AppCompatActivity() {
 
         })*/
 
-         childEventListener= mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).limitToLast(sayfaNumarasi * SAYFA_BASI_GONDERI_SAYISI).addChildEventListener(object : ChildEventListener{
+         childEventListener= mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).limitToLast(SAYFA_BASI_GONDERI_SAYISI).addChildEventListener(object : ChildEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
             }
@@ -223,16 +251,17 @@ class ChatActivity : AppCompatActivity() {
                 if(mesajPos==0){
 
                     ilkGetirilenMesajID=p0!!.key
+                    zatenListedeOlanMesajID=p0!!.key
 
                 }
                 mesajPos++
 
 
 
-                myRecyclerViewAdapter.notifyDataSetChanged()
+                myRecyclerViewAdapter.notifyItemInserted(tumMesajlar.size-1)
                 myRecyclerView.scrollToPosition(tumMesajlar.size-1)
 
-                Log.e("KONTROL","İLK OKUNAN MESAJ ID :"+ilkGetirilenMesajID)
+               Log.e("KONTROL","İLK OKUNAN MESAJ ID :"+ilkGetirilenMesajID)
 
 
             }
