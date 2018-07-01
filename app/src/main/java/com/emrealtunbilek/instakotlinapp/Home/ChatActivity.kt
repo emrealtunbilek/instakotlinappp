@@ -35,7 +35,12 @@ class ChatActivity : AppCompatActivity() {
     val SAYFA_BASI_GONDERI_SAYISI = 5
     var sayfaNumarasi=1
 
+    var mesajPos=0
+    var dahaFazlaMesajPos=0
+    var ilkGetirilenMesajID=""
+
     lateinit var childEventListener:ChildEventListener
+    lateinit var childListenerDahaFazla:ChildEventListener
 
 
 
@@ -56,9 +61,10 @@ class ChatActivity : AppCompatActivity() {
             override fun onRefresh() {
 
                 sayfaNumarasi++
-                tumMesajlar.clear()
-                mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
-                mesajlariGetir()
+                dahaFazlaMesajPos=0
+
+               // mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
+                dahaFazlaMesajGetir()
 
 
             refreshLayout.setRefreshing(false)
@@ -117,6 +123,53 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
+    private fun dahaFazlaMesajGetir(){
+
+      childListenerDahaFazla= mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId)
+                                                    .orderByKey().endAt(ilkGetirilenMesajID).limitToLast(SAYFA_BASI_GONDERI_SAYISI)
+                                                    .addChildEventListener(object : ChildEventListener{
+                  override fun onCancelled(p0: DatabaseError?) {
+
+                  }
+
+                  override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+
+                  }
+
+                  override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+
+                  }
+
+                  override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
+
+                      var okunanMesaj=p0!!.getValue(Mesaj::class.java)
+                      if(dahaFazlaMesajPos==0){
+
+                          ilkGetirilenMesajID=p0!!.key
+
+                      }
+                      tumMesajlar.add(dahaFazlaMesajPos++,okunanMesaj!!)
+
+
+                      myRecyclerViewAdapter.notifyDataSetChanged()
+                      myRecyclerView.scrollToPosition(SAYFA_BASI_GONDERI_SAYISI)
+
+                      Log.e("KONTROL","İLK OKUNAN MESAJ ID :"+ilkGetirilenMesajID)
+
+                  }
+
+                  override fun onChildRemoved(p0: DataSnapshot?) {
+
+                  }
+
+              })
+
+
+
+
+
+    }
+
     private fun mesajlariGetir() {
 
 
@@ -167,8 +220,19 @@ class ChatActivity : AppCompatActivity() {
                 var okunanMesaj=p0!!.getValue(Mesaj::class.java)
                 tumMesajlar.add(okunanMesaj!!)
 
+                if(mesajPos==0){
+
+                    ilkGetirilenMesajID=p0!!.key
+
+                }
+                mesajPos++
+
+
+
                 myRecyclerViewAdapter.notifyDataSetChanged()
                 myRecyclerView.scrollToPosition(tumMesajlar.size-1)
+
+                Log.e("KONTROL","İLK OKUNAN MESAJ ID :"+ilkGetirilenMesajID)
 
 
             }
