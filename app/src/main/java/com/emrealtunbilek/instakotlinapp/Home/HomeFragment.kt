@@ -229,7 +229,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         setupNavigationView()
         super.onResume()
-        if (mRecyclerView?.getHandingVideoHolder() != null) {
+        if (mRecyclerView != null && mRecyclerView?.getHandingVideoHolder() != null) {
             mRecyclerView!!.getHandingVideoHolder().playVideo();
             Log.e("HATA","RESUME CALISIYO")
         }
@@ -238,7 +238,7 @@ class HomeFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        if (mRecyclerView!!.getHandingVideoHolder() != null){
+        if (mRecyclerView != null && mRecyclerView!!.getHandingVideoHolder() != null){
             mRecyclerView!!.getHandingVideoHolder().stopVideo();
             Log.e("HATA","PAUSE CALISIYO")
         }

@@ -38,17 +38,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSohbetEdilecekUserName"></View>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvSohbet"
-        android:layout_width="0dp"
+    <com.dinuscxj.refresh.RecyclerRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/etMesaj"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/golgelik" />
+        app:layout_constraintTop_toBottomOf="@+id/golgelik">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvSohbet"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/etMesaj"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/golgelik" />
+
+    </com.dinuscxj.refresh.RecyclerRefreshLayout>
+
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageView"

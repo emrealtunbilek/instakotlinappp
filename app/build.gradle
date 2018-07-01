@@ -87,6 +87,9 @@ dependencies {
     //social textview
     compile 'com.hendraanggrian:socialview-core:0.18'
     compile 'com.hendraanggrian:socialview-commons:0.18' // optional
+
+    //sayfa pull or refresh
+    compile 'com.dinuscxj:recyclerrefreshlayout:2.0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'

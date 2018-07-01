@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
+import com.dinuscxj.refresh.RecyclerRefreshLayout
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.Models.Mesaj
 import com.emrealtunbilek.instakotlinapp.Models.Users
@@ -30,6 +31,14 @@ class ChatActivity : AppCompatActivity() {
     lateinit var myRecyclerView: RecyclerView
     var sohbetEdilecekUser:Users? = null
 
+    //sayfalamaiçin
+    val SAYFA_BASI_GONDERI_SAYISI = 5
+    var sayfaNumarasi=1
+
+    lateinit var childEventListener:ChildEventListener
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
@@ -43,8 +52,23 @@ class ChatActivity : AppCompatActivity() {
 
         sohbetEdenlerinBilgileriniGetir(sohbetEdilecekUserId, mesajGonderenUserId)
 
+        refreshLayout.setOnRefreshListener(object : RecyclerRefreshLayout.OnRefreshListener{
+            override fun onRefresh() {
 
-        mesajlariGetir()
+                sayfaNumarasi++
+                tumMesajlar.clear()
+                mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
+                mesajlariGetir()
+
+
+            refreshLayout.setRefreshing(false)
+
+            }
+
+        })
+
+
+
 
         tvMesajGonderButton.setOnClickListener {
 
@@ -56,7 +80,8 @@ class ChatActivity : AppCompatActivity() {
             mesajAtan.put("type","text")
             mesajAtan.put("user_id",mesajGonderenUserId)
 
-            mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).push().setValue(mesajAtan)
+            var yeniMesajKey=mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).push().key
+            mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).child(yeniMesajKey).setValue(mesajAtan)
 
             var mesajAlan=HashMap<String,Any>()
             mesajAlan.put("mesaj",mesajText)
@@ -64,7 +89,7 @@ class ChatActivity : AppCompatActivity() {
             mesajAlan.put("time",ServerValue.TIMESTAMP)
             mesajAlan.put("type","text")
             mesajAlan.put("user_id",mesajGonderenUserId)
-            mRef.child("mesajlar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).push().setValue(mesajAlan)
+            mRef.child("mesajlar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).child(yeniMesajKey).setValue(mesajAlan)
 
 
 
@@ -124,7 +149,7 @@ class ChatActivity : AppCompatActivity() {
 
         })*/
 
-        mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).addChildEventListener(object : ChildEventListener{
+         childEventListener= mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).limitToLast(sayfaNumarasi * SAYFA_BASI_GONDERI_SAYISI).addChildEventListener(object : ChildEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
             }
@@ -142,7 +167,7 @@ class ChatActivity : AppCompatActivity() {
                 var okunanMesaj=p0!!.getValue(Mesaj::class.java)
                 tumMesajlar.add(okunanMesaj!!)
 
-                myRecyclerViewAdapter.notifyItemInserted(tumMesajlar.size-1)
+                myRecyclerViewAdapter.notifyDataSetChanged()
                 myRecyclerView.scrollToPosition(tumMesajlar.size-1)
 
 
@@ -165,6 +190,8 @@ class ChatActivity : AppCompatActivity() {
         myRecyclerViewAdapter=MesajRecyclerViewAdapter(tumMesajlar, this, sohbetEdilecekUser!!)
         myRecyclerView.layoutManager=myLinearLayoutManager
         myRecyclerView.adapter=myRecyclerViewAdapter
+
+        mesajlariGetir()
 
     }
 
