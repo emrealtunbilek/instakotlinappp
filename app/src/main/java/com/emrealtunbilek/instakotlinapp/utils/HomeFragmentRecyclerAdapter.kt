@@ -1,6 +1,7 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
@@ -10,8 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Generic.CommentFragment
+import com.emrealtunbilek.instakotlinapp.Generic.UserProfileActivity
 import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
+import com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.Video
 import com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.VideoView
@@ -135,19 +138,29 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
                 UniversalImageLoader.setImage(oankiGonderi.postURL!!, gonderi, null, "")
             }
 
+
+
+
             userNameTitle.setText(oankiGonderi.userName)
 
-            /*
-                     var userNameveAciklamaText="<font color=#000>"+oankiGonderi.userName.toString()+"</font>"+" "+oankiGonderi.postAciklama
+            userNameTitle.setOnClickListener {
+
+                var tiklanilanUserID=oankiGonderi.userID
+
+                if(!tiklanilanUserID!!.equals(FirebaseAuth.getInstance().currentUser!!.uid)){
+                    var intent=Intent(myHomeActivity,UserProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    intent.putExtra("secilenUserID", oankiGonderi.userID)
+                    myHomeActivity.startActivity(intent)
+                }else {
+
+                    var intent=Intent(myHomeActivity, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    myHomeActivity.startActivity(intent)
+                }
 
 
-                     var sonuc:Spanned?=null
-                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                         sonuc= Html.fromHtml(userNameveAciklamaText,Html.FROM_HTML_MODE_LEGACY)
-                     }else {
-                         sonuc=Html.fromHtml(userNameveAciklamaText)
-                     }
-                     */
+            }
+
+
             userNameveAciklama.setText(oankiGonderi.userName.toString()+" "+oankiGonderi.postAciklama.toString())
 
             UniversalImageLoader.setImage(oankiGonderi.userPhotoURL!!, profileImage, null, "")

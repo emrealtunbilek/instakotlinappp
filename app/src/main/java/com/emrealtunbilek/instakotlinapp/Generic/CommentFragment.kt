@@ -2,6 +2,7 @@ package com.emrealtunbilek.instakotlinapp.Generic
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -14,13 +15,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.emrealtunbilek.instakotlinapp.Models.Comments
 import com.emrealtunbilek.instakotlinapp.Models.Users
+import com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity
 
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
 import com.emrealtunbilek.instakotlinapp.utils.TimeAgo
 import com.emrealtunbilek.instakotlinapp.utils.UniversalImageLoader
+import com.firebase.ui.auth.data.model.User
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -234,6 +238,51 @@ class CommentFragment : Fragment() {
                         sonuc=Html.fromHtml(userNameveYorum)
                     }
                     kullaniciAdiveYorum.setText(sonuc)
+
+                    kullaniciAdiveYorum.setOnMentionClickListener { view, s ->
+
+                        var tiklanilanUserName = s
+
+                        var mRef=FirebaseDatabase.getInstance().reference
+                        mRef.child("users").orderByChild("user_name").equalTo(s).limitToFirst(1).addListenerForSingleValueEvent(object : ValueEventListener{
+                            override fun onCancelled(p0: DatabaseError?) {
+
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot?) {
+
+                                if(p0!!.getValue() != null){
+
+                                    for(ds in p0!!.children){
+                                        var bulunanUserID = ds!!.getValue(Users::class.java)!!.user_id
+
+
+                                        var oturumAcmisUserID=FirebaseAuth.getInstance().currentUser!!.uid
+
+                                        if(!bulunanUserID.equals(oturumAcmisUserID)){
+                                            var intent= Intent(itemView.context,UserProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                            intent.putExtra("secilenUserID", bulunanUserID)
+                                            itemView.context.startActivity(intent)
+                                        }else {
+
+                                            var intent=Intent(itemView.context, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                            itemView.context.startActivity(intent)
+                                        }
+                                    }
+
+
+
+                                }else {
+                                    Log.e("HATA","KULLANICI BULUNAMADI")
+                                }
+                            }
+
+                        })
+
+
+                    }
+
+
 
                     UniversalImageLoader.setImage(p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture!!.toString(),yorumYapanUserPhoto
                     ,null,"")
