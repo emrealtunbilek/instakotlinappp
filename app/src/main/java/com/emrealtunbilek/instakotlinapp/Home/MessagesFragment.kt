@@ -31,6 +31,7 @@ class MessagesFragment : Fragment() {
     lateinit var myFragmentView: View
 
     lateinit var mRef: DatabaseReference
+    var listenerAtandiMi=false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -57,7 +58,11 @@ class MessagesFragment : Fragment() {
 
 
         mRef = FirebaseDatabase.getInstance().reference.child("konusmalar").child(mAuth.currentUser!!.uid)
-        mRef.orderByChild("time").addChildEventListener(myListener)
+        if(listenerAtandiMi==false){
+            listenerAtandiMi=true
+            mRef.orderByChild("time").addChildEventListener(myListener)
+        }
+
 
     }
 
@@ -154,6 +159,26 @@ class MessagesFragment : Fragment() {
                 }
             }
 
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        tumKonusmalar.clear()
+        if(listenerAtandiMi==true){
+            listenerAtandiMi=false
+            mRef.removeEventListener(myListener)
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        tumKonusmalar.clear()
+        if(listenerAtandiMi==false){
+            listenerAtandiMi=true
+            myAdapter.notifyDataSetChanged()
+            mRef.orderByChild("time").addChildEventListener(myListener)
         }
     }
 }

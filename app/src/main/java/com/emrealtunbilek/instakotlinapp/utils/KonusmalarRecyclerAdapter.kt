@@ -1,7 +1,9 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
 import android.content.Context
+import android.graphics.Typeface
 import android.support.constraint.ConstraintLayout
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -50,6 +52,7 @@ class KonusmalarRecyclerAdapter(var tumKonusmalar:ArrayList<Konusmalar>, var myC
         var mesajZaman = tumLayout.tvMesajZaman
         var sohbetEdilenUserName=tumLayout.tvUserName
         var sohbetEdilenUserPic=tumLayout.imgUserProfilePicture
+        var okunduBilgisi=tumLayout.imgOkunmaBilgisi
 
 
 
@@ -57,6 +60,23 @@ class KonusmalarRecyclerAdapter(var tumKonusmalar:ArrayList<Konusmalar>, var myC
 
             enSonAtilanMesaj.text=oankiKonusma.son_mesaj.toString()
             mesajZaman.text=TimeAgo.getTimeAgoForComments(oankiKonusma.time!!.toLong())
+
+            if(oankiKonusma.goruldu==false){
+
+                okunduBilgisi.visibility=View.VISIBLE
+                sohbetEdilenUserName.setTypeface(null,Typeface.BOLD)
+                enSonAtilanMesaj.setTypeface(null,Typeface.BOLD)
+                enSonAtilanMesaj.setTextColor(ContextCompat.getColor(itemView.context,R.color.siyah))
+                mesajZaman.setTextColor(ContextCompat.getColor(itemView.context,R.color.siyah))
+
+            }else {
+                okunduBilgisi.visibility=View.INVISIBLE
+                sohbetEdilenUserName.setTypeface(null,Typeface.NORMAL)
+                enSonAtilanMesaj.setTypeface(null,Typeface.NORMAL)
+                mesajZaman.setTextColor(ContextCompat.getColor(itemView.context,R.color.gri))
+                enSonAtilanMesaj.setTextColor(ContextCompat.getColor(itemView.context,R.color.gri))
+
+            }
 
             sohbetEdilenKullaniciBilgileriniGetir(oankiKonusma.user_id.toString())
 

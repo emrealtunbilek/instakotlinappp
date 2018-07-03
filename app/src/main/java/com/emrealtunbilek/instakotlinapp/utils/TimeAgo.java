@@ -50,7 +50,7 @@ public class TimeAgo {
 
         long now = System.currentTimeMillis();
         if (time > now || time <= 0) {
-            return null;
+            return "şimdi";
         }
 
         // TODO: localize
