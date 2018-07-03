@@ -57,7 +57,7 @@ class MessagesFragment : Fragment() {
 
 
         mRef = FirebaseDatabase.getInstance().reference.child("konusmalar").child(mAuth.currentUser!!.uid)
-        mRef.addChildEventListener(myListener)
+        mRef.orderByChild("time").addChildEventListener(myListener)
 
     }
 
@@ -72,19 +72,53 @@ class MessagesFragment : Fragment() {
 
         override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
 
+            //kontrol -1 ise yeni bir konusma listeye eklenecek, -1den farklı ise var olan konusmanın arraylistte
+            //position degeridir.
+            var kontrol =konusmaPositionBul(p0!!.key.toString())
+            if(kontrol != -1){
+
+                var guncellenecekKonusma = p0!!.getValue(Konusmalar::class.java)
+                guncellenecekKonusma!!.user_id=p0!!.key
+
+               // myRecyclerView.recycledViewPool.clear()
+                tumKonusmalar.removeAt(kontrol)
+                myAdapter.notifyItemRemoved(kontrol)
+                tumKonusmalar.add(0,guncellenecekKonusma)
+                myAdapter.notifyItemInserted(0)
+
+
+            }
+
+
+
         }
 
         override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
             var eklenecekKonusma = p0!!.getValue(Konusmalar::class.java)
             eklenecekKonusma!!.user_id=p0!!.key
-            tumKonusmalar.add(eklenecekKonusma!!)
+            tumKonusmalar.add(0,eklenecekKonusma!!)
 
-            myAdapter.notifyItemInserted(tumKonusmalar.size - 1)
+            myAdapter.notifyItemInserted(0)
         }
 
         override fun onChildRemoved(p0: DataSnapshot?) {
 
         }
+
+    }
+
+    private fun konusmaPositionBul(userID : String) : Int{
+
+        for(i in 0..tumKonusmalar.size-1){
+            var gecici = tumKonusmalar.get(i)
+
+            if(gecici.user_id.equals(userID)){
+                return i
+            }
+        }
+
+        return -1
+
 
     }
 
