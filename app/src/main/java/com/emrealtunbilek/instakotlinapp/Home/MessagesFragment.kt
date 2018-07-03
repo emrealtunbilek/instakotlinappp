@@ -14,10 +14,7 @@ import com.emrealtunbilek.instakotlinapp.Models.Konusmalar
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.KonusmalarRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_messages.view.*
 
 /**
@@ -27,15 +24,17 @@ class MessagesFragment : Fragment() {
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-    var tumKonusmalar:ArrayList<Konusmalar> = ArrayList<Konusmalar>()
-    lateinit var myRecyclerView:RecyclerView
+    var tumKonusmalar: ArrayList<Konusmalar> = ArrayList<Konusmalar>()
+    lateinit var myRecyclerView: RecyclerView
     lateinit var myLinearLayoutManager: LinearLayoutManager
-    lateinit var myAdapter:KonusmalarRecyclerAdapter
-    lateinit var myFragmentView:View
+    lateinit var myAdapter: KonusmalarRecyclerAdapter
+    lateinit var myFragmentView: View
+
+    lateinit var mRef: DatabaseReference
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        myFragmentView=inflater?.inflate(R.layout.fragment_messages, container, false)
+        myFragmentView = inflater?.inflate(R.layout.fragment_messages, container, false)
 
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
@@ -43,11 +42,12 @@ class MessagesFragment : Fragment() {
 
         myFragmentView.searchview.setOnClickListener {
 
-            var intent=Intent(activity,AlgolisSearchMesajActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            var intent = Intent(activity, AlgolisSearchMesajActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
 
         }
-        tumKonusmalariGetir()
+
+        setupKonusmalarRecylerView()
 
 
         return myFragmentView
@@ -55,48 +55,50 @@ class MessagesFragment : Fragment() {
 
     private fun tumKonusmalariGetir() {
 
-        var mRef=FirebaseDatabase.getInstance().reference
-        var mUser=FirebaseAuth.getInstance().currentUser
-        mRef.child("konusmalar").child(mUser!!.uid).addValueEventListener(object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError?) {
 
-            }
+        mRef = FirebaseDatabase.getInstance().reference.child("konusmalar").child(mAuth.currentUser!!.uid)
+        mRef.addChildEventListener(myListener)
 
-            override fun onDataChange(p0: DataSnapshot?) {
+    }
 
-                if(p0!!.getValue() != null){
+    private var myListener = object : ChildEventListener {
+        override fun onCancelled(p0: DatabaseError?) {
 
-                    for(konusma in p0!!.children){
+        }
 
-                        var okunanKonusma = konusma.getValue(Konusmalar::class.java)
-                        okunanKonusma!!.user_id=konusma.key
-                        tumKonusmalar.add(okunanKonusma!!)
+        override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
 
+        }
 
-                    }
+        override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
 
-                    setupKonusmalarRecylerView()
+        }
 
-                }
+        override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
+            var eklenecekKonusma = p0!!.getValue(Konusmalar::class.java)
+            eklenecekKonusma!!.user_id=p0!!.key
+            tumKonusmalar.add(eklenecekKonusma!!)
 
+            myAdapter.notifyItemInserted(tumKonusmalar.size - 1)
+        }
 
-            }
+        override fun onChildRemoved(p0: DataSnapshot?) {
 
-
-        })
-
+        }
 
     }
 
     private fun setupKonusmalarRecylerView() {
 
-        myRecyclerView=myFragmentView.recyclerKonusmalar
-        myLinearLayoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
-        myAdapter=KonusmalarRecyclerAdapter(tumKonusmalar,this!!.activity!!)
+        myRecyclerView = myFragmentView.recyclerKonusmalar
+        myLinearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        myAdapter = KonusmalarRecyclerAdapter(tumKonusmalar, this!!.activity!!)
 
-        myRecyclerView.layoutManager=myLinearLayoutManager
-        myRecyclerView.adapter=myAdapter
+        myRecyclerView.layoutManager = myLinearLayoutManager
+        myRecyclerView.adapter = myAdapter
 
+
+        tumKonusmalariGetir()
 
 
     }

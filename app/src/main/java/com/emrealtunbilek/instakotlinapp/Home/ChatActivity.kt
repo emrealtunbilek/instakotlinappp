@@ -32,7 +32,7 @@ class ChatActivity : AppCompatActivity() {
     var sohbetEdilecekUser:Users? = null
 
     //sayfalamaiçin
-    val SAYFA_BASI_GONDERI_SAYISI = 10
+    val SAYFA_BASI_GONDERI_SAYISI = 5
     var sayfaNumarasi=1
 
     var mesajPos=0
@@ -63,7 +63,7 @@ class ChatActivity : AppCompatActivity() {
             override fun onRefresh() {
 
 
-                mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).addValueEventListener(object : ValueEventListener{
+                mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).addListenerForSingleValueEvent(object : ValueEventListener{
                     override fun onCancelled(p0: DatabaseError?) {
                         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                     }
