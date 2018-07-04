@@ -31,6 +31,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var myRecyclerView: RecyclerView
     var sohbetEdilecekUser:Users? = null
 
+
     //sayfalamaiçin
     val SAYFA_BASI_GONDERI_SAYISI = 5
     var sayfaNumarasi=1
@@ -256,6 +257,8 @@ class ChatActivity : AppCompatActivity() {
                 }
                 mesajPos++
 
+                mesajGorulduBilgisiniGuncelle(p0!!.key)
+
 
 
                 myRecyclerViewAdapter.notifyItemInserted(tumMesajlar.size-1)
@@ -274,6 +277,21 @@ class ChatActivity : AppCompatActivity() {
 
 
     }
+
+    private fun mesajGorulduBilgisiniGuncelle(mesajID: String?) {
+
+        FirebaseDatabase.getInstance().getReference()
+                .child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).child(mesajID)
+                .child("goruldu").setValue(true)
+                .addOnCompleteListener {
+                    FirebaseDatabase.getInstance().getReference().child("konusmalar")
+                            .child(mesajGonderenUserId).child(sohbetEdilecekUserId).child("goruldu").setValue(true)
+                }
+
+
+    }
+
+
 
     private fun setupMesajlarRecyclerView() {
         var myLinearLayoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
@@ -351,12 +369,13 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA", "HomeActivitydesin")
+        Log.e("HATA", "Chat activity on start")
         mAuth.addAuthStateListener(mAuthListener)
     }
 
     override fun onStop() {
         super.onStop()
+        mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener)
         }

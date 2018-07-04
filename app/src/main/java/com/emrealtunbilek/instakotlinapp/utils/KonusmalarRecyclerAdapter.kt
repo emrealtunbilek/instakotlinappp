@@ -1,6 +1,7 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
 import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
@@ -9,9 +10,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.emrealtunbilek.instakotlinapp.Home.ChatActivity
 import com.emrealtunbilek.instakotlinapp.Models.Konusmalar
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -75,6 +78,24 @@ class KonusmalarRecyclerAdapter(var tumKonusmalar:ArrayList<Konusmalar>, var myC
                 enSonAtilanMesaj.setTypeface(null,Typeface.NORMAL)
                 mesajZaman.setTextColor(ContextCompat.getColor(itemView.context,R.color.gri))
                 enSonAtilanMesaj.setTextColor(ContextCompat.getColor(itemView.context,R.color.gri))
+
+            }
+
+            tumLayout.setOnClickListener {
+
+                var intent=Intent(itemView.context,ChatActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                intent.putExtra("secilenUserID", oankiKonusma.user_id.toString())
+
+                FirebaseDatabase.getInstance().getReference()
+                        .child("konusmalar")
+                        .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                        .child(oankiKonusma.user_id.toString())
+                        .child("goruldu").setValue(true)
+                        .addOnCompleteListener {
+                            itemView.context.startActivity(intent)
+                        }
+
+
 
             }
 
