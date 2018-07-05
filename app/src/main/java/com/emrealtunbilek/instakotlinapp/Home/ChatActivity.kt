@@ -5,9 +5,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
-import android.widget.LinearLayout
-import android.widget.Toast
 import com.dinuscxj.refresh.RecyclerRefreshLayout
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.Models.Mesaj
@@ -26,6 +27,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var mRef:DatabaseReference
+    lateinit var mYaziyorRef:DatabaseReference
     var tumMesajlar:ArrayList<Mesaj> = ArrayList<Mesaj>()
     lateinit var myRecyclerViewAdapter: MesajRecyclerViewAdapter
     lateinit var myRecyclerView: RecyclerView
@@ -55,8 +57,10 @@ class ChatActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mRef=FirebaseDatabase.getInstance().reference
 
+
         sohbetEdilecekUserId=intent.getStringExtra("secilenUserID")
         mesajGonderenUserId=mAuth.currentUser!!.uid.toString()
+        mYaziyorRef=FirebaseDatabase.getInstance().reference.child("konusmalar").child(mesajGonderenUserId).child(sohbetEdilecekUserId)
 
         sohbetEdenlerinBilgileriniGetir(sohbetEdilecekUserId, mesajGonderenUserId)
 
@@ -95,47 +99,82 @@ class ChatActivity : AppCompatActivity() {
         tvMesajGonderButton.setOnClickListener {
 
             var mesajText=etMesaj.text.toString()
-            var mesajAtan=HashMap<String,Any>()
-            mesajAtan.put("mesaj",mesajText)
-            mesajAtan.put("goruldu",true)
-            mesajAtan.put("time",ServerValue.TIMESTAMP)
-            mesajAtan.put("type","text")
-            mesajAtan.put("user_id",mesajGonderenUserId)
 
-            var yeniMesajKey=mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).push().key
-            mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).child(yeniMesajKey).setValue(mesajAtan)
+            if(!TextUtils.isEmpty(mesajText.toString())){
+                var mesajAtan=HashMap<String,Any>()
+                mesajAtan.put("mesaj",mesajText)
+                mesajAtan.put("goruldu",true)
+                mesajAtan.put("time",ServerValue.TIMESTAMP)
+                mesajAtan.put("type","text")
+                mesajAtan.put("user_id",mesajGonderenUserId)
 
-            var mesajAlan=HashMap<String,Any>()
-            mesajAlan.put("mesaj",mesajText)
-            mesajAlan.put("goruldu",false)
-            mesajAlan.put("time",ServerValue.TIMESTAMP)
-            mesajAlan.put("type","text")
-            mesajAlan.put("user_id",mesajGonderenUserId)
-            mRef.child("mesajlar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).child(yeniMesajKey).setValue(mesajAlan)
+                var yeniMesajKey=mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).push().key
+                mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).child(yeniMesajKey).setValue(mesajAtan)
 
-
-
-            var konusmaMesajAtan=HashMap<String,Any>()
-            konusmaMesajAtan.put("time",ServerValue.TIMESTAMP)
-            konusmaMesajAtan.put("goruldu",true)
-            konusmaMesajAtan.put("son_mesaj",mesajText)
-
-            mRef.child("konusmalar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).setValue(konusmaMesajAtan)
-
-            var konusmaMesajAlan=HashMap<String,Any>()
-            konusmaMesajAlan.put("time",ServerValue.TIMESTAMP)
-            konusmaMesajAlan.put("goruldu",false)
-            konusmaMesajAlan.put("son_mesaj",mesajText)
+                var mesajAlan=HashMap<String,Any>()
+                mesajAlan.put("mesaj",mesajText)
+                mesajAlan.put("goruldu",false)
+                mesajAlan.put("time",ServerValue.TIMESTAMP)
+                mesajAlan.put("type","text")
+                mesajAlan.put("user_id",mesajGonderenUserId)
+                mRef.child("mesajlar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).child(yeniMesajKey).setValue(mesajAlan)
 
 
-            mRef.child("konusmalar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).setValue(konusmaMesajAlan)
+
+                var konusmaMesajAtan=HashMap<String,Any>()
+                konusmaMesajAtan.put("time",ServerValue.TIMESTAMP)
+                konusmaMesajAtan.put("goruldu",true)
+                konusmaMesajAtan.put("son_mesaj",mesajText)
+                konusmaMesajAtan.put("typing",false)
+
+                mRef.child("konusmalar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).setValue(konusmaMesajAtan)
+
+                var konusmaMesajAlan=HashMap<String,Any>()
+                konusmaMesajAlan.put("time",ServerValue.TIMESTAMP)
+                konusmaMesajAlan.put("goruldu",false)
+                konusmaMesajAlan.put("son_mesaj",mesajText)
+                konusmaMesajAlan.put("typing",false)
 
 
-            etMesaj.setText("")
+                mRef.child("konusmalar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).setValue(konusmaMesajAlan)
+
+
+                etMesaj.setText("")
+            }
+
+
 
 
 
         }
+
+        etMesaj.addTextChangedListener(object : TextWatcher{
+
+            var typing=false
+
+            override fun afterTextChanged(p0: Editable?) {
+
+                if(!TextUtils.isEmpty(p0.toString()) && p0!!.toString().trim().length == 1){
+                    typing=true
+                    Log.e("KONTROL","KULLANICI YAZMAYA BASLAMIS")
+                    mYaziyorRef.child("typing").setValue(true)
+                }else if(typing && p0!!.toString().trim().length == 0){
+                    typing=false
+                    Log.e("KONTROL","KULLANICI YAZMAYI BIRAKTI")
+                    mYaziyorRef.child("typing").setValue(false)
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
 
     }
 
@@ -292,6 +331,26 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
+    private var yaziyorEventListener=object : ValueEventListener{
+        override fun onCancelled(p0: DatabaseError?) {
+
+        }
+
+        override fun onDataChange(p0: DataSnapshot?) {
+
+            Log.e("kontrol","value event listener tetiklendi"+p0!!.getValue()!!.toString())
+
+            if(p0!!.getValue() == true){
+
+                Log.e("kontrol","değer true olmus")
+
+            }else if(p0!!.getValue() == false){
+                Log.e("kontrol","değer false olmus")
+            }
+
+        }
+
+    }
 
     private fun setupMesajlarRecyclerView() {
         var myLinearLayoutManager=LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
@@ -379,5 +438,11 @@ class ChatActivity : AppCompatActivity() {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("KONTROL",mYaziyorRef.toString())
+        mYaziyorRef.child("typing").addValueEventListener(yaziyorEventListener)
     }
 }
