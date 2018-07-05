@@ -61,7 +61,13 @@ class KonusmalarRecyclerAdapter(var tumKonusmalar:ArrayList<Konusmalar>, var myC
 
         fun setData(oankiKonusma: Konusmalar) {
 
-            enSonAtilanMesaj.text=oankiKonusma.son_mesaj.toString()
+            if(oankiKonusma.son_mesaj.toString().trim().length>25){
+                enSonAtilanMesaj.text=oankiKonusma.son_mesaj.toString().trim().substring(0,25)+"..."
+            }else{
+                enSonAtilanMesaj.text=oankiKonusma.son_mesaj.toString().trim()
+            }
+
+
             mesajZaman.text=TimeAgo.getTimeAgoForComments(oankiKonusma.time!!.toLong())
 
             if(oankiKonusma.goruldu==false){

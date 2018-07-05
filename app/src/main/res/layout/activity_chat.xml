@@ -42,7 +42,8 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/etMesaj"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/yaziyorContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/golgelik">
@@ -63,6 +64,39 @@
     </com.dinuscxj.refresh.RecyclerRefreshLayout>
 
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/yaziyorContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/golgelik1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/refreshLayout">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageViewYaziyor"
+            android:layout_width="30dp"
+
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvYaziyor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Yazıyor ..."
+            app:layout_constraintBottom_toBottomOf="@+id/circleImageViewYaziyor"
+            app:layout_constraintStart_toEndOf="@+id/circleImageViewYaziyor"
+            app:layout_constraintTop_toTopOf="@+id/circleImageViewYaziyor" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageView"

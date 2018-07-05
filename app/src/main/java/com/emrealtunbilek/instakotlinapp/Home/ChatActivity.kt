@@ -9,6 +9,8 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.view.animation.AnimationUtils
 import com.dinuscxj.refresh.RecyclerRefreshLayout
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.Models.Mesaj
@@ -28,6 +30,7 @@ class ChatActivity : AppCompatActivity() {
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var mRef:DatabaseReference
     lateinit var mYaziyorRef:DatabaseReference
+    lateinit var mDinleYaziyorRef:DatabaseReference
     var tumMesajlar:ArrayList<Mesaj> = ArrayList<Mesaj>()
     lateinit var myRecyclerViewAdapter: MesajRecyclerViewAdapter
     lateinit var myRecyclerView: RecyclerView
@@ -61,6 +64,7 @@ class ChatActivity : AppCompatActivity() {
         sohbetEdilecekUserId=intent.getStringExtra("secilenUserID")
         mesajGonderenUserId=mAuth.currentUser!!.uid.toString()
         mYaziyorRef=FirebaseDatabase.getInstance().reference.child("konusmalar").child(mesajGonderenUserId).child(sohbetEdilecekUserId)
+        mDinleYaziyorRef=FirebaseDatabase.getInstance().reference.child("konusmalar").child(sohbetEdilecekUserId).child(mesajGonderenUserId)
 
         sohbetEdenlerinBilgileriniGetir(sohbetEdilecekUserId, mesajGonderenUserId)
 
@@ -133,7 +137,7 @@ class ChatActivity : AppCompatActivity() {
                 konusmaMesajAlan.put("time",ServerValue.TIMESTAMP)
                 konusmaMesajAlan.put("goruldu",false)
                 konusmaMesajAlan.put("son_mesaj",mesajText)
-                konusmaMesajAlan.put("typing",false)
+                //konusmaMesajAlan.put("typing",false)
 
 
                 mRef.child("konusmalar").child(sohbetEdilecekUserId).child(mesajGonderenUserId).setValue(konusmaMesajAlan)
@@ -338,15 +342,21 @@ class ChatActivity : AppCompatActivity() {
 
         override fun onDataChange(p0: DataSnapshot?) {
 
-            Log.e("kontrol","value event listener tetiklendi"+p0!!.getValue()!!.toString())
+           if(p0!!.getValue()!=null){
+               if(p0!!.getValue() == true){
+                   Log.e("kontrol","value event listener tetiklendi"+p0!!.getValue()!!.toString())
+                   yaziyorContainer.visibility= View.VISIBLE
+                   yaziyorContainer.startAnimation(AnimationUtils.loadAnimation(this@ChatActivity,android.R.anim.fade_in))
 
-            if(p0!!.getValue() == true){
 
-                Log.e("kontrol","değer true olmus")
+               }else if(p0!!.getValue() == false){
+                   Log.e("kontrol","değer false olmus")
+                   yaziyorContainer.visibility= View.GONE
+                   yaziyorContainer.startAnimation(AnimationUtils.loadAnimation(this@ChatActivity,android.R.anim.fade_out))
+               }
+           }
 
-            }else if(p0!!.getValue() == false){
-                Log.e("kontrol","değer false olmus")
-            }
+
 
         }
 
@@ -377,7 +387,8 @@ class ChatActivity : AppCompatActivity() {
 
                     sohbetEdilecekUser=p0!!.getValue(Users::class.java)
                     tvSohbetEdilecekUserName.setText(sohbetEdilecekUser!!.user_name!!.toString())
-
+                    UniversalImageLoader.setImage(sohbetEdilecekUser!!.user_detail!!.profile_picture!!.toString(),
+                            circleImageViewYaziyor,null,"")
                     setupMesajlarRecyclerView()
                 }
             }
@@ -443,6 +454,12 @@ class ChatActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.e("KONTROL",mYaziyorRef.toString())
-        mYaziyorRef.child("typing").addValueEventListener(yaziyorEventListener)
+        mDinleYaziyorRef.child("typing").addValueEventListener(yaziyorEventListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mYaziyorRef.child("typing").setValue(false)
+        mDinleYaziyorRef.child("typing").removeEventListener(yaziyorEventListener)
     }
 }
