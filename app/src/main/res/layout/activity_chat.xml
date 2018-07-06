@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/yaziyorContainer"
+        app:layout_constraintBottom_toTopOf="@+id/sonGorulmeContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/golgelik">
@@ -71,7 +71,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/golgelik1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/refreshLayout">
+        app:layout_constraintTop_toBottomOf="@+id/sonGorulmeContainer">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleImageViewYaziyor"
@@ -110,7 +110,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/etMesaj"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yorumlarRecyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/golgelik1" />
 
     <EditText
         android:id="@+id/etMesaj"
@@ -118,10 +118,12 @@
         android:layout_height="0dp"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="2dp"
+        android:layout_marginTop="4dp"
         android:background="@null"
         android:ems="10"
-        android:hint="Yorum Ekle ... "
+        android:hint="Yeni Mesaj ... "
         android:inputType="textMultiLine"
+        android:singleLine="true"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvMesajGonderButton"
@@ -144,10 +146,43 @@
         android:id="@+id/golgelik1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="4dp"
         android:background="@color/golgelik"
         app:layout_constraintBottom_toTopOf="@+id/circleImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"></View>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/sonGorulmeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/yaziyorContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/refreshLayout">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvGorenKullaniciUserName"
+            app:layout_constraintEnd_toStartOf="@+id/tvGorenKullaniciUserName"
+            app:layout_constraintTop_toTopOf="@+id/tvGorenKullaniciUserName"
+            app:srcCompat="@drawable/ic_seen" />
+
+        <TextView
+            android:id="@+id/tvGorenKullaniciUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="kullanıcıadı"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

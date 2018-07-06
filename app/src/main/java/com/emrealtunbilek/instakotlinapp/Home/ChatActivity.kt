@@ -36,6 +36,8 @@ class ChatActivity : AppCompatActivity() {
     lateinit var myRecyclerView: RecyclerView
     var sohbetEdilecekUser:Users? = null
 
+    var ekrandaSonGorulmeVarMi=false
+
 
     //sayfalamaiçin
     val SAYFA_BASI_GONDERI_SAYISI = 5
@@ -102,7 +104,7 @@ class ChatActivity : AppCompatActivity() {
 
         tvMesajGonderButton.setOnClickListener {
 
-            var mesajText=etMesaj.text.toString()
+            var mesajText=etMesaj.text.toString().trim()
 
             if(!TextUtils.isEmpty(mesajText.toString())){
                 var mesajAtan=HashMap<String,Any>()
@@ -302,6 +304,8 @@ class ChatActivity : AppCompatActivity() {
 
                 mesajGorulduBilgisiniGuncelle(p0!!.key)
 
+                sonGorulmeBilgisiniGuncelle(p0!!.key)
+
 
 
                 myRecyclerViewAdapter.notifyItemInserted(tumMesajlar.size-1)
@@ -317,6 +321,32 @@ class ChatActivity : AppCompatActivity() {
             }
 
         })
+
+
+    }
+
+    private fun sonGorulmeBilgisiniGuncelle(mesajID: String?) {
+
+        FirebaseDatabase.getInstance().getReference().child("mesajlar").child(sohbetEdilecekUserId).child(mesajGonderenUserId)
+                .child(mesajID).addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+
+                if(p0!!.child("goruldu").getValue() == true && p0!!.child("user_id").getValue().toString().equals(mesajGonderenUserId)){
+                    ekrandaSonGorulmeVarMi=true
+                    sonGorulmeContainer.visibility=View.VISIBLE
+                }else {
+                    ekrandaSonGorulmeVarMi=false
+                    sonGorulmeContainer.visibility=View.GONE
+                }
+
+            }
+
+        })
+
 
 
     }
@@ -345,12 +375,22 @@ class ChatActivity : AppCompatActivity() {
            if(p0!!.getValue()!=null){
                if(p0!!.getValue() == true){
                    Log.e("kontrol","value event listener tetiklendi"+p0!!.getValue()!!.toString())
+
+                   if(ekrandaSonGorulmeVarMi){
+                       sonGorulmeContainer.visibility=View.GONE
+                   }
+
                    yaziyorContainer.visibility= View.VISIBLE
                    yaziyorContainer.startAnimation(AnimationUtils.loadAnimation(this@ChatActivity,android.R.anim.fade_in))
 
 
                }else if(p0!!.getValue() == false){
                    Log.e("kontrol","değer false olmus")
+
+                   if(ekrandaSonGorulmeVarMi){
+                       sonGorulmeContainer.visibility=View.VISIBLE
+                   }
+
                    yaziyorContainer.visibility= View.GONE
                    yaziyorContainer.startAnimation(AnimationUtils.loadAnimation(this@ChatActivity,android.R.anim.fade_out))
                }
@@ -389,6 +429,7 @@ class ChatActivity : AppCompatActivity() {
                     tvSohbetEdilecekUserName.setText(sohbetEdilecekUser!!.user_name!!.toString())
                     UniversalImageLoader.setImage(sohbetEdilecekUser!!.user_detail!!.profile_picture!!.toString(),
                             circleImageViewYaziyor,null,"")
+                    tvGorenKullaniciUserName.setText(sohbetEdilecekUser!!.user_name!!.toString())
                     setupMesajlarRecyclerView()
                 }
             }
@@ -459,7 +500,18 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        mYaziyorRef.child("typing").setValue(false)
+        mYaziyorRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                if (p0!!.hasChild("typing")) {
+                    mYaziyorRef.child("typing").setValue(false)
+                }
+            }
+
+        })
         mDinleYaziyorRef.child("typing").removeEventListener(yaziyorEventListener)
     }
 }
