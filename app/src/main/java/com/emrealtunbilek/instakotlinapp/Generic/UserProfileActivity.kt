@@ -16,10 +16,12 @@ import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.Profile.ProfileEditFragment
 
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.CenterLayoutManager
 import com.emrealtunbilek.instakotlinapp.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import org.greenrobot.eventbus.EventBus
 
@@ -34,6 +36,7 @@ class UserProfileActivity : AppCompatActivity() {
     lateinit var mRef: DatabaseReference
     lateinit var tumGonderiler: ArrayList<UserPosts>
     lateinit var secilenUserID:String
+    var kullaniciPostListe:AutoPlayVideoRecyclerView ? = null
 
     var profilGizliMi=false
     var takipEdiyorMuyum=false
@@ -66,22 +69,37 @@ class UserProfileActivity : AppCompatActivity() {
 
        if(profilGizliMi==false || (profilGizliMi==true && takipEdiyorMuyum==true)){
 
+           golgelik2.visibility=View.VISIBLE
+           golgelik3.visibility=View.VISIBLE
            containerButtons.visibility=View.VISIBLE
            profileRecyclerView.visibility=View.VISIBLE
            containerGizliUyari.visibility=View.GONE
 
-           kullaniciPostlariniGetir(secilenUserID)
+           tumGonderiler.clear()
+           kullaniciPostlariniGetir(secilenUserID,1)
 
            imgGrid.setOnClickListener {
-               setupRecyclerView(1)
+               tumGonderiler.clear()
+               kullaniciPostlariniGetir(secilenUserID,1)
+
            }
 
            imgList.setOnClickListener {
-
-               setupRecyclerView(2)
+               tumGonderiler.clear()
+               kullaniciPostlariniGetir(secilenUserID,2)
            }
 
        }else {
+
+           if (kullaniciPostListe!= null && kullaniciPostListe!!.getHandingVideoHolder() != null){
+               kullaniciPostListe!!.getHandingVideoHolder().stopVideo();
+               Log.e("HATA","PAUSE CALISIYO")
+           }
+
+           tumGonderiler.clear()
+
+           golgelik2.visibility=View.GONE
+           golgelik3.visibility=View.GONE
            containerButtons.visibility=View.GONE
            profileRecyclerView.visibility=View.GONE
            containerGizliUyari.visibility=View.VISIBLE
@@ -260,8 +278,20 @@ class UserProfileActivity : AppCompatActivity() {
     override fun onResume() {
         setupNavigationView()
         super.onResume()
+        if (kullaniciPostListe!= null && kullaniciPostListe?.getHandingVideoHolder() != null) {
+            kullaniciPostListe!!.getHandingVideoHolder().playVideo();
+            Log.e("HATA","RESUME CALISIYO")
+        }
+
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (kullaniciPostListe!= null && kullaniciPostListe!!.getHandingVideoHolder() != null){
+            kullaniciPostListe!!.getHandingVideoHolder().stopVideo();
+            Log.e("HATA","PAUSE CALISIYO")
+        }
+    }
 
     fun setupNavigationView(){
 
@@ -272,7 +302,7 @@ class UserProfileActivity : AppCompatActivity() {
         menuItem.setChecked(true)
     }
 
-    private fun kullaniciPostlariniGetir(kullaniciID: String) {
+    private fun kullaniciPostlariniGetir(kullaniciID: String, layoutCesidi: Int) {
 
 
 
@@ -313,7 +343,7 @@ class UserProfileActivity : AppCompatActivity() {
                             }
                         }
 
-                        setupRecyclerView(1)
+                        setupRecyclerView(layoutCesidi)
 
                     }
 
@@ -335,20 +365,33 @@ class UserProfileActivity : AppCompatActivity() {
     private fun setupRecyclerView(layoutCesidi: Int) {
 
         if(layoutCesidi==1){
+
+            if (kullaniciPostListe!= null && kullaniciPostListe!!.getHandingVideoHolder() != null){
+                kullaniciPostListe!!.getHandingVideoHolder().stopVideo();
+                Log.e("HATA","Gridlayout aktif, videoları durdur")
+            }
+
             imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.mavi), PorterDuff.Mode.SRC_IN)
             imgList.setColorFilter(ContextCompat.getColor(this,R.color.siyah), PorterDuff.Mode.SRC_IN)
-            var kullaniciPostListe=profileRecyclerView
-            kullaniciPostListe.adapter= ProfilePostGridRecyclerAdapter(tumGonderiler,this)
+            kullaniciPostListe=profileRecyclerView
+            kullaniciPostListe?.layoutManager= GridLayoutManager(this,3)
+            kullaniciPostListe?.adapter= ProfilePostGridRecyclerAdapter(tumGonderiler,this)
 
-            kullaniciPostListe.layoutManager= GridLayoutManager(this,3)
+
 
         }else if(layoutCesidi==2){
+            if (kullaniciPostListe!= null && kullaniciPostListe?.getHandingVideoHolder() != null) {
+                kullaniciPostListe!!.getHandingVideoHolder().playVideo();
+                Log.e("HATA","Listview aktif, varsa bekleyen videoyu oynat")
+            }
+
             imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.siyah), PorterDuff.Mode.SRC_IN)
             imgList.setColorFilter(ContextCompat.getColor(this,R.color.mavi), PorterDuff.Mode.SRC_IN)
-            var kullaniciPostListe=profileRecyclerView
-            kullaniciPostListe.adapter= ProfilePostListRecyclerAdapter(this,tumGonderiler)
+            kullaniciPostListe=profileRecyclerView
+            kullaniciPostListe?.layoutManager= CenterLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+            kullaniciPostListe?.adapter= ProfilePostListRecyclerAdapter(this,tumGonderiler)
 
-            kullaniciPostListe.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+
 
         }
 

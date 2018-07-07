@@ -85,36 +85,46 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
             holder.dosyaProgressBar.visibility=View.VISIBLE
         }
 
-        override fun doInBackground(vararg p0: String?): Bitmap {
+        override fun doInBackground(vararg p0: String?): Bitmap? {
 
-            var videoPath=p0[0]
+            if(p0[0] != null){
+                var videoPath=p0[0]
 
-            var bitmap: Bitmap? = null
-            var mediaMetadataRetriever: MediaMetadataRetriever? = null
-            try {
-                mediaMetadataRetriever = MediaMetadataRetriever()
-                if (Build.VERSION.SDK_INT >= 14)
-                    mediaMetadataRetriever.setDataSource(videoPath, HashMap())
-                else
-                    mediaMetadataRetriever.setDataSource(videoPath)
+                var bitmap: Bitmap? = null
+                var mediaMetadataRetriever: MediaMetadataRetriever? = null
+                try {
+                    mediaMetadataRetriever = MediaMetadataRetriever()
+                    if (Build.VERSION.SDK_INT >= 14)
+                        mediaMetadataRetriever.setDataSource(videoPath, HashMap())
+                    else
+                        mediaMetadataRetriever.setDataSource(videoPath)
 
-                bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                throw Throwable(
-                        "Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+                    bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    throw Throwable(
+                            "Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
 
-            } finally {
-                if (mediaMetadataRetriever != null) {
-                    mediaMetadataRetriever.release()
+                } finally {
+                    if (mediaMetadataRetriever != null) {
+                        mediaMetadataRetriever.release()
+                    }else{
+                        return null
+                    }
                 }
+                if (bitmap != null)
+                return bitmap
+                else return null
             }
-            return bitmap!!
+
+            return null
+
         }
 
         override fun onPostExecute(result: Bitmap?) {
             super.onPostExecute(result)
             holder.dosyaProgressBar.visibility=View.GONE
+            if(result != null)
             holder.dosyaResim.setImageBitmap(result)
         }
 
