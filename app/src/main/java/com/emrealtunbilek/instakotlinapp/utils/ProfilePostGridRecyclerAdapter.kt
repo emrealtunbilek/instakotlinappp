@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.tek_sutun_grid_resim_profil.view.*
 import android.os.Build
 import android.graphics.Bitmap
 import android.os.AsyncTask
+import java.util.*
 
 
 /**
@@ -22,6 +23,17 @@ import android.os.AsyncTask
 class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>, var myContext:Context): RecyclerView.Adapter<ProfilePostGridRecyclerAdapter.MyViewHolder>() {
 
     lateinit var inflater:LayoutInflater
+
+    init {
+        Collections.sort(kullaniciPostlari, object : Comparator<UserPosts> {
+            override fun compare(o1: UserPosts?, o2: UserPosts?): Int {
+                if (o1!!.postYuklenmeTarih!! > o2!!.postYuklenmeTarih!!) {
+                    return -1
+                } else return 1
+            }
+        })
+
+    }
 
     init {
         inflater= LayoutInflater.from(myContext)

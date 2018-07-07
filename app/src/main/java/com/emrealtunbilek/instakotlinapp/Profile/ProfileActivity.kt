@@ -196,7 +196,7 @@ class ProfileActivity : AppCompatActivity() {
                             }
                         }
 
-                        setupRecyclerView(2)
+                        setupRecyclerView(1)
 
                     }
 
