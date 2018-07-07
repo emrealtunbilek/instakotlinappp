@@ -91,6 +91,7 @@ class UserProfileActivity : AppCompatActivity() {
 
        }else {
 
+           
            if (kullaniciPostListe!= null && kullaniciPostListe!!.getHandingVideoHolder() != null){
                kullaniciPostListe!!.getHandingVideoHolder().stopVideo();
                Log.e("HATA","PAUSE CALISIYO")
