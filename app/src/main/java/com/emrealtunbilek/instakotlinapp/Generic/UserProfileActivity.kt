@@ -35,6 +35,9 @@ class UserProfileActivity : AppCompatActivity() {
     lateinit var tumGonderiler: ArrayList<UserPosts>
     lateinit var secilenUserID:String
 
+    var profilGizliMi=false
+    var takipEdiyorMuyum=false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
@@ -52,19 +55,39 @@ class UserProfileActivity : AppCompatActivity() {
 
         kullaniciBilgileriniGetir()
 
-        kullaniciPostlariniGetir(secilenUserID)
 
-        imgGrid.setOnClickListener {
 
-            setupRecyclerView(1)
 
-        }
 
-        imgList.setOnClickListener {
 
-            setupRecyclerView(2)
-        }
+    }
 
+    private fun takibeUygunsaGoster() {
+
+       if(profilGizliMi==false || (profilGizliMi==true && takipEdiyorMuyum==true)){
+
+           containerButtons.visibility=View.VISIBLE
+           profileRecyclerView.visibility=View.VISIBLE
+           containerGizliUyari.visibility=View.GONE
+
+           kullaniciPostlariniGetir(secilenUserID)
+
+           imgGrid.setOnClickListener {
+               setupRecyclerView(1)
+           }
+
+           imgList.setOnClickListener {
+
+               setupRecyclerView(2)
+           }
+
+       }else {
+           containerButtons.visibility=View.GONE
+           profileRecyclerView.visibility=View.GONE
+           containerGizliUyari.visibility=View.VISIBLE
+
+
+       }
 
     }
 
@@ -87,6 +110,12 @@ class UserProfileActivity : AppCompatActivity() {
                     EventBus.getDefault().postSticky(EventbusDataEvents.KullaniciBilgileriniGonder(okunanKullaniciBilgileri))
                     tvTakip.isEnabled=true
                     imgProfileSettings.isEnabled=true
+
+                    if(p0!!.child("gizli_profil").getValue()!=null){
+                        profilGizliMi=p0!!.child("gizli_profil").getValue().toString().toBoolean()
+                    }else{
+                        profilGizliMi=false
+                    }
 
                     tvProfilAdiToolbar.setText(okunanKullaniciBilgileri!!.user_name)
                     tvProfilGercekAdi.setText(okunanKullaniciBilgileri!!.adi_soyadi)
@@ -130,10 +159,13 @@ class UserProfileActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot?) {
                if(p0!!.hasChild(secilenUserID)){
-                  takibiBirakButonOzellikleri()
+                   takipEdiyorMuyum=true
+                   takibiBirakButonOzellikleri()
                }else {
+                   takipEdiyorMuyum=false
                   takipEtButonOzellikleri()
                }
+                takibeUygunsaGoster()
             }
 
 
