@@ -18,48 +18,58 @@
 
     <TextView
         android:id="@+id/tvTakipEdenUserName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="TextView"
         android:textColor="@color/siyah"
+        android:textSize="12sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imgTakipEdenUserPicture"
+        app:layout_constraintEnd_toStartOf="@+id/btnOnayla"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imgTakipEdenUserPicture"
-        app:layout_constraintTop_toTopOf="@+id/imgTakipEdenUserPicture" />
+        app:layout_constraintTop_toTopOf="@+id/imgTakipEdenUserPicture"
+        app:layout_constraintVertical_bias="0.235" />
 
     <TextView
         android:id="@+id/tvTakipEdenAdiSoyadi"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="4dp"
         android:text="TextView"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/btnOnayla"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvTakipEdenUserName"
         app:layout_constraintTop_toBottomOf="@+id/tvTakipEdenUserName" />
 
     <Button
         android:id="@+id/btnSil"
 
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/register_button"
         android:text="Sil"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="@+id/imgTakipEdenUserPicture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imgTakipEdenUserPicture" />
 
     <Button
         android:id="@+id/btnOnayla"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/register_button_aktif"
         android:text="Onayla"
         android:textAllCaps="false"
         android:textColor="@color/beyaz"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSil"
         app:layout_constraintEnd_toStartOf="@+id/btnSil"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/btnSil" />
 
 </android.support.constraint.ConstraintLayout>

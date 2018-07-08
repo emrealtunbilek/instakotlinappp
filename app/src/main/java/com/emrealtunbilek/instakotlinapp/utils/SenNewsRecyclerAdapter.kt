@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Models.BildirimModel
 import com.emrealtunbilek.instakotlinapp.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -139,8 +140,14 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
                         if(!p0!!.child("adi_soyadi").getValue().toString().isNullOrEmpty())
                         takipEdenUserAdiSoyadi.setText(p0!!.child("adi_soyadi").getValue().toString())
 
-                        var takipEdenPicURL=p0!!.child("user_detail").child("profil_picture").getValue().toString()
-                        UniversalImageLoader.setImage(takipEdenPicURL,takipEdenUserProfileResim,null,"")
+                        if(!p0!!.child("user_detail").child("profile_picture").getValue().toString().isNullOrEmpty()){
+                            var takipEdenPicURL=p0!!.child("user_detail").child("profile_picture").getValue().toString()
+                            UniversalImageLoader.setImage(takipEdenPicURL,takipEdenUserProfileResim,null,"")
+                        }else {
+                            var takipEdenPicURL="https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+                            UniversalImageLoader.setImage(takipEdenPicURL,takipEdenUserProfileResim,null,"")
+                        }
+
 
                     }
 
@@ -162,8 +169,44 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
 
         fun setData(oankiBildirim: BildirimModel) {
 
+            idsiVerilenKullanicininBilgileri(oankiBildirim.user_id,oankiBildirim.time!!)
 
         }
+
+        private fun idsiVerilenKullanicininBilgileri(user_id: String?,bildirimZamani:Long) {
+
+            FirebaseDatabase.getInstance().getReference().child("users").child(user_id).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+
+                    if(p0!!.getValue()!=null){
+
+                        if(!p0!!.child("user_name").getValue().toString().isNullOrEmpty())
+                            bildirim.setText(p0!!.child("user_name").getValue().toString()+" sizi takip etmeye başladı.   "+TimeAgo.getTimeAgoForComments(bildirimZamani))
+
+
+
+                        if(!p0!!.child("user_detail").child("profile_picture").getValue().toString().isNullOrEmpty()){
+                            var takipEdenPicURL=p0!!.child("user_detail").child("profile_picture").getValue().toString()
+                            UniversalImageLoader.setImage(takipEdenPicURL,takipEdenUserPicture,null,"")
+                        }else {
+                            var takipEdenPicURL="https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+                            UniversalImageLoader.setImage(takipEdenPicURL,takipEdenUserPicture,null,"")
+                        }
+
+
+                    }
+
+
+                }
+
+            })
+
+        }
+
 
     }
 
@@ -177,6 +220,81 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
 
         fun setData(oankiBildirim: BildirimModel) {
 
+            idsiVerilenKullanicininBilgileri(oankiBildirim.user_id, oankiBildirim.gonderi_id, oankiBildirim.time!!)
+
+        }
+
+        private fun idsiVerilenKullanicininBilgileri(user_id: String?, gonderi_id:String?,bildirimZamani:Long) {
+
+            FirebaseDatabase.getInstance().getReference().child("users").child(user_id).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+
+                    if(p0!!.getValue()!=null){
+
+                        var userName=p0!!.child("user_name").getValue().toString()
+                        if(!p0!!.child("user_name").getValue().toString().isNullOrEmpty())
+                            bildirimGonderibegenildi.setText(userName+" fotoğrafını beğendi.  "+TimeAgo.getTimeAgoForComments(bildirimZamani))
+
+
+
+                        if(!p0!!.child("user_detail").child("profile_picture").getValue().toString().isNullOrEmpty()){
+                            var takipEdenPicURL=p0!!.child("user_detail").child("profile_picture").getValue().toString()
+                            UniversalImageLoader.setImage(takipEdenPicURL,begenenProfilePicture,null,"")
+                        }else {
+                            var takipEdenPicURL="https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+                            UniversalImageLoader.setImage(takipEdenPicURL,begenenProfilePicture,null,"")
+                        }
+
+
+                        FirebaseDatabase.getInstance().getReference().child("posts").child(FirebaseAuth.getInstance().currentUser!!.uid)
+                                .child(gonderi_id).addListenerForSingleValueEvent(object : ValueEventListener{
+                            override fun onCancelled(p0: DatabaseError?) {
+
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot?) {
+                                if(p0!!.getValue()!=null){
+
+                                    var dosyaYolu=p0!!.child("file_url").getValue().toString()
+                                    var dosyaTuru=dosyaYolu!!.substring(dosyaYolu.lastIndexOf("."), dosyaYolu.lastIndexOf(".")+4)
+
+                                    if(dosyaTuru.equals(".mp4")) {
+                                        bildirimGonderibegenildi.setText(userName+" videonu beğendi.  "+TimeAgo.getTimeAgoForComments(bildirimZamani))
+                                        begenilenGonderiPicture.visibility=View.GONE
+
+                                    }else {
+
+                                        if(!p0!!.child("file_url").getValue().toString().isNullOrEmpty()){
+                                            begenilenGonderiPicture.visibility=View.VISIBLE
+                                            var begenilenFotoURL=p0!!.child("file_url").getValue().toString()
+                                            UniversalImageLoader.setImage(begenilenFotoURL,begenilenGonderiPicture,null,"")
+                                        }else {
+                                            begenilenGonderiPicture.visibility=View.VISIBLE
+                                            var begenilenFotoURL="https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+                                            UniversalImageLoader.setImage(begenilenFotoURL,begenilenGonderiPicture,null,"")
+                                        }
+
+                                    }
+
+
+                                }
+                            }
+
+
+                        })
+
+
+
+                    }
+
+
+                }
+
+            })
 
         }
     }
