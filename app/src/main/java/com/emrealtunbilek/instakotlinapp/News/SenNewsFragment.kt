@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Models.BildirimModel
 
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.utils.SenNewsRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_takip_sen.view.*
@@ -23,6 +24,7 @@ class SenNewsFragment : Fragment() {
     var benimTumBildirimlerim=ArrayList<BildirimModel>()
     lateinit var myRecyclerView: RecyclerView
     lateinit var myLinearLayoutManager: LinearLayoutManager
+    lateinit var myRecyclerAdapter:SenNewsRecyclerAdapter
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
 
@@ -75,9 +77,12 @@ class SenNewsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         myRecyclerView=myView.newsSenRecyclerview
+        myRecyclerAdapter=SenNewsRecyclerAdapter(activity!!,benimTumBildirimlerim)
 
         myLinearLayoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
         myRecyclerView.layoutManager=myLinearLayoutManager
+
+        myRecyclerView.adapter=myRecyclerAdapter
 
     }
 
