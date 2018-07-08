@@ -278,12 +278,12 @@ class UserProfileActivity : AppCompatActivity() {
                                     if(p0!!.getValue() != null){
 
                                         mRef.child("takip_istekleri").child(secilenUserID).child(mUser.uid).removeValue()
-                                        bildirimKaydet(2)
+                                        Bildirimler.bildirimKaydet(secilenUserID,Bildirimler.TAKIP_ISTEGINI_SIL)
                                         takipEtButonOzellikleri()
 
                                     }else {
                                         mRef.child("takip_istekleri").child(secilenUserID).child(mUser.uid).setValue(mUser.uid)
-                                        bildirimKaydet(1)
+                                        Bildirimler.bildirimKaydet(secilenUserID, Bildirimler.YENI_TAKIP_ISTEGI)
                                         istekGonderildiButonOzellikleri()
                                     }
 
@@ -311,31 +311,6 @@ class UserProfileActivity : AppCompatActivity() {
 
     }
 
-    private fun bildirimKaydet(olayTuru: Int) {
-
-        //1 takip isteği geldi
-        //2 takip isteğini sil
-
-        when(olayTuru){
-
-            1-> {
-                var yeniBildirim=HashMap<String,Any>()
-                yeniBildirim.put("bildirim_tur","1")
-                yeniBildirim.put("time", ServerValue.TIMESTAMP)
-                mRef.child("benim_bildirimlerim").child(secilenUserID).child(mUser.uid).setValue(yeniBildirim)
-            }
-
-            2->{
-
-                mRef.child("benim_bildirimlerim").child(secilenUserID).child(mUser.uid).removeValue()
-
-            }
-
-        }
-
-
-
-    }
 
     private fun istekGonderildiButonOzellikleri() {
         tvTakip.setText("ISTEK GONDERILDI")
