@@ -178,8 +178,16 @@ class UserProfileActivity : AppCompatActivity() {
 
                     if(p0!!.getValue()!=null){
                         mRef.child("takip_istekleri").child(secilenUserID).child(mUser.uid).removeValue()
+                        Bildirimler.bildirimKaydet(secilenUserID,Bildirimler.TAKIP_ISTEGINI_SIL)
+
+
                         mRef.child("following").child(mUser.uid).child(secilenUserID).setValue(secilenUserID)
                         mRef.child("follower").child(secilenUserID).child(mUser.uid).setValue(mUser.uid)
+
+                        Log.e("KONTROL", "PROFILE ARTIK GIZLI DEGIL TAKIBE BASLA")
+
+                        Bildirimler.bildirimKaydet(secilenUserID,Bildirimler.TAKIP_ETMEYE_BASLADI)
+
                         takipciSayilariniGuncelle()
                         takibiBirakButonOzellikleri()
                     }
@@ -260,6 +268,9 @@ class UserProfileActivity : AppCompatActivity() {
                     if (p0!!.hasChild(secilenUserID)) {
                         mRef.child("following").child(mUser.uid).child(secilenUserID).removeValue()
                         mRef.child("follower").child(secilenUserID).child(mUser.uid).removeValue()
+
+                        Bildirimler.bildirimKaydet(secilenUserID,Bildirimler.TAKIP_ETMEYI_BIRAKTI)
+
                         takipciSayilariniGuncelle()
                         takipEtButonOzellikleri()
 
@@ -283,7 +294,9 @@ class UserProfileActivity : AppCompatActivity() {
 
                                     }else {
                                         mRef.child("takip_istekleri").child(secilenUserID).child(mUser.uid).setValue(mUser.uid)
+
                                         Bildirimler.bildirimKaydet(secilenUserID, Bildirimler.YENI_TAKIP_ISTEGI)
+
                                         istekGonderildiButonOzellikleri()
                                     }
 
@@ -293,8 +306,14 @@ class UserProfileActivity : AppCompatActivity() {
                             })
 
                         } else {
+
+
                             mRef.child("following").child(mUser.uid).child(secilenUserID).setValue(secilenUserID)
                             mRef.child("follower").child(secilenUserID).child(mUser.uid).setValue(mUser.uid)
+
+
+                            Bildirimler.bildirimKaydet(secilenUserID,Bildirimler.TAKIP_ETMEYE_BASLADI)
+
                             takipciSayilariniGuncelle()
                             takibiBirakButonOzellikleri()
                         }

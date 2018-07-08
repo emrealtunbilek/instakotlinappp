@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -196,13 +197,16 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
                     override fun onDataChange(p0: DataSnapshot?) {
                         if (p0!!.hasChild(userID)) {
-
+                            Log.e("KONTROL","GONDERI BEGENILME BILGISI GERI CEKILECEK")
                             mRef.child("likes").child(oankiGonderi.postID).child(userID).removeValue()
+                            Bildirimler.bildirimKaydet(oankiGonderi.userID!!,Bildirimler.GONDERI_BEGENISI_GERI_CEK,oankiGonderi!!.postID!!)
                             gonderiBegen.setImageResource(R.drawable.ic_like)
 
                         } else {
 
                             mRef.child("likes").child(oankiGonderi.postID).child(userID).setValue(userID)
+                            Log.e("KONTROL","GONDERI BEGENILME BILGISI KAYDEDİLECEK")
+                            Bildirimler.bildirimKaydet(oankiGonderi.userID!!,Bildirimler.GONDERI_BEGENILDI,oankiGonderi!!.postID!!)
                             gonderiBegen.setImageResource(R.drawable.ic_begen_kirmizi)
                             mInstaLikeView.start()
                             begenmeSayisi.visibility=View.VISIBLE
