@@ -37,6 +37,8 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var tumGonderiler: ArrayList<UserPosts>
     var myRecyclerView: AutoPlayVideoRecyclerView?=null
 
+    var ilkAcilis=true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,9 @@ class ProfileActivity : AppCompatActivity() {
         setupToolbar()
 
 
-        kullaniciBilgileriniGetir()
+        takipciSayilariniGuncelle()
+
+
 
         kullaniciPostlariniGetir(mUser.uid)
 
@@ -94,8 +98,12 @@ class ProfileActivity : AppCompatActivity() {
                     tvFollowingSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.following)
                     tvPostSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.post)
 
-                    var imgUrl:String=okunanKullaniciBilgileri!!.user_detail!!.profile_picture!!
-                    UniversalImageLoader.setImage(imgUrl,circleProfileImage,progressBar,"")
+                    if (ilkAcilis){
+                        ilkAcilis=false
+                        var imgUrl:String=okunanKullaniciBilgileri!!.user_detail!!.profile_picture!!
+                        UniversalImageLoader.setImage(imgUrl,circleProfileImage,progressBar,"")
+                    }
+
 
                     if(!okunanKullaniciBilgileri!!.user_detail!!.biography!!.isNullOrEmpty()){
                         tvBiyografi.visibility=View.VISIBLE
@@ -144,7 +152,39 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
+    private fun takipciSayilariniGuncelle() {
 
+        mRef = FirebaseDatabase.getInstance().reference
+
+        mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                var takipEttikleriminSayisi = p0!!.childrenCount.toString()
+
+                mRef.child("follower").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot?) {
+                        var takipEdenlerinSayisi = p0!!.childrenCount.toString()
+
+                        mRef.child("users").child(mUser.uid).child("user_detail").child("following").setValue(takipEttikleriminSayisi)
+                        mRef.child("users").child(mUser.uid).child("user_detail").child("follower").setValue(takipEdenlerinSayisi)
+
+
+                        kullaniciBilgileriniGetir()
+                    }
+
+                })
+            }
+
+        })
+
+    }
 
     fun setupNavigationView(){
 

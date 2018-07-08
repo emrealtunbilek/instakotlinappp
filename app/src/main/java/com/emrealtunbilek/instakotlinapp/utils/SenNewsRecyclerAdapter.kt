@@ -99,7 +99,7 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
 
     }
 
-    class TakipIstekViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    inner class TakipIstekViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
         var tumLayout=itemView as ConstraintLayout
         var takipEdenUserProfileResim=tumLayout.imgTakipEdenUserPicture
@@ -111,12 +111,28 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
         fun setData(oankiBildirim: BildirimModel) {
 
            idsiVerilenKullanicininBilgileri(oankiBildirim.user_id)
+           var mRef=FirebaseDatabase.getInstance().reference
+            var mUser=FirebaseAuth.getInstance().currentUser
 
             istekOnaylaButonu.setOnClickListener {
+
+
+
+                mRef.child("takip_istekleri").child(mUser!!.uid).child(oankiBildirim.user_id).removeValue()
+                mRef.child("following").child(oankiBildirim.user_id).child(mUser!!.uid).setValue(mUser!!.uid)
+                mRef.child("follower").child(mUser.uid).child(oankiBildirim.user_id).setValue(oankiBildirim.user_id)
+
+                tumBildirimler.removeAt(adapterPosition)
+                notifyItemRemoved(adapterPosition)
+                notifyItemRangeChanged(adapterPosition,tumBildirimler.size)
+                //notifydatasetchanged()
 
             }
 
             istekSilButonu.setOnClickListener {
+                tumBildirimler.removeAt(adapterPosition)
+                notifyItemRemoved(adapterPosition)
+                notifyItemRangeChanged(adapterPosition,tumBildirimler.size)
 
             }
 
@@ -161,7 +177,7 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
 
     }
 
-    class TakipBasladiViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+   inner class TakipBasladiViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         var tumLayout=itemView as ConstraintLayout
         var takipEdenUserPicture=tumLayout.imgTakipEdenUserPic
         var bildirim=tumLayout.tvBildirimTakipBasladi
@@ -210,7 +226,7 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
 
     }
 
-    class GonderiBegendiViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+  inner  class GonderiBegendiViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         var tumLayout=itemView as ConstraintLayout
         var begenenProfilePicture=tumLayout.imgBegenenProfilePicture
         var bildirimGonderibegenildi = tumLayout.tvBildirimGonderiBegen

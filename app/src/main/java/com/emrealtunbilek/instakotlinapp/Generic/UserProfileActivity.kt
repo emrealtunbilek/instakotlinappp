@@ -41,6 +41,8 @@ class UserProfileActivity : AppCompatActivity() {
     var profilGizliMi = false
     var takipEdiyorMuyum = false
 
+    var ilkAcilis=true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
@@ -54,7 +56,8 @@ class UserProfileActivity : AppCompatActivity() {
 
 
         setupButtons()
-        kullaniciBilgileriniGetir()
+        takipciSayilariniGuncelle()
+
 
 
     }
@@ -136,8 +139,12 @@ class UserProfileActivity : AppCompatActivity() {
                     tvFollowingSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.following)
                     tvPostSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.post)
 
-                    var imgUrl: String = okunanKullaniciBilgileri!!.user_detail!!.profile_picture!!
-                    UniversalImageLoader.setImage(imgUrl, circleProfileImage, progressBar, "")
+                    if(ilkAcilis){
+                        ilkAcilis=false
+                        var imgUrl: String = okunanKullaniciBilgileri!!.user_detail!!.profile_picture!!
+                        UniversalImageLoader.setImage(imgUrl, circleProfileImage, progressBar, "")
+                    }
+
 
                     if (!okunanKullaniciBilgileri!!.user_detail!!.biography!!.isNullOrEmpty()) {
                         tvBiyografi.visibility = View.VISIBLE
@@ -359,6 +366,9 @@ class UserProfileActivity : AppCompatActivity() {
 
                         mRef.child("users").child(mUser.uid).child("user_detail").child("following").setValue(takipEttikleriminSayisi)
                         mRef.child("users").child(secilenUserID).child("user_detail").child("follower").setValue(takipEdenlerinSayisi)
+
+
+                        kullaniciBilgileriniGetir()
                     }
 
                 })
