@@ -200,6 +200,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
                             Log.e("KONTROL","GONDERI BEGENILME BILGISI GERI CEKILECEK")
                             mRef.child("likes").child(oankiGonderi.postID).child(userID).removeValue()
                             Bildirimler.bildirimKaydet(oankiGonderi.userID!!,Bildirimler.GONDERI_BEGENISI_GERI_CEK,oankiGonderi!!.postID!!)
+                            Log.e("VVV","HA BEGENME gerı cekme BILDIRIM:"+oankiGonderi!!.postID)
                             gonderiBegen.setImageResource(R.drawable.ic_like)
 
                         } else {
@@ -207,6 +208,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
                             mRef.child("likes").child(oankiGonderi.postID).child(userID).setValue(userID)
                             Log.e("KONTROL","GONDERI BEGENILME BILGISI KAYDEDİLECEK")
                             Bildirimler.bildirimKaydet(oankiGonderi.userID!!,Bildirimler.GONDERI_BEGENILDI,oankiGonderi!!.postID!!)
+                            Log.e("VVV","HA BEGENME BILDIRIM:"+oankiGonderi!!.postID)
                             gonderiBegen.setImageResource(R.drawable.ic_begen_kirmizi)
                             mInstaLikeView.start()
                             begenmeSayisi.visibility=View.VISIBLE
