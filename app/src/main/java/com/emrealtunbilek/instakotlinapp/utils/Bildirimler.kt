@@ -147,7 +147,7 @@ object Bildirimler {
         when(bildirimTuru){
 
             GONDERI_BEGENILDI->{
-                Log.e("VVV","BILDIRIMLERDEKI BEGENME BILDIRIM:"+gonderiID!!)
+
                 var yeniBildirimID=mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).push().key
                 var yeniBildirim=HashMap<String,Any>()
                 yeniBildirim.put("bildirim_tur", GONDERI_BEGENILDI)
@@ -158,7 +158,7 @@ object Bildirimler {
             }
 
             GONDERI_BEGENISI_GERI_CEK->{
-                Log.e("VVV","BILDIRIMLERDEKI BEGENME GERICEKME BILDIRIM:"+gonderiID!!)
+
                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).orderByChild("gonderi_id").addListenerForSingleValueEvent(object : ValueEventListener{
                     override fun onCancelled(p0: DatabaseError?) {
 

@@ -181,10 +181,14 @@ class ProfilePostListRecyclerAdapter(var context: Context, var tumGonderiler: Ar
 
                             mRef.child("likes").child(oankiGonderi.postID).child(userID).removeValue()
                             gonderiBegen.setImageResource(R.drawable.ic_like)
+                            Bildirimler.bildirimKaydet(oankiGonderi.userID!!,Bildirimler.GONDERI_BEGENISI_GERI_CEK,oankiGonderi!!.postID!!)
 
                         } else {
 
                             mRef.child("likes").child(oankiGonderi.postID).child(userID).setValue(userID)
+
+                            if(!oankiGonderi.userID!!.equals(userID))
+                            Bildirimler.bildirimKaydet(oankiGonderi.userID!!,Bildirimler.GONDERI_BEGENILDI,oankiGonderi!!.postID!!)
                             gonderiBegen.setImageResource(R.drawable.ic_begen_kirmizi)
                             mInstaLikeView.start()
                             begenmeSayisi.visibility=View.VISIBLE
