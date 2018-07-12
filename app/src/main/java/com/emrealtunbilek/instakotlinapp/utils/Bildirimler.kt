@@ -73,6 +73,12 @@ object Bildirimler {
                 yeniBildirim.put("time", ServerValue.TIMESTAMP)
                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).child(yeniBildirimID).setValue(yeniBildirim)
 
+                var yeniBildirimTakipEttigim=HashMap<String,Any>()
+                yeniBildirimTakipEttigim.put("bildirim_tur", TAKIP_ETMEYE_BASLADI)
+                yeniBildirimTakipEttigim.put("user_id", bildirimYapanUserID)
+                yeniBildirimTakipEttigim.put("time", ServerValue.TIMESTAMP)
+                mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).child(yeniBildirimID).setValue(yeniBildirimTakipEttigim)
+
 
             }
 
@@ -90,6 +96,29 @@ object Bildirimler {
                             Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == TAKIP_ETMEYE_BASLADI && bildirim.child("user_id").getValue()!!.equals(mUserID)){
                                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).child(okunanBildirimKey).removeValue()
+                                break
+                            }
+
+                        }
+
+                    }
+
+
+                })
+
+                mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot?) {
+
+                        for (bildirim in p0!!.children){
+
+                            var okunanBildirimKey=bildirim!!.key
+                            Log.e("KONTROL",bildirim.toString())
+                            if(bildirim.child("bildirim_tur").getValue().toString().toInt() == TAKIP_ETMEYE_BASLADI && bildirim.child("user_id").getValue()!!.equals(bildirimYapanUserID)){
+                                mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).child(okunanBildirimKey).removeValue()
                                 break
                             }
 
@@ -133,6 +162,12 @@ object Bildirimler {
                 yeniBildirim.put("time", ServerValue.TIMESTAMP)
                 mRef.child("benim_bildirimlerim").child(mUserID).child(yeniBildirimID).setValue(yeniBildirim)
 
+                var yeniBildirimTakipEttigim=HashMap<String,Any>()
+                yeniBildirimTakipEttigim.put("bildirim_tur", TAKIP_ETMEYE_BASLADI)
+                yeniBildirimTakipEttigim.put("user_id", mUserID)
+                yeniBildirimTakipEttigim.put("time", ServerValue.TIMESTAMP)
+                mRef.child("takip_ettiklerimin_bildirimleri").child(bildirimYapanUserID).child(yeniBildirimID).setValue(yeniBildirimTakipEttigim)
+
 
             }
 
@@ -155,6 +190,13 @@ object Bildirimler {
                 yeniBildirim.put("gonderi_id",gonderiID)
                 yeniBildirim.put("time", ServerValue.TIMESTAMP)
                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).child(yeniBildirimID).setValue(yeniBildirim)
+
+                var yeniBildirimTakipEttigim=HashMap<String,Any>()
+                yeniBildirimTakipEttigim.put("bildirim_tur", GONDERI_BEGENILDI)
+                yeniBildirimTakipEttigim.put("user_id", bildirimYapanUserID)
+                yeniBildirimTakipEttigim.put("gonderi_id",gonderiID)
+                yeniBildirimTakipEttigim.put("time", ServerValue.TIMESTAMP)
+                mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).child(yeniBildirimID).setValue(yeniBildirimTakipEttigim)
             }
 
             GONDERI_BEGENISI_GERI_CEK->{
@@ -172,6 +214,29 @@ object Bildirimler {
                             Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == GONDERI_BEGENILDI && bildirim.child("gonderi_id").getValue()!!.equals(gonderiID)){
                                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).child(okunanBildirimKey).removeValue()
+                                break
+                            }
+
+                        }
+
+                    }
+
+
+                })
+
+                mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).orderByChild("gonderi_id").addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot?) {
+
+                        for (bildirim in p0!!.children){
+
+                            var okunanBildirimKey=bildirim!!.key
+                            Log.e("KONTROL",bildirim.toString())
+                            if(bildirim.child("bildirim_tur").getValue().toString().toInt() == GONDERI_BEGENILDI && bildirim.child("gonderi_id").getValue()!!.equals(gonderiID)){
+                                mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).child(okunanBildirimKey).removeValue()
                                 break
                             }
 
