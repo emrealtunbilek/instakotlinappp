@@ -20,9 +20,7 @@ import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 
-/**
- * Created by Emre on 8.07.2018.
- */
+
 class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList<BildirimModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var yeniSiralanmisListe=ArrayList<BildirimModel>()
