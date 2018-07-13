@@ -12,20 +12,23 @@ import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Models.BildirimModel
 
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.utils.TakipNewsRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.fragment_takip_news.view.*
 
 
 class TakipNewsFragment : Fragment() {
 
     lateinit var myView:View
 
+
     var takipEttikleriminTumBildirimleri =ArrayList<BildirimModel>()
 
 
     lateinit var myRecyclerView: RecyclerView
     lateinit var myLinearLayoutManager: LinearLayoutManager
-    //lateinit var myRecyclerAdapter: SenNewsRecyclerAdapter
+    lateinit var myRecyclerAdapter: TakipNewsRecyclerAdapter
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
 
@@ -56,7 +59,7 @@ class TakipNewsFragment : Fragment() {
 
                     var takipEttigimUserID=userID.key
 
-                    mRef.child("takip_ettiklerimin_bildirimleri").child(takipEttigimUserID).addListenerForSingleValueEvent(object : ValueEventListener{
+                    mRef.child("takip_ettiklerimin_bildirimleri").child(takipEttigimUserID).limitToLast(10).addListenerForSingleValueEvent(object : ValueEventListener{
                         override fun onCancelled(p0: DatabaseError?) {
 
                         }
@@ -93,7 +96,17 @@ class TakipNewsFragment : Fragment() {
     }
 
     private fun listeyiHazirla() {
-        Log.e("KONTROL","TAKIP ETTIKLERIMIN TUM BILD SAYISI:"+ takipEttikleriminTumBildirimleri.size)
+
+        myRecyclerView=myView.takipEttikleriminBildirimListesi
+        myLinearLayoutManager=LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+
+        myRecyclerView.layoutManager=myLinearLayoutManager
+        myRecyclerAdapter=TakipNewsRecyclerAdapter(activity!!,takipEttikleriminTumBildirimleri)
+
+        myRecyclerView.adapter=myRecyclerAdapter
+
+
+
     }
 
 }

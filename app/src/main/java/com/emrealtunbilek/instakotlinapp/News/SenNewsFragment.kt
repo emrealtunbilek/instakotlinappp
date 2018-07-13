@@ -47,7 +47,7 @@ class SenNewsFragment : Fragment() {
 
     private fun tumBildirimlerimiGetir() {
 
-        mRef.child("benim_bildirimlerim").child(mAuth.currentUser!!.uid).orderByChild("time").addListenerForSingleValueEvent(object : ValueEventListener{
+        mRef.child("benim_bildirimlerim").child(mAuth.currentUser!!.uid).orderByChild("time").limitToLast(100).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
             }
