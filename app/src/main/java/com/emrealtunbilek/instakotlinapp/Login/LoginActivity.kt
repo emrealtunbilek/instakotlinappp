@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -117,6 +118,7 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
                     override fun onComplete(p0: Task<AuthResult>) {
                         if (p0!!.isSuccessful) {
+                            fcmTokenKaydet()
                             Toast.makeText(this@LoginActivity, " Oturum açıldı :" + mAuth.currentUser!!.uid, Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(this@LoginActivity, " Kullanıcı Adı/Sifre Hatalı :", Toast.LENGTH_SHORT).show()
@@ -128,6 +130,21 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    private fun fcmTokenKaydet() {
+         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+            var token=it.token
+            yeniTokenVeritabaninaKaydet(token)
+        }
+    }
+
+    private fun yeniTokenVeritabaninaKaydet(yeniToken: String) {
+        if(FirebaseAuth.getInstance().currentUser != null ){
+            FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                    .child("fcm_token").setValue(yeniToken)
+        }
+    }
 
     var watcher: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
