@@ -111,7 +111,15 @@ class LoginActivity : AppCompatActivity() {
         if (telefonIleGiris == true) {
             girisYapacakEmail = okunanKullanici.email_phone_number.toString()
         } else {
-            girisYapacakEmail = okunanKullanici.email.toString()
+
+            if(!okunanKullanici.email.toString().isNullOrEmpty() && okunanKullanici.email_phone_number.toString().isNullOrEmpty()){
+                girisYapacakEmail = okunanKullanici.email.toString()
+            }else {
+                girisYapacakEmail = okunanKullanici.email_phone_number.toString()
+            }
+
+
+
         }
 
         mAuth.signInWithEmailAndPassword(girisYapacakEmail, sifre)
