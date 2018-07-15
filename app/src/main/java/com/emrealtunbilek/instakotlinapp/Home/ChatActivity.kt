@@ -38,6 +38,11 @@ class ChatActivity : AppCompatActivity() {
 
     var ekrandaSonGorulmeVarMi=false
 
+    companion object {
+        var activityAcikMi=false
+    }
+
+
 
     //sayfalamaiçin
     val SAYFA_BASI_GONDERI_SAYISI = 5
@@ -184,6 +189,11 @@ class ChatActivity : AppCompatActivity() {
             }
 
         })
+
+        imgBack.setOnClickListener {
+            onBackPressed()
+        }
+
 
     }
 
@@ -483,12 +493,14 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        activityAcikMi=true
         Log.e("HATA", "Chat activity on start")
         mAuth.addAuthStateListener(mAuthListener)
     }
 
     override fun onStop() {
         super.onStop()
+        activityAcikMi=false
         mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener)
@@ -497,12 +509,14 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        activityAcikMi=true
         Log.e("KONTROL",mYaziyorRef.toString())
         mDinleYaziyorRef.child("typing").addValueEventListener(yaziyorEventListener)
     }
 
     override fun onPause() {
         super.onPause()
+        activityAcikMi=false
         mYaziyorRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
 

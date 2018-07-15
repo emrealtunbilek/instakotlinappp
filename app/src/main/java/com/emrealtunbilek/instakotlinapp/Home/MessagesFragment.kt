@@ -33,12 +33,17 @@ class MessagesFragment : Fragment() {
     lateinit var mRef: DatabaseReference
     var listenerAtandiMi=false
 
+    companion object {
+        var fragmentAcikMi=false
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         myFragmentView = inflater?.inflate(R.layout.fragment_messages, container, false)
 
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
+
 
 
         myFragmentView.searchview.setOnClickListener {
@@ -164,6 +169,7 @@ class MessagesFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+        fragmentAcikMi=false
         tumKonusmalar.clear()
         if(listenerAtandiMi==true){
             listenerAtandiMi=false
@@ -174,6 +180,7 @@ class MessagesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        fragmentAcikMi=true
         tumKonusmalar.clear()
         if(listenerAtandiMi==false){
             listenerAtandiMi=true

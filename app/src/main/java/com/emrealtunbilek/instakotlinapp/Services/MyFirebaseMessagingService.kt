@@ -8,7 +8,9 @@ import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.support.v4.app.NotificationCompat
 import android.util.Log
+import com.emrealtunbilek.instakotlinapp.Home.ChatActivity
 import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
+import com.emrealtunbilek.instakotlinapp.Home.MessagesFragment
 import com.emrealtunbilek.instakotlinapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -31,6 +33,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         if(bildirimBaslik.equals("Yeni Mesaj")){
 
+            if(MessagesFragment.fragmentAcikMi==false && ChatActivity.activityAcikMi==false)
             yeniMesajBildiriminiGoster(bildirimBaslik, bildirimBody, bildirimData)
 
         }else {
