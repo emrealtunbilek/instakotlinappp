@@ -45,3 +45,53 @@ exports.takipIstegiBildirimiGonder=functions.database.ref("/takip_istekleri/{tak
     });
   });
 });
+
+exports.yeniMesajBildirimiGonder=functions.database.ref("/mesajlar/{mesaj_gonderilen_user_id}/{mesaj_gonderen_user_id}/{yeni_mesaj_id}").onCreate((data, context)=>{
+
+const mesajGonderilenUserID =context.params.mesaj_gonderilen_user_id;
+const mesajGonderenUserID   =context.params.mesaj_gonderen_user_id;
+const yeniMesajID           =context.params.yeni_mesaj_id;
+
+console.log("Kime mesaj gönderilmiş idsi:",mesajGonderilenUserID);
+console.log("Kim mesaj gondermiş user id:", mesajGonderenUserID);
+console.log("Gönderilen mesaj id", yeniMesajID);
+
+const mesajGonderilenUserToken = admin.database().ref(`/users/${mesajGonderilenUserID}/fcm_token`).once('value');
+const mesajGonderenUserName    = admin.database().ref(`/users/${mesajGonderenUserID}/user_name`).once('value');
+const gonderilenSonMesaj       = admin.database().ref(`/mesajlar/${mesajGonderilenUserID}/${mesajGonderenUserID}/${yeniMesajID}`).once('value');
+
+
+return mesajGonderilenUserToken.then(result=>{
+
+const user_token=result.val();
+
+  return mesajGonderenUserName.then(result=>{
+
+    const user_name=result.val();
+
+      return gonderilenSonMesaj.then(result=>{
+
+        const son_yazilan_mesaj = result.child('mesaj').val();
+        const son_mesaji_yazan_userin_idsi = result.child('user_id').val();
+
+          const yeniMesajBildirimi = {
+            notification : {
+              title : 'Yeni Mesaj',
+              body  : `${user_name} : ${son_yazilan_mesaj} `,
+              icon  : 'default'
+            }
+          };
+
+          return admin.messaging().sendToDevice(user_token, yeniMesajBildirimi).then(result=>{
+            console.log("Yeni mesaj bildirimi gönderildi ");
+          });
+
+      });
+
+  });
+
+
+});
+
+
+});
