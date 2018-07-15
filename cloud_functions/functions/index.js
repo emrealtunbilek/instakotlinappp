@@ -74,17 +74,27 @@ const user_token=result.val();
         const son_yazilan_mesaj = result.child('mesaj').val();
         const son_mesaji_yazan_userin_idsi = result.child('user_id').val();
 
+        if(son_mesaji_yazan_userin_idsi == mesajGonderenUserID){
+
           const yeniMesajBildirimi = {
             notification : {
+              click_action : '.HomeActivity',
               title : 'Yeni Mesaj',
               body  : `${user_name} : ${son_yazilan_mesaj} `,
               icon  : 'default'
+            },
+
+            data : {
+              secilenUserID : `${mesajGonderenUserID}`
             }
           };
 
           return admin.messaging().sendToDevice(user_token, yeniMesajBildirimi).then(result=>{
             console.log("Yeni mesaj bildirimi gönderildi ");
           });
+
+        }
+
 
       });
 

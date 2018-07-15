@@ -51,9 +51,17 @@ class HomeActivity : AppCompatActivity() {
         initImageLoader()
 
         if(intent.extras != null){
-            var intent=Intent(this,NewsActivity::class.java)
-            intent.putExtra("bildirim","yeni_takip_istegi")
-            startActivity(intent)
+
+            if(intent.extras.get("secilenUserID") != null){
+                var secilenUserID=intent.extras.getString("secilenUserID")
+                var intent=Intent(this,ChatActivity::class.java)
+                intent.putExtra("secilenUserID",secilenUserID)
+                startActivity(intent)
+            }else {
+                var intent=Intent(this,NewsActivity::class.java)
+                intent.putExtra("bildirim","yeni_takip_istegi")
+                startActivity(intent)
+            }
         }
 
         setupHomeViewPager()

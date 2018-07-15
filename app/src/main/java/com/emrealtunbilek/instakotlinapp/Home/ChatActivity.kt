@@ -62,8 +62,11 @@ class ChatActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mRef=FirebaseDatabase.getInstance().reference
 
+        if(intent.extras.get("secilenUserID") != null){
+            var id=intent.extras.get("secilenUserID").toString()
+            sohbetEdilecekUserId=id
+        }
 
-        sohbetEdilecekUserId=intent.getStringExtra("secilenUserID")
         mesajGonderenUserId=mAuth.currentUser!!.uid.toString()
         mYaziyorRef=FirebaseDatabase.getInstance().reference.child("konusmalar").child(mesajGonderenUserId).child(sohbetEdilecekUserId)
         mDinleYaziyorRef=FirebaseDatabase.getInstance().reference.child("konusmalar").child(sohbetEdilecekUserId).child(mesajGonderenUserId)
