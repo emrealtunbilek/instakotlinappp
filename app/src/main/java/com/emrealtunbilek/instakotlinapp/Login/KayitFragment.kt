@@ -106,8 +106,7 @@ class KayitFragment : Fragment() {
                                             override fun onComplete(p0: Task<AuthResult>) {
 
                                                 if(p0!!.isSuccessful){
-                                                    Toast.makeText(activity,"Oturum email ile açıldı"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
-
+                                                    
                                                     var userID=mAuth.currentUser!!.uid.toString()
 
                                                     //oturum açan kullanıcın verilerini databaseye kaydedelim...
@@ -118,7 +117,7 @@ class KayitFragment : Fragment() {
                                                             .addOnCompleteListener(object : OnCompleteListener<Void>{
                                                                 override fun onComplete(p0: Task<Void>) {
                                                                     if(p0!!.isSuccessful){
-                                                                        Toast.makeText(activity,"Kullanıcı kaydedildi",Toast.LENGTH_SHORT).show()
+
                                                                         progressBar.visibility=View.INVISIBLE
                                                                     }else {
                                                                         progressBar.visibility=View.INVISIBLE
@@ -162,7 +161,7 @@ class KayitFragment : Fragment() {
                                             override fun onComplete(p0: Task<AuthResult>) {
 
                                                 if(p0!!.isSuccessful){
-                                                    Toast.makeText(activity,"Oturum tel no ile açıldı Uid:"+mAuth.currentUser!!.uid,Toast.LENGTH_SHORT).show()
+
                                                     var userID=mAuth.currentUser!!.uid.toString()
 
 
@@ -174,7 +173,7 @@ class KayitFragment : Fragment() {
                                                             .addOnCompleteListener(object : OnCompleteListener<Void>{
                                                                 override fun onComplete(p0: Task<Void>) {
                                                                     if(p0!!.isSuccessful){
-                                                                        Toast.makeText(activity,"Kullanıcı kaydedildi",Toast.LENGTH_SHORT).show()
+
                                                                         progressBar.visibility=View.INVISIBLE
                                                                     }else {
                                                                         progressBar.visibility=View.INVISIBLE

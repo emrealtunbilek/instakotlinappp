@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.Models.Users
@@ -46,6 +47,7 @@ class LoginActivity : AppCompatActivity() {
 
         btnGirisYap.setOnClickListener {
             //kullanıcı veritabanında aranır, bulunursa giriş yapma denemesi yapılır
+            progressBar3.visibility= View.VISIBLE
             oturumAcacakKullaniciyiDenetle(etEmailTelorUsername.text.toString(), etSifre.text.toString())
         }
 
@@ -92,6 +94,7 @@ class LoginActivity : AppCompatActivity() {
                    }
 
                    if(kullaniciBulundu==false){
+                       progressBar3.visibility= View.GONE
                        Toast.makeText(this@LoginActivity,"Kullanıcı Bulunamadı", Toast.LENGTH_SHORT).show()
                    }
                }
@@ -127,8 +130,10 @@ class LoginActivity : AppCompatActivity() {
                     override fun onComplete(p0: Task<AuthResult>) {
                         if (p0!!.isSuccessful) {
                             fcmTokenKaydet()
-                            Toast.makeText(this@LoginActivity, " Oturum açıldı :" + mAuth.currentUser!!.uid, Toast.LENGTH_SHORT).show()
+                            progressBar3.visibility= View.GONE
+
                         } else {
+                            progressBar3.visibility= View.GONE
                             Toast.makeText(this@LoginActivity, " Kullanıcı Adı/Sifre Hatalı :", Toast.LENGTH_SHORT).show()
                         }
                     }
