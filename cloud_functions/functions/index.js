@@ -25,6 +25,21 @@ exports.takipIstegiBildirimiGonder=functions.database.ref("/takip_istekleri/{tak
       const takipEtmekIsteyenUserName= result.val();
       console.log("Takip edilmek istenen userın name değeri :", takipEtmekIsteyenUserName);
 
+      const yeniTakipIstegiBildirimi = {
+
+        notification : {
+          click_action : '.HomeActivity',
+          title : 'Takip İsteği',
+          body  : `${takipEtmekIsteyenUserName} seni takip etmek istiyor`,
+          icon  : 'default'
+
+        }
+      };
+
+      return admin.messaging().sendToDevice(takipEdilmekIstenenUserFCMToken, yeniTakipIstegiBildirimi).then(result=>{
+        console.log("yeni takip istepi bildirimi gönderildi");
+      });
+
 
 
     });

@@ -31,6 +31,13 @@ class NewsActivity : AppCompatActivity() {
 
         viewPagerNews.adapter=newsPagerAdapter
 
+        if(intent.extras!=null){
+            if(intent.extras.getString("bildirim").equals("yeni_takip_istegi")){
+                viewPagerNews.setCurrentItem(1)
+            }
+        }
+
+
         viewPagerNews.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
 

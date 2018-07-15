@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
+import com.emrealtunbilek.instakotlinapp.News.NewsActivity
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
 import com.emrealtunbilek.instakotlinapp.utils.EventbusDataEvents
@@ -48,6 +49,12 @@ class HomeActivity : AppCompatActivity() {
 
 
         initImageLoader()
+
+        if(intent.extras != null){
+            var intent=Intent(this,NewsActivity::class.java)
+            intent.putExtra("bildirim","yeni_takip_istegi")
+            startActivity(intent)
+        }
 
         setupHomeViewPager()
     }
