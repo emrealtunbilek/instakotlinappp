@@ -66,16 +66,20 @@ class DosyaIslemleri {
 
                         Log.e("HATA","okunan dosya yolu"+okunanDosyaYolu)
 
-                       var dosyaTuru=okunanDosyaYolu.substring(okunanDosyaYolu.lastIndexOf("."))
+                       var noktaninSonIndexi= okunanDosyaYolu.lastIndexOf(".")
+                        if(noktaninSonIndexi>0){
+                            var dosyaTuru=okunanDosyaYolu.substring(noktaninSonIndexi)
 
-                        Log.e("HATA","okunan dosya türü"+dosyaTuru)
+                            Log.e("HATA","okunan dosya türü"+dosyaTuru)
 
-                        if(dosyaTuru!= null && (dosyaTuru.equals(".jpg") || dosyaTuru.equals(".jpeg") || dosyaTuru.equals(".png") || dosyaTuru.equals(".mp4"))){
+                            if(dosyaTuru!= null && (dosyaTuru.equals(".jpg") || dosyaTuru.equals(".jpeg") || dosyaTuru.equals(".png") || dosyaTuru.equals(".mp4"))){
 
 
-                            tumDosyalar.add(okunanDosyaYolu)
-                            Log.e("HATA","arrayliste eklenen dosya"+okunanDosyaYolu)
+                                tumDosyalar.add(okunanDosyaYolu)
+                                Log.e("HATA","arrayliste eklenen dosya"+okunanDosyaYolu)
+                            }
                         }
+
 
 
                     }
@@ -142,7 +146,7 @@ class DosyaIslemleri {
             Log.e("GALERI","olusan yeni dosyanın adı"+yeniDosyaninAdi)
 
             val bytes = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bytes)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
 
 
             val ExternalStorageDirectory = Environment.getExternalStorageDirectory().path+"/PICTURES/Screenshots"
