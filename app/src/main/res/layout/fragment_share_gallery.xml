@@ -46,7 +46,7 @@
 
             <Spinner
                 android:id="@+id/spnKlasorAdlari"
-                android:layout_width="160dp"
+                android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="16dp"

@@ -44,6 +44,7 @@ class ShareGalleryFragment : Fragment() {
         var whatsappResimleri=root+"/WhatsApp/Media/WhatsApp Images"
         var screenShot=root+"/PICTURES/Screenshots"
         var twitter=root+"/PICTURES/Twitter"
+        var buUygulama = root+"/DCIM/InstagramKotlinApp/compressed"
 
         klasorAdlari.add("Galeri")
 
@@ -66,6 +67,10 @@ class ShareGalleryFragment : Fragment() {
         if(DosyaIslemleri.klasorMevcutMu(twitter)){
             klasorPaths.add(twitter)
             klasorAdlari.add("Twitter")
+        }
+        if(DosyaIslemleri.klasorMevcutMu(buUygulama)){
+            klasorPaths.add(buUygulama)
+            klasorAdlari.add("InstaKotlin App")
         }
 
 

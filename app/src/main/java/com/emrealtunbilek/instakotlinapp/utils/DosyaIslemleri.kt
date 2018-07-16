@@ -198,7 +198,7 @@ class DosyaIslemleri {
 
         override fun doInBackground(vararg params: String?): String? {
 
-            var yeniOlusanDosyaninKlasoru=File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/TestKlasor/compressedVideo/")
+            var yeniOlusanDosyaninKlasoru=File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/InstagramKotlinApp/compressed/")
 
             if(yeniOlusanDosyaninKlasoru.isDirectory || yeniOlusanDosyaninKlasoru.mkdirs()){
                 var yeniDosyaninPath= SiliCompressor.with(myFragment.context).compressVideo(params[0],yeniOlusanDosyaninKlasoru.path)
@@ -242,8 +242,9 @@ class DosyaIslemleri {
 
         override fun doInBackground(vararg params: String?): String {
 
-            var yeniOlusanDosyaninKlasoru=File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/TestKlasor/compressed/")
-            var yeniDosyaYolu = SiliCompressor.with(myFragment.context).compress(params[0], yeniOlusanDosyaninKlasoru)
+            var yeniOlusanDosyaninKlasoru=File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/InstagramKotlinApp/compressed/")
+          //  var yeniDosyaYolu = SiliCompressor.with(myFragment.context).compress(params[0], yeniOlusanDosyaninKlasoru)
+            var yeniDosyaYolu = params[0]!!
 
             //sıkıstırılarak olusturulmus yeni  dosyanın yolunu verir
             return yeniDosyaYolu
