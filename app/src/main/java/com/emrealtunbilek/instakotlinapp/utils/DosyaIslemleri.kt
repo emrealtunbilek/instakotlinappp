@@ -1,13 +1,19 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.os.Environment
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.util.Log
 import com.emrealtunbilek.instakotlinapp.Profile.YukleniyorFragment
 import com.emrealtunbilek.instakotlinapp.Share.ShareNextFragment
 import com.iceteck.silicompressorr.SiliCompressor
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.*
 import kotlin.Comparator
 
@@ -92,6 +98,83 @@ class DosyaIslemleri {
         fun compressVideoDosya(fragment: Fragment, secilenDosyaYolu: String) {
 
             VideoCompressAsyncTask(fragment).execute(secilenDosyaYolu)
+
+        }
+
+        fun klasorMevcutMu(klasorAdi: String):Boolean{
+
+            var dosya=File(klasorAdi)
+
+            var klasordekiDosyalar=dosya.listFiles()
+
+            if(klasordekiDosyalar != null && klasordekiDosyalar.size>0){
+                Log.e("GALERI","KLASOR BOS DEGIL"+klasorAdi)
+                return true
+            }else return false
+
+        }
+
+        fun galeridekiTumFotograflariGetir(context: Context):ArrayList<String>{
+            val galleryImageUrls: ArrayList<String>
+            val columns = arrayOf(MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID)//get all columns of type images
+            val orderBy = MediaStore.Images.Media.DATE_TAKEN//order data by date
+
+            val imagecursor = context.contentResolver.query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
+                    null, null, orderBy + " DESC")//get all data in Cursor by sorting in DESC order
+
+            galleryImageUrls = ArrayList()
+
+            for (i in 0 until imagecursor.getCount()) {
+                imagecursor.moveToPosition(i)
+                val dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA)//get column index
+                galleryImageUrls.add(imagecursor.getString(dataColumnIndex))//get Image from column index
+
+            }
+
+            return galleryImageUrls
+        }
+
+        fun cropImageandSave(bitmap: Bitmap): String {
+
+
+            var yeniDosyaninAdi="cropimage"+System.currentTimeMillis().toString().substring(8,12)+".jpg"
+            Log.e("GALERI","olusan yeni dosyanın adı"+yeniDosyaninAdi)
+
+            val bytes = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bytes)
+
+
+            val ExternalStorageDirectory = Environment.getExternalStorageDirectory().path+"/PICTURES/Screenshots"
+            val fileKlasor = File(ExternalStorageDirectory)
+            val file = File(ExternalStorageDirectory + File.separator + yeniDosyaninAdi)
+
+            var fileOutputStream: FileOutputStream? = null
+            try {
+
+                if(fileKlasor.isDirectory || fileKlasor.mkdirs())
+                {
+                    file.createNewFile()
+                    fileOutputStream = FileOutputStream(file)
+                    fileOutputStream.write(bytes.toByteArray())
+
+                    Log.e("GALERI","yeni dosyanın absolute path:"+file.absolutePath)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } finally {
+                if (fileOutputStream != null) {
+                    try {
+                        return file.absolutePath
+                        fileOutputStream.close()
+                    } catch (e: IOException) {
+
+                        e.printStackTrace()
+                    }
+
+                }
+            }
+            return ""
 
         }
 

@@ -39,20 +39,35 @@ class ShareGalleryFragment : Fragment() {
         var root= Environment.getExternalStorageDirectory().path
 
 
-        var test=root+"/DCIM/TestKlasor"
         var kameraResimleri= root+"/DCIM/Camera"
         var indirilenResimler=root+"/Download"
         var whatsappResimleri=root+"/WhatsApp/Media/WhatsApp Images"
+        var screenShot=root+"/PICTURES/Screenshots"
+        var twitter=root+"/PICTURES/Twitter"
 
-        klasorPaths.add(test)
-        klasorPaths.add(kameraResimleri)
-        klasorPaths.add(indirilenResimler)
-        klasorPaths.add(whatsappResimleri)
+        klasorAdlari.add("Galeri")
 
-        klasorAdlari.add("Test")
-        klasorAdlari.add("Kamera")
-        klasorAdlari.add("Indirilenler")
-        klasorAdlari.add("Whatsapp")
+        if(DosyaIslemleri.klasorMevcutMu(kameraResimleri)){
+            klasorPaths.add(kameraResimleri)
+            klasorAdlari.add("Kamera")
+        }
+        if(DosyaIslemleri.klasorMevcutMu(indirilenResimler)){
+            klasorPaths.add(indirilenResimler)
+            klasorAdlari.add("Indirilenler")
+        }
+        if(DosyaIslemleri.klasorMevcutMu(whatsappResimleri)){
+            klasorPaths.add(whatsappResimleri)
+            klasorAdlari.add("Whatsapp")
+        }
+        if(DosyaIslemleri.klasorMevcutMu(screenShot)){
+            klasorPaths.add(screenShot)
+            klasorAdlari.add("Ekran Alıntıları")
+        }
+        if(DosyaIslemleri.klasorMevcutMu(twitter)){
+            klasorPaths.add(twitter)
+            klasorAdlari.add("Twitter")
+        }
+
 
         var spinnerArrayAdapter=ArrayAdapter(activity, android.R.layout.simple_spinner_item, klasorAdlari)
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -72,7 +87,12 @@ class ShareGalleryFragment : Fragment() {
 
                // setupGridView(DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position)))
 
-                setupRecyclerView(DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position)))
+                if(position==0){
+                    setupRecyclerView(DosyaIslemleri.galeridekiTumFotograflariGetir(activity!!))
+                }else{
+                    setupRecyclerView(DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position-1)))
+                }
+
 
 
             }
@@ -86,11 +106,32 @@ class ShareGalleryFragment : Fragment() {
             activity!!.fragmentContainerLayout.visibility=View.VISIBLE
             var transaction=activity!!.supportFragmentManager.beginTransaction()
 
-            EventBus.getDefault().postSticky(EventbusDataEvents.PaylasilacakResmiGonder(secilenDosyaYolu,dosyaTuruResimMi))
-            videoView.stopPlayback()
-            transaction.replace(R.id.fragmentContainerLayout,ShareNextFragment())
-            transaction.addToBackStack("shareNextFragmentEklendi")
-            transaction.commit()
+            if(dosyaTuruResimMi==true){
+
+                var bitmap=imgCropView.croppedImage
+                if(bitmap != null){
+                    Log.e("GALERI","BİTMAP OLUSMUS")
+                    var croppedImagePath=DosyaIslemleri.cropImageandSave(bitmap)
+                    EventBus.getDefault().postSticky(EventbusDataEvents.PaylasilacakResmiGonder(croppedImagePath,dosyaTuruResimMi))
+                    transaction.replace(R.id.fragmentContainerLayout,ShareNextFragment())
+                    transaction.addToBackStack("shareNextFragmentEklendi")
+                    transaction.commit()
+                }else{
+                    Log.e("GALERI","BİTMAP olusmamıs")
+                }
+
+
+
+            }else {
+                EventBus.getDefault().postSticky(EventbusDataEvents.PaylasilacakResmiGonder(secilenDosyaYolu,dosyaTuruResimMi))
+                videoView.stopPlayback()
+                transaction.replace(R.id.fragmentContainerLayout,ShareNextFragment())
+                transaction.addToBackStack("shareNextFragmentEklendi")
+                transaction.commit()
+
+            }
+
+
 
 
 
@@ -117,7 +158,7 @@ class ShareGalleryFragment : Fragment() {
         recyclerViewDosyalar.layoutManager=layoutManager!!
 
         recyclerViewDosyalar.setHasFixedSize(true);
-        recyclerViewDosyalar.setItemViewCacheSize(10);
+        recyclerViewDosyalar.setItemViewCacheSize(30);
         recyclerViewDosyalar.setDrawingCacheEnabled(true);
         recyclerViewDosyalar.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
 
