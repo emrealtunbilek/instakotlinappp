@@ -1,17 +1,25 @@
 package com.emrealtunbilek.instakotlinapp.News
 
 
+import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dinuscxj.refresh.RecyclerRefreshLayout
 import com.emrealtunbilek.instakotlinapp.Models.BildirimModel
 
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.utils.MaterialRefreshView
 import com.emrealtunbilek.instakotlinapp.utils.SenNewsRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -36,7 +44,23 @@ class SenNewsFragment : Fragment() {
         mAuth=FirebaseAuth.getInstance()
         mRef=FirebaseDatabase.getInstance().reference
 
+
         tumBildirimlerimiGetir()
+
+
+        myView.refreshLayout.setRefreshView(MaterialRefreshView(activity),ViewGroup.LayoutParams(100,100))
+
+        myView.refreshLayout.setOnRefreshListener(object : RecyclerRefreshLayout.OnRefreshListener{
+            override fun onRefresh() {
+                benimTumBildirimlerim.clear()
+                myRecyclerAdapter.notifyDataSetChanged()
+                tumBildirimlerimiGetir()
+                myView.refreshLayout.setRefreshing(false)
+            }
+
+        })
+
+
 
 
 
@@ -46,6 +70,9 @@ class SenNewsFragment : Fragment() {
     }
 
     private fun tumBildirimlerimiGetir() {
+
+        myView.progressBar.visibility=View.VISIBLE
+        myView.newsSenRecyclerview.visibility=View.INVISIBLE
 
         mRef.child("benim_bildirimlerim").child(mAuth.currentUser!!.uid).orderByChild("time").limitToLast(100).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
@@ -83,6 +110,21 @@ class SenNewsFragment : Fragment() {
         myRecyclerView.layoutManager=myLinearLayoutManager
 
         myRecyclerView.adapter=myRecyclerAdapter
+
+       object : CountDownTimer(1000,1000){
+            override fun onFinish() {
+                myView.progressBar.visibility=View.GONE
+                myView.newsSenRecyclerview.visibility=View.VISIBLE
+            }
+
+            override fun onTick(p0: Long) {
+
+            }
+
+        }.start()
+
+
+
 
     }
 

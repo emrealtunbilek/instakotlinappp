@@ -2,6 +2,7 @@ package com.emrealtunbilek.instakotlinapp.Home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -53,6 +54,8 @@ class MessagesFragment : Fragment() {
 
         }
 
+        myFragmentView.progressBar6.visibility=View.VISIBLE
+        myFragmentView.recyclerKonusmalar.visibility=View.INVISIBLE
         setupKonusmalarRecylerView()
 
 
@@ -66,6 +69,19 @@ class MessagesFragment : Fragment() {
         if(listenerAtandiMi==false){
             listenerAtandiMi=true
             mRef.orderByChild("time").addChildEventListener(myListener)
+
+            object : CountDownTimer(1000,1000){
+                override fun onFinish() {
+                    myFragmentView.progressBar6.visibility=View.GONE
+                    myFragmentView.recyclerKonusmalar.visibility=View.VISIBLE
+                }
+
+                override fun onTick(p0: Long) {
+
+                }
+
+            }.start()
+
         }
 
 
@@ -191,7 +207,20 @@ class MessagesFragment : Fragment() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot?) {
+                    myFragmentView.progressBar6.visibility=View.VISIBLE
+                    myFragmentView.recyclerKonusmalar.visibility=View.GONE
                     mRef.orderByChild("time").addChildEventListener(myListener)
+                    object : CountDownTimer(1000,1000){
+                        override fun onFinish() {
+                            myFragmentView.progressBar6.visibility=View.GONE
+                            myFragmentView.recyclerKonusmalar.visibility=View.VISIBLE
+                        }
+
+                        override fun onTick(p0: Long) {
+
+                        }
+
+                    }.start()
                 }
 
             })

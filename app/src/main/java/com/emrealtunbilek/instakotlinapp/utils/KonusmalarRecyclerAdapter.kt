@@ -62,14 +62,20 @@ class KonusmalarRecyclerAdapter(var tumKonusmalar:ArrayList<Konusmalar>, var myC
         fun setData(oankiKonusma: Konusmalar) {
 
             var konusmaText=oankiKonusma.son_mesaj.toString()
-            konusmaText=konusmaText.replace("\n"," ")
-            konusmaText=konusmaText.trim()
+            if(!konusmaText.isNullOrEmpty()){
+                konusmaText=konusmaText.replace("\n"," ")
+                konusmaText=konusmaText.trim()
 
-            if(konusmaText.length>25){
-                enSonAtilanMesaj.text=konusmaText.substring(0,25)+"..."
+                if(konusmaText.length>25){
+                    enSonAtilanMesaj.text=konusmaText.substring(0,25)+"..."
+                }else{
+                    enSonAtilanMesaj.text=konusmaText
+                }
             }else{
+                konusmaText=""
                 enSonAtilanMesaj.text=konusmaText
             }
+
 
 
             mesajZaman.text=TimeAgo.getTimeAgoForComments(oankiKonusma.time!!.toLong())

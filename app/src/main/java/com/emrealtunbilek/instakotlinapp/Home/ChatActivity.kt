@@ -3,6 +3,7 @@ package com.emrealtunbilek.instakotlinapp.Home
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -45,7 +46,7 @@ class ChatActivity : AppCompatActivity() {
 
 
     //sayfalamaiçin
-    val SAYFA_BASI_GONDERI_SAYISI = 5
+    val SAYFA_BASI_GONDERI_SAYISI = 10
     var sayfaNumarasi=1
 
     var mesajPos=0
@@ -67,6 +68,9 @@ class ChatActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mRef=FirebaseDatabase.getInstance().reference
 
+        progressBar5.visibility=View.VISIBLE
+        tvSohbetEdilecekUserName.visibility=View.INVISIBLE
+        rvSohbet.visibility=View.INVISIBLE
         if(intent.extras.get("secilenUserID") != null){
             var id=intent.extras.get("secilenUserID").toString()
             sohbetEdilecekUserId=id
@@ -84,15 +88,21 @@ class ChatActivity : AppCompatActivity() {
 
                 mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).addListenerForSingleValueEvent(object : ValueEventListener{
                     override fun onCancelled(p0: DatabaseError?) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                     }
 
                     override fun onDataChange(p0: DataSnapshot?) {
-                       if(p0!!.childrenCount>tumMesajlar.size){
+
+
+                       if(p0!!.childrenCount.toInt() != tumMesajlar.size){
                            dahaFazlaMesajPos=0
 
-                           // mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
+
                            dahaFazlaMesajGetir()
+                       }else{
+
+                           refreshLayout.setRefreshing(false)
+                           refreshLayout.setEnabled(false)
                        }
                     }
 
@@ -101,7 +111,7 @@ class ChatActivity : AppCompatActivity() {
 
 
 
-            refreshLayout.setRefreshing(false)
+
 
             }
 
@@ -217,10 +227,12 @@ class ChatActivity : AppCompatActivity() {
 
                   override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
 
+                      Log.e("KONTROL","p0 kaç tane veri geldi "+p0!!.childrenCount+" pos:"+dahaFazlaMesajPos)
                       var okunanMesaj=p0!!.getValue(Mesaj::class.java)
 
                       if(!zatenListedeOlanMesajID.equals(p0!!.key)){
                           tumMesajlar.add(dahaFazlaMesajPos++,okunanMesaj!!)
+                          myRecyclerViewAdapter.notifyItemInserted(dahaFazlaMesajPos-1)
                       }else {
 
                           zatenListedeOlanMesajID=ilkGetirilenMesajID
@@ -238,10 +250,11 @@ class ChatActivity : AppCompatActivity() {
 
 
 
-                      myRecyclerViewAdapter.notifyDataSetChanged()
-                      myRecyclerView.scrollToPosition(SAYFA_BASI_GONDERI_SAYISI)
 
 
+                      myRecyclerView.scrollToPosition(0)
+
+                      refreshLayout.setRefreshing(false)
 
                   }
 
@@ -335,6 +348,18 @@ class ChatActivity : AppCompatActivity() {
 
         })
 
+        object : CountDownTimer(1000,1000){
+            override fun onFinish() {
+                progressBar5.visibility=View.GONE
+                tvSohbetEdilecekUserName.visibility=View.VISIBLE
+                rvSohbet.visibility=View.VISIBLE
+            }
+
+            override fun onTick(p0: Long) {
+
+            }
+
+        }.start()
 
     }
 

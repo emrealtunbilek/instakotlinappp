@@ -2,6 +2,7 @@ package com.emrealtunbilek.instakotlinapp.News
 
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Models.BildirimModel
 
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.utils.MaterialRefreshView
 import com.emrealtunbilek.instakotlinapp.utils.TakipNewsRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -43,12 +45,29 @@ class TakipNewsFragment : Fragment() {
 
         takipEttigimKullanicilariGetir()
 
+        myView.refreshLayout.setRefreshView(MaterialRefreshView(activity),ViewGroup.LayoutParams(100,100))
+
+        myView.refreshLayout.setOnRefreshListener {
+
+            takipEttikleriminTumBildirimleri.clear()
+            myRecyclerAdapter.notifyDataSetChanged()
+
+            takipEttigimKullanicilariGetir()
+
+            myView.refreshLayout.setRefreshing(false)
+
+        }
+
 
 
         return myView
     }
 
     private fun takipEttigimKullanicilariGetir() {
+
+        myView.progressBar4.visibility=View.VISIBLE
+        myView.takipEttikleriminBildirimListesi.visibility=View.INVISIBLE
+
         mRef.child("following").child(mAuth.currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
 
@@ -105,6 +124,18 @@ class TakipNewsFragment : Fragment() {
 
         myRecyclerView.adapter=myRecyclerAdapter
 
+
+        object : CountDownTimer(1000,1000){
+            override fun onFinish() {
+                myView.progressBar4.visibility=View.GONE
+                myView.takipEttikleriminBildirimListesi.visibility=View.VISIBLE
+            }
+
+            override fun onTick(p0: Long) {
+
+            }
+
+        }.start()
 
 
     }
