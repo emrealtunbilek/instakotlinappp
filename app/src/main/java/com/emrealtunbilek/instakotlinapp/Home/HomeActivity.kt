@@ -224,12 +224,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
+        overridePendingTransition(0,0)
         if(homeViewPager.currentItem == 1){
 
             homeViewPager.visibility=View.VISIBLE
             homeFragmentContainer.visibility=View.GONE
+
             super.onBackPressed()
+            overridePendingTransition(0,0)
+
         }else {
             homeViewPager.visibility=View.VISIBLE
             homeFragmentContainer.visibility=View.GONE

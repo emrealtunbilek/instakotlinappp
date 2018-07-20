@@ -3,6 +3,7 @@ package com.emrealtunbilek.instakotlinapp.utils
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.BottomNavigationView
+import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.News.NewsActivity
@@ -26,7 +27,7 @@ class BottomnavigationViewHelper {
             bottomnavigationViewEx.setTextVisibility(false)
         }
 
-        fun setupNavigation(context: Context, bottomnavigationViewEx: BottomNavigationViewEx){
+        fun setupNavigation(context: Context, bottomnavigationViewEx: BottomNavigationViewEx, hangiActivity:Int){
 
             bottomnavigationViewEx.onNavigationItemSelectedListener=object :BottomNavigationView.OnNavigationItemSelectedListener{
                 override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -34,39 +35,56 @@ class BottomnavigationViewHelper {
                     when(item.itemId){
 
                         R.id.ic_home -> {
-
-                            val intent=Intent(context,HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                            context.startActivity(intent)
-                            return true
+                            if (hangiActivity != 0) {
+                                val intent = Intent(context, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                context.startActivity(intent)
+                                (context as AppCompatActivity).overridePendingTransition(0,0)
+                                return true
+                            }
 
                         }
 
                         R.id.ic_search -> {
-
-                            val intent=Intent(context,SearchActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                            context.startActivity(intent)
-                            return true
+                            if (hangiActivity != 1) {
+                                val intent = Intent(context, SearchActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                context.startActivity(intent)
+                                (context as AppCompatActivity).overridePendingTransition(0,0)
+                                return true
+                            }
                         }
 
                         R.id.ic_share -> {
-                            val intent=Intent(context, ShareActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                            context.startActivity(intent)
-                            return true
+                            if (hangiActivity != 2) {
+                                val intent = Intent(context, ShareActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                context.startActivity(intent)
+                                (context as AppCompatActivity).overridePendingTransition(0,0)
+                                return true
+                            }
 
                         }
 
                         R.id.ic_news -> {
-                            val intent=Intent(context,NewsActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                            context.startActivity(intent)
-                            return true
+                            if (hangiActivity != 3) {
+                                val intent = Intent(context, NewsActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                context.startActivity(intent)
+                                (context as AppCompatActivity).overridePendingTransition(0,0)
+                                return true
+                            }
 
                         }
 
                         R.id.ic_profile -> {
-
-                            val intent=Intent(context, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                            context.startActivity(intent)
-                            return true
+                            if (hangiActivity != 4) {
+                                val intent = Intent(context, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                context.startActivity(intent)
+                                (context as AppCompatActivity).overridePendingTransition(0,0)
+                                return true
+                            }
                         }
 
 

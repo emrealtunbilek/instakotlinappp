@@ -16,10 +16,15 @@ class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
 
-        setupNavigationView()
+
         setupViewPager()
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        setupNavigationView()
+    }
     private fun setupViewPager() {
         var tabAdlari = ArrayList<String>()
         tabAdlari.add("TAKIP")
@@ -58,10 +63,15 @@ class NewsActivity : AppCompatActivity() {
 
     }
 
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(0,0)
+    }
     fun setupNavigationView(){
 
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
-        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView)
+        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView,ACTIVITY_NO)
         var menu=bottomNavigationView.menu
         var menuItem=menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)

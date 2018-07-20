@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
 
-        setupNavigationView()
+
 
         searchview.setOnClickListener {
 
@@ -37,13 +37,23 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupNavigationView()
+    }
+
     fun setupNavigationView(){
 
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
-        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView)
+        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView,ACTIVITY_NO)
         var menu=bottomNavigationView.menu
         var menuItem=menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(0,0)
     }
 
     private fun setupAuthListener() {

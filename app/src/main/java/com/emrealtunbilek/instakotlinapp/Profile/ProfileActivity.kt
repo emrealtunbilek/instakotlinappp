@@ -189,7 +189,7 @@ class ProfileActivity : AppCompatActivity() {
     fun setupNavigationView(){
 
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
-        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView)
+        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView,ACTIVITY_NO)
         var menu=bottomNavigationView.menu
         var menuItem=menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
@@ -297,6 +297,7 @@ class ProfileActivity : AppCompatActivity() {
         profileContainer.visibility=View.INVISIBLE
 
         super.onBackPressed()
+        overridePendingTransition(0,0)
     }
 
     private fun setupAuthListener() {

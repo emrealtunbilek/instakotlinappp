@@ -195,7 +195,7 @@ class HomeFragment : Fragment() {
         var fragmentBottomNavView = fragmentView.bottomNavigationView
 
         BottomnavigationViewHelper.setupBottomNavigationView(fragmentBottomNavView)
-        BottomnavigationViewHelper.setupNavigation(activity!!, fragmentBottomNavView)
+        BottomnavigationViewHelper.setupNavigation(activity!!, fragmentBottomNavView,ACTIVITY_NO)
         var menu = fragmentBottomNavView.menu
         var menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)

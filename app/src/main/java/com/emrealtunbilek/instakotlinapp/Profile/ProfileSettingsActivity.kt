@@ -34,7 +34,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
         mUser=mAuth.currentUser!!
         mRef= FirebaseDatabase.getInstance().reference
 
-        setupNavigationView()
+
         setupToolbar()
         fragmentNavigations()
 
@@ -105,13 +105,14 @@ class ProfileSettingsActivity : AppCompatActivity() {
     override fun onBackPressed() {
         profileSettingsRoot.visibility=View.VISIBLE
         super.onBackPressed()
+        overridePendingTransition(0,0)
     }
 
 
     fun setupNavigationView(){
 
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
-        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView)
+        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView,ACTIVITY_NO)
         var menu=bottomNavigationView.menu
         var menuItem=menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
@@ -141,6 +142,11 @@ class ProfileSettingsActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupNavigationView()
     }
 
     override fun onStart() {

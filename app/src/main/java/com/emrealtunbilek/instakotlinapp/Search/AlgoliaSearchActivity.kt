@@ -39,9 +39,14 @@ class AlgoliaSearchActivity : AppCompatActivity() {
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
 
-        setupNavigationView()
+
         setupAlgoliaSearch()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupNavigationView()
     }
 
     private fun setupAlgoliaSearch() {
@@ -75,10 +80,15 @@ class AlgoliaSearchActivity : AppCompatActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(0,0)
+    }
+
     fun setupNavigationView(){
 
         BottomnavigationViewHelper.setupBottomNavigationView(bottomNavigationView)
-        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView)
+        BottomnavigationViewHelper.setupNavigation(this, bottomNavigationView,ACTIVITY_NO)
         var menu=bottomNavigationView.menu
         var menuItem=menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)

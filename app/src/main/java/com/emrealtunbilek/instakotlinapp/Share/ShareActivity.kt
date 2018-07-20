@@ -196,6 +196,7 @@ class ShareActivity : AppCompatActivity() {
         anaLayout.visibility = View.VISIBLE
         fragmentContainerLayout.visibility = View.GONE
         super.onBackPressed()
+        overridePendingTransition(0,0)
     }
 
     private fun setupAuthListener() {
