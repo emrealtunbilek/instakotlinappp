@@ -40,6 +40,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     var profilGizliMi = false
     var takipEdiyorMuyum = false
+    var listenerAtandiMi = false
 
     var ilkAcilis=true
 
@@ -112,63 +113,69 @@ class UserProfileActivity : AppCompatActivity() {
         tvTakip.isEnabled = false
         imgProfileSettings.isEnabled = false
 
-        mRef.child("users").child(secilenUserID).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-
-            }
-
-            override fun onDataChange(p0: DataSnapshot?) {
-
-                if (p0!!.getValue() != null) {
-                    var okunanKullaniciBilgileri = p0!!.getValue(Users::class.java)
+        if(listenerAtandiMi==false){
+            listenerAtandiMi=true
+            mRef.child("users").child(secilenUserID).addValueEventListener(myListener)
+        }
 
 
-                    EventBus.getDefault().postSticky(EventbusDataEvents.KullaniciBilgileriniGonder(okunanKullaniciBilgileri))
-                    tvTakip.isEnabled = true
-                    imgProfileSettings.isEnabled = true
+    }
 
-                    if (p0!!.child("gizli_profil").getValue() != null) {
-                        profilGizliMi = p0!!.child("gizli_profil").getValue().toString().toBoolean()
-                    } else {
-                        profilGizliMi = false
-                    }
+    private var myListener = object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError?) {
 
-                    tvProfilAdiToolbar.setText(okunanKullaniciBilgileri!!.user_name)
-                    tvProfilGercekAdi.setText(okunanKullaniciBilgileri!!.adi_soyadi)
-                    tvFollowerSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.follower)
-                    tvFollowingSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.following)
-                    tvPostSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.post)
+        }
 
-                    if(ilkAcilis){
-                        ilkAcilis=false
-                        var imgUrl: String = okunanKullaniciBilgileri!!.user_detail!!.profile_picture!!
-                        UniversalImageLoader.setImage(imgUrl, circleProfileImage, progressBar, "")
-                    }
+        override fun onDataChange(p0: DataSnapshot?) {
+
+            if (p0!!.getValue() != null) {
+                var okunanKullaniciBilgileri = p0!!.getValue(Users::class.java)
 
 
-                    if (!okunanKullaniciBilgileri!!.user_detail!!.biography!!.isNullOrEmpty()) {
-                        tvBiyografi.visibility = View.VISIBLE
-                        tvBiyografi.setText(okunanKullaniciBilgileri!!.user_detail!!.biography!!)
-                    } else {
-                        tvBiyografi.visibility = View.GONE
-                    }
-                    if (!okunanKullaniciBilgileri!!.user_detail!!.web_site!!.isNullOrEmpty()) {
-                        tvWebSitesi.visibility = View.VISIBLE
-                        tvWebSitesi.setText(okunanKullaniciBilgileri!!.user_detail!!.web_site!!)
-                    } else {
-                        tvWebSitesi.visibility = View.GONE
-                    }
+                EventBus.getDefault().postSticky(EventbusDataEvents.KullaniciBilgileriniGonder(okunanKullaniciBilgileri))
+                tvTakip.isEnabled = true
+                imgProfileSettings.isEnabled = true
 
+                if (p0!!.child("gizli_profil").getValue() != null) {
+                    profilGizliMi = p0!!.child("gizli_profil").getValue().toString().toBoolean()
+                } else {
+                    profilGizliMi = false
+                }
+
+                tvProfilAdiToolbar.setText(okunanKullaniciBilgileri!!.user_name)
+                tvProfilGercekAdi.setText(okunanKullaniciBilgileri!!.adi_soyadi)
+                tvFollowerSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.follower)
+                tvFollowingSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.following)
+                tvPostSayisi.setText(okunanKullaniciBilgileri!!.user_detail!!.post)
+
+                if(ilkAcilis){
+                    ilkAcilis=false
+                    var imgUrl: String = okunanKullaniciBilgileri!!.user_detail!!.profile_picture!!
+                    UniversalImageLoader.setImage(imgUrl, circleProfileImage, progressBar, "")
                 }
 
 
-                takipBilgisiniGetir()
-
+                if (!okunanKullaniciBilgileri!!.user_detail!!.biography!!.isNullOrEmpty()) {
+                    tvBiyografi.visibility = View.VISIBLE
+                    tvBiyografi.setText(okunanKullaniciBilgileri!!.user_detail!!.biography!!)
+                } else {
+                    tvBiyografi.visibility = View.GONE
+                }
+                if (!okunanKullaniciBilgileri!!.user_detail!!.web_site!!.isNullOrEmpty()) {
+                    tvWebSitesi.visibility = View.VISIBLE
+                    tvWebSitesi.setText(okunanKullaniciBilgileri!!.user_detail!!.web_site!!)
+                } else {
+                    tvWebSitesi.visibility = View.GONE
+                }
 
             }
 
 
-        })
+            takipBilgisiniGetir()
+
+
+        }
+
 
     }
 

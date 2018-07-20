@@ -185,7 +185,17 @@ class MessagesFragment : Fragment() {
         if(listenerAtandiMi==false){
             listenerAtandiMi=true
             myAdapter.notifyDataSetChanged()
-            mRef.orderByChild("time").addChildEventListener(myListener)
+            mRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                    mRef.orderByChild("time").addChildEventListener(myListener)
+                }
+
+            })
+
         }
     }
 }

@@ -53,7 +53,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var bildirimPendingIntent=PendingIntent.getActivity(this,10,pendingIntent,PendingIntent.FLAG_UPDATE_CURRENT)
 
         var builder=NotificationCompat.Builder(this,"Yeni Mesaj")
-                .setSmallIcon(R.drawable.ic_yeni_mesaj_notif)
+                .setSmallIcon(R.drawable.ic_new_notify)
                 .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.ic_yeni_mesaj_notif))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle(bildirimBaslik)
@@ -88,7 +88,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var bildirimPendingIntent=PendingIntent.getActivity(this,15,pendingIntent,PendingIntent.FLAG_UPDATE_CURRENT)
 
         var builder=NotificationCompat.Builder(this,"Yeni Takip isteği")
-                .setSmallIcon(R.drawable.ic_yeni_takip_istek)
+                .setSmallIcon(R.drawable.ic_new_notify)
                 .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.ic_yeni_takip_istek))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle(bildirimBaslik)
