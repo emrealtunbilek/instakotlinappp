@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
+import com.emrealtunbilek.instakotlinapp.Generic.TekGonderiFragment
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.Models.Posts
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
@@ -295,6 +296,8 @@ class ProfileActivity : AppCompatActivity() {
     override fun onBackPressed() {
         tumlayout.visibility= View.VISIBLE
         profileContainer.visibility=View.INVISIBLE
+
+
 
         super.onBackPressed()
         overridePendingTransition(0,0)

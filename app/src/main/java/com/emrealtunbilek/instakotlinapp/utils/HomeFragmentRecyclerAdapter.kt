@@ -67,6 +67,23 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
     class MyViewHolder(itemView: View?, myHomeActivity: Context) : VideoHolder(itemView) {
 
+        var tumLayout = itemView as ConstraintLayout
+        var profileImage = tumLayout.imgUserProfile
+        var userNameTitle = tumLayout.tvKullaniciAdiBaslik
+        var gonderi = tumLayout.imgPostResim
+        var userNameveAciklama = tumLayout.tvKullaniciAdiveAciklama
+        var gonderiKacZamanOnce = tumLayout.tvKacZamanOnce
+        var yorumYap = tumLayout.imgYorum
+        var gonderiBegen = tumLayout.imgBegen
+        var myHomeActivity = myHomeActivity
+        var mInstaLikeView = tumLayout.insta_like_view
+        var begenmeSayisi = tumLayout.tvBegenmeSayisi
+        var yorumlariGoster = tumLayout.tvYorumlariGoster
+        var myVideo = tumLayout.videoView
+        var videoCameraAnim = tumLayout.cameraAnimation
+        var videoKaranlikImage=tumLayout.videoKaranlik
+
+
         var olusturulanElemanVideoMu=false
 
         override fun getVideoLayout(): View? {
@@ -99,21 +116,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
             }
         }
 
-        var tumLayout = itemView as ConstraintLayout
-        var profileImage = tumLayout.imgUserProfile
-        var userNameTitle = tumLayout.tvKullaniciAdiBaslik
-        var gonderi = tumLayout.imgPostResim
-        var userNameveAciklama = tumLayout.tvKullaniciAdiveAciklama
-        var gonderiKacZamanOnce = tumLayout.tvKacZamanOnce
-        var yorumYap = tumLayout.imgYorum
-        var gonderiBegen = tumLayout.imgBegen
-        var myHomeActivity = myHomeActivity
-        var mInstaLikeView = tumLayout.insta_like_view
-        var begenmeSayisi = tumLayout.tvBegenmeSayisi
-        var yorumlariGoster = tumLayout.tvYorumlariGoster
-        var myVideo = tumLayout.videoView
-        var videoCameraAnim = tumLayout.cameraAnimation
-        var videoKaranlikImage=tumLayout.videoKaranlik
+
 
 
         fun setData(position: Int, oankiGonderi: UserPosts, videoMu: Boolean) {

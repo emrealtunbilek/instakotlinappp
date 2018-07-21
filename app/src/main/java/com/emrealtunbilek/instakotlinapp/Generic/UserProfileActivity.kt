@@ -501,9 +501,11 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        tumlayout.visibility= View.VISIBLE
+        profileContainer.visibility=View.INVISIBLE
 
         super.onBackPressed()
-        overridePendingTransition(0,0);
+        overridePendingTransition(0,0)
     }
 
     private fun setupAuthListener() {
