@@ -78,11 +78,22 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
         tvProfilDuzenleHesapAyarlari.setOnClickListener {
             profileSettingsRoot.visibility=View.GONE
+            profileSettingsContainer.visibility=View.VISIBLE
             var transaction=supportFragmentManager.beginTransaction()
             transaction.replace(R.id.profileSettingsContainer,ProfileEditFragment())
             transaction.addToBackStack("editProfileFragmentEklendi")
             transaction.commit()
         }
+
+        tvBegendiginGonderiler.setOnClickListener {
+            profileSettingsRoot.visibility=View.GONE
+            profileSettingsContainer.visibility=View.VISIBLE
+            var transaction=supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.profileSettingsContainer,BegendigimGonderilerFragment())
+            transaction.addToBackStack("begendigimGonderilerFragmentEklendi")
+            transaction.commit()
+        }
+
 
         tvCikisYap.setOnClickListener {
 
@@ -104,6 +115,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         profileSettingsRoot.visibility=View.VISIBLE
+        profileSettingsContainer.visibility=View.GONE
         super.onBackPressed()
         overridePendingTransition(0,0)
     }

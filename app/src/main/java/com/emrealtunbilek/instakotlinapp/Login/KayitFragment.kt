@@ -110,7 +110,8 @@ class KayitFragment : Fragment() {
                                                     var userID = mAuth.currentUser!!.uid.toString()
 
                                                     //oturum açan kullanıcın verilerini databaseye kaydedelim...
-                                                    var kaydedilecekKullaniciDetaylari = UserDetails("0", "0", "0", "", "", "")
+                                                    var defaultProfilPicture = "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+                                                    var kaydedilecekKullaniciDetaylari = UserDetails("0", "0", "0", defaultProfilPicture, "", "")
                                                     var kaydedilecekKullanici = Users(gelenEmail, sifre, userName, adSoyad, "", "", userID, kaydedilecekKullaniciDetaylari)
 
                                                     mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
@@ -165,7 +166,8 @@ class KayitFragment : Fragment() {
 
 
                                                     //oturum açan kullanıcın verilerini databaseye kaydedelim...
-                                                    var kaydedilecekKullaniciDetaylari = UserDetails("0", "0", "0", "", "", "")
+                                                    var defaultProfilPicture = "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+                                                    var kaydedilecekKullaniciDetaylari = UserDetails("0", "0", "0", defaultProfilPicture, "", "")
                                                     var kaydedilecekKullanici = Users("", sifre, userName, adSoyad, telNo, sahteEmail, userID, kaydedilecekKullaniciDetaylari)
 
                                                     mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
