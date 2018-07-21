@@ -14,6 +14,11 @@ import kotlinx.android.synthetic.main.tek_sutun_grid_resim_profil.view.*
 import android.os.Build
 import android.graphics.Bitmap
 import android.os.AsyncTask
+import android.support.v7.app.AppCompatActivity
+import com.emrealtunbilek.instakotlinapp.Generic.TekGonderiFragment
+import com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity
+import kotlinx.android.synthetic.main.activity_profile.*
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 
 
@@ -66,13 +71,17 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
         if(dosyaTuru.equals(".mp4")){
             Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
             holder.videoIcon.visibility=View.VISIBLE
+
             VideodanThumbOlustur(holder).execute(dosyaYolu)
+
+            holder.setData(kullaniciPostlari.get(position), true)
 
         }else {
             Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
             holder.videoIcon.visibility=View.GONE
             holder.dosyaProgressBar.visibility=View.VISIBLE
             UniversalImageLoader.setImage(dosyaYolu!!, holder.dosyaResim, holder.dosyaProgressBar,"")
+            holder.setData(kullaniciPostlari.get(position), false)
         }
 
     }
@@ -132,13 +141,29 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
 
 
 
-    class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+     inner  class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
         var tekSutunDosya=itemView as ConstraintLayout
         var videoIcon=tekSutunDosya.imgVideoIcon
         var dosyaResim=tekSutunDosya.imgTekSutunImage
         var dosyaProgressBar=tekSutunDosya.progressBar
 
+
+        fun setData(oankiGonderi: UserPosts, videoMu: Boolean) {
+
+
+            tekSutunDosya.setOnClickListener {
+                Log.e("ZZZ","Secilen post :"+oankiGonderi.postURL+" video mu:"+videoMu)
+                (myContext as AppCompatActivity).tumlayout.visibility= View.INVISIBLE
+                (myContext as AppCompatActivity).profileContainer.visibility=View.VISIBLE
+                EventBus.getDefault().postSticky(EventbusDataEvents.SecilenGonderiyiGonder(oankiGonderi, videoMu))
+                var transaction=(myContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.profileContainer,TekGonderiFragment())
+                transaction.addToBackStack("tekGonderiFragmentEklendi")
+                transaction.commit()
+            }
+
+        }
 
 
     }

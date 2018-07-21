@@ -1,5 +1,6 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
+import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Models.Users
 
 /**
@@ -19,5 +20,7 @@ class EventbusDataEvents {
     internal class KameraIzinBilgisiGonder(var kameraIzniVerildiMi: Boolean?)
 
     internal class YorumYapilacakGonderininIDsiniGonder(var gonderiID:String?)
+
+    internal class SecilenGonderiyiGonder(var secilenGonderi:UserPosts?,var videoMu:Boolean?)
 
 }
