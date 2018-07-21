@@ -96,14 +96,26 @@
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
-            android:id="@+id/recyclerview"
+        <com.dinuscxj.refresh.RecyclerRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar"/>
+            app:layout_constraintTop_toBottomOf="@+id/appbar"
+            android:id="@+id/refreshLayout"
+            >
+            <com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appbar"/>
+        </com.dinuscxj.refresh.RecyclerRefreshLayout>
+
+
 
         <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
             android:id="@+id/bottomNavigationView"

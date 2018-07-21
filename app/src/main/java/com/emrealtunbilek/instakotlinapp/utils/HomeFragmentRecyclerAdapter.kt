@@ -36,16 +36,6 @@ import kotlin.Comparator
  */
 class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: ArrayList<UserPosts>) : RecyclerView.Adapter<HomeFragmentRecyclerAdapter.MyViewHolder>() {
 
-    init {
-        Collections.sort(tumGonderiler, object : Comparator<UserPosts> {
-            override fun compare(o1: UserPosts?, o2: UserPosts?): Int {
-                if (o1!!.postYuklenmeTarih!! > o2!!.postYuklenmeTarih!!) {
-                    return -1
-                } else return 1
-            }
-        })
-
-    }
 
     override fun getItemCount(): Int {
         return tumGonderiler.size

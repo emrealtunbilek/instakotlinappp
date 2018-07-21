@@ -14,6 +14,7 @@ import com.emrealtunbilek.instakotlinapp.Models.Posts
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.CenterLayoutManager
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
 import com.emrealtunbilek.instakotlinapp.utils.HomeFragmentRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -22,6 +23,7 @@ import com.google.firebase.database.*
 import com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import java.util.*
 
 
 class HomeFragment : Fragment() {
@@ -30,6 +32,7 @@ class HomeFragment : Fragment() {
     private val ACTIVITY_NO = 0
 
     lateinit var tumGonderiler: ArrayList<UserPosts>
+    lateinit var sayfaBasinaTumGonderiler: ArrayList<UserPosts>
     lateinit var tumTakipEttiklerim:ArrayList<String>
 
     lateinit var mAuth: FirebaseAuth
@@ -37,6 +40,9 @@ class HomeFragment : Fragment() {
     lateinit var mUser: FirebaseUser
     lateinit var mRef: DatabaseReference
     var mRecyclerView: AutoPlayVideoRecyclerView?=null
+    val SAYFA_BASINA_GONDERI_SAYISI = 10
+    var sayfaNumarasi=1
+    var sayfaninSonunaGelindi=false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -47,6 +53,7 @@ class HomeFragment : Fragment() {
         mUser = mAuth.currentUser!!
         mRef = FirebaseDatabase.getInstance().reference
         tumGonderiler = ArrayList<UserPosts>()
+        sayfaBasinaTumGonderiler = ArrayList<UserPosts>()
         tumTakipEttiklerim=ArrayList<String>()
 
 
@@ -64,6 +71,15 @@ class HomeFragment : Fragment() {
         fragmentView.imgTabDirectMessage.setOnClickListener {
 
             (activity as HomeActivity).homeViewPager.setCurrentItem(2)
+        }
+
+        fragmentView.refreshLayout.setOnRefreshListener {
+
+            tumGonderiler.clear()
+            sayfaBasinaTumGonderiler.clear()
+            sayfaninSonunaGelindi=false
+            kullaniciPostlariniGetir()
+            fragmentView.refreshLayout.setRefreshing(false)
         }
 
 
@@ -181,12 +197,72 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerView() {
 
 
-        mRecyclerView=fragmentView.recyclerview
-        var recyclerAdapter=HomeFragmentRecyclerAdapter(this.activity!!,tumGonderiler)
+        Collections.sort(tumGonderiler, object : Comparator<UserPosts> {
+            override fun compare(o1: UserPosts?, o2: UserPosts?): Int {
+                if (o1!!.postYuklenmeTarih!! > o2!!.postYuklenmeTarih!!) {
+                    return -1
+                } else return 1
+            }
+        })
 
+        for(i in 0..SAYFA_BASINA_GONDERI_SAYISI-1){
+            sayfaBasinaTumGonderiler.add(tumGonderiler.get(i))
+        }
+
+        Log.e("XXX","Tüm gönderi sayısı:"+tumGonderiler.size)
+        Log.e("XXX","Sayfa basına düşen gönderi sayısı:"+sayfaBasinaTumGonderiler.size)
+
+        mRecyclerView=fragmentView.recyclerview
+        var recyclerAdapter=HomeFragmentRecyclerAdapter(this.activity!!,sayfaBasinaTumGonderiler)
+        mRecyclerView!!.layoutManager=CenterLayoutManager(this.activity!!,LinearLayoutManager.VERTICAL,false)
         mRecyclerView!!.adapter=recyclerAdapter
 
-        mRecyclerView!!.layoutManager=LinearLayoutManager(this.activity!!,LinearLayoutManager.VERTICAL,false)
+
+        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager=mRecyclerView!!.layoutManager as CenterLayoutManager
+
+                if(dy>0 && layoutManager.findLastVisibleItemPosition() == mRecyclerView!!.adapter!!.itemCount -1){
+                    Log.e("XXX","Liste sonuna gelindi, yeni öğeleri getirt")
+                    Log.e("XXX","Son görülen öğenin pos:"+layoutManager.findLastVisibleItemPosition())
+                    Log.e("XXX","Listedeki eleman sayısı:"+mRecyclerView!!.adapter!!.itemCount)
+                    if(sayfaninSonunaGelindi==false)
+                    listeyeYeniElemanlariEkle()
+                }
+
+
+            }
+
+        })
+
+    }
+
+    private fun listeyeYeniElemanlariEkle() {
+
+        if (mRecyclerView != null && mRecyclerView!!.getHandingVideoHolder() != null){
+            mRecyclerView!!.getHandingVideoHolder().stopVideo();
+            Log.e("HATA","PAUSE CALISIYO")
+        }
+
+        var yeniGetirilecekElemanlarinAltSiniri=sayfaNumarasi*SAYFA_BASINA_GONDERI_SAYISI
+        var yeniGetirilecekElemanlarinUstSiniri=(sayfaNumarasi+1)*SAYFA_BASINA_GONDERI_SAYISI -1
+        for(i in yeniGetirilecekElemanlarinAltSiniri .. yeniGetirilecekElemanlarinUstSiniri){
+            if(sayfaBasinaTumGonderiler.size<=tumGonderiler.size-1)
+            {
+                sayfaBasinaTumGonderiler.add(tumGonderiler.get(i))
+                mRecyclerView!!.adapter.notifyDataSetChanged()
+            }else{
+                sayfaninSonunaGelindi=true
+                sayfaNumarasi=0
+                break
+            }
+
+        }
+        Log.e("XXX",""+yeniGetirilecekElemanlarinAltSiniri+" dan "+yeniGetirilecekElemanlarinUstSiniri+" kadar eleman eklendi")
+        sayfaNumarasi++
     }
 
 
