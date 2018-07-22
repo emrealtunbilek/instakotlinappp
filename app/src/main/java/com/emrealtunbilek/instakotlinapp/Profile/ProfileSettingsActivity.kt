@@ -3,6 +3,7 @@ package com.emrealtunbilek.instakotlinapp.Profile
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
 import android.util.Log
 import android.view.View
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
@@ -33,6 +34,27 @@ class ProfileSettingsActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mUser=mAuth.currentUser!!
         mRef= FirebaseDatabase.getInstance().reference
+
+        supportFragmentManager.addOnBackStackChangedListener(object : FragmentManager.OnBackStackChangedListener{
+            override fun onBackStackChanged() {
+
+                var backStacktekiElemanSayisi= supportFragmentManager.backStackEntryCount
+                if(backStacktekiElemanSayisi==0){
+                    Log.e("MMM","Back stackte eleman yok")
+                    profileSettingsRoot.visibility=View.VISIBLE
+                    profileSettingsContainer.visibility=View.GONE
+                }else{
+                    profileSettingsRoot.visibility=View.GONE
+                    profileSettingsContainer.visibility=View.VISIBLE
+                    Log.e("MMM","*****************************************")
+                    for(i in 0..backStacktekiElemanSayisi-1)
+                        Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
+
+                }
+
+            }
+
+        })
 
 
         setupToolbar()
@@ -89,9 +111,10 @@ class ProfileSettingsActivity : AppCompatActivity() {
             profileSettingsRoot.visibility=View.GONE
             profileSettingsContainer.visibility=View.VISIBLE
             var transaction=supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.profileSettingsContainer,BegendigimGonderilerFragment())
-            transaction.addToBackStack("begendigimGonderilerFragmentEklendi")
+            transaction.add(R.id.profileSettingsContainer,BegendigimGonderilerFragment(),"fra1")
+            transaction.addToBackStack("BegendigimGonderilerFragment")
             transaction.commit()
+
         }
 
 
@@ -114,10 +137,19 @@ class ProfileSettingsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        profileSettingsRoot.visibility=View.VISIBLE
-        profileSettingsContainer.visibility=View.GONE
-        super.onBackPressed()
-        overridePendingTransition(0,0)
+
+        if(supportFragmentManager.backStackEntryCount>0){
+            profileSettingsRoot.visibility=View.GONE
+            profileSettingsContainer.visibility=View.VISIBLE
+            supportFragmentManager.popBackStack()
+        }else{
+            profileSettingsRoot.visibility=View.VISIBLE
+            profileSettingsContainer.visibility=View.GONE
+            super.onBackPressed()
+            overridePendingTransition(0,0)
+        }
+
+
     }
 
 

@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity
+import com.emrealtunbilek.instakotlinapp.Profile.ProfileSettingsActivity
 
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.Video
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_profile_settings.*
 import kotlinx.android.synthetic.main.fragment_tek_gonderi.*
 import kotlinx.android.synthetic.main.fragment_tek_gonderi.view.*
 import org.greenrobot.eventbus.EventBus
@@ -302,17 +304,30 @@ class TekGonderiFragment : Fragment() {
 
     fun yorumlarFragmentiniBaslat(oankiGonderi: UserPosts) {
 
-        (activity as AppCompatActivity).tumlayout.visibility= View.INVISIBLE
-        (activity as AppCompatActivity).profileContainer.visibility=View.VISIBLE
-        EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
+//profile settings activity veya begendigimgonderiler için geçerli
+        if(activity is ProfileSettingsActivity){
+            (activity as ProfileSettingsActivity).profileSettingsRoot.visibility= View.GONE
+            (activity as ProfileSettingsActivity).profileSettingsContainer.visibility=View.VISIBLE
+            EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
+            var transaction=(activity as ProfileSettingsActivity).supportFragmentManager.beginTransaction()
+            transaction.hide( (activity as ProfileSettingsActivity).supportFragmentManager.findFragmentByTag("fra2"))
+            transaction.add(R.id.profileSettingsContainer,CommentFragment())
+            transaction.addToBackStack("CommentFragment")
+            transaction.commit()
+        }
+        //profile veya userprofile activity için geçerli
+        else {
+            (activity as AppCompatActivity).tumlayout.visibility= View.INVISIBLE
+            (activity as AppCompatActivity).profileContainer.visibility=View.VISIBLE
+            EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
+            var transaction=(activity as AppCompatActivity).supportFragmentManager.beginTransaction()
+            transaction.hide( (activity as AppCompatActivity).supportFragmentManager.findFragmentByTag("fra2"))
+            transaction.add(R.id.profileContainer,CommentFragment())
+            transaction.addToBackStack("commentFragmentEklendi")
+            transaction.commit()
+        }
 
 
-
-        (activity as AppCompatActivity).supportFragmentManager.popBackStack("tekGonderiFragmentEklendi", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        var transaction=(activity as AppCompatActivity).supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.profileContainer,CommentFragment())
-        transaction.addToBackStack("commentFragmentEklendi")
-        transaction.commit()
 
 
 

@@ -16,8 +16,11 @@ import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import com.emrealtunbilek.instakotlinapp.Generic.TekGonderiFragment
+import com.emrealtunbilek.instakotlinapp.Profile.BegendigimGonderilerFragment
 import com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity
+import com.emrealtunbilek.instakotlinapp.Profile.ProfileSettingsActivity
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_profile_settings.*
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 
@@ -151,17 +154,33 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
 
         fun setData(oankiGonderi: UserPosts, videoMu: Boolean) {
 
-
+            //bu kısım calısıyorsa bu adapter begendigim gönderiler için veya profilesetting activityde kullanılmıstır
             tekSutunDosya.setOnClickListener {
-                Log.e("ZZZ","Secilen post :"+oankiGonderi.postURL+" video mu:"+videoMu)
-                (myContext as AppCompatActivity).tumlayout.visibility= View.INVISIBLE
-                (myContext as AppCompatActivity).profileContainer.visibility=View.VISIBLE
-                EventBus.getDefault().postSticky(EventbusDataEvents.SecilenGonderiyiGonder(oankiGonderi, videoMu))
-                var transaction=(myContext as AppCompatActivity).supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.profileContainer,TekGonderiFragment())
-                transaction.addToBackStack("tekGonderiFragmentEklendi")
-                transaction.commit()
+                if(myContext is ProfileSettingsActivity){
+                    (myContext as ProfileSettingsActivity).profileSettingsRoot.visibility= View.GONE
+                    (myContext as ProfileSettingsActivity).profileSettingsContainer.visibility=View.VISIBLE
+                    EventBus.getDefault().postSticky(EventbusDataEvents.SecilenGonderiyiGonder(oankiGonderi, videoMu))
+                    var transaction=(myContext as ProfileSettingsActivity).supportFragmentManager.beginTransaction()
+                    transaction.hide((myContext as ProfileSettingsActivity).supportFragmentManager.findFragmentByTag("fra1"))
+                    transaction.add(R.id.profileSettingsContainer,TekGonderiFragment(),"fra2")
+                    transaction.addToBackStack("TekGonderiFragment")
+                    transaction.commit()
+                }
+                //bu kısım calısıyorsa bu adapter profile activity veya user profile activiyde kullanılmıstır
+                else {
+                    Log.e("ZZZ","Secilen post :"+oankiGonderi.postURL+" video mu:"+videoMu)
+                    (myContext as AppCompatActivity).tumlayout.visibility= View.INVISIBLE
+                    (myContext as AppCompatActivity).profileContainer.visibility=View.VISIBLE
+                    EventBus.getDefault().postSticky(EventbusDataEvents.SecilenGonderiyiGonder(oankiGonderi, videoMu))
+                    var transaction=(myContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+                    transaction.add(R.id.profileContainer,TekGonderiFragment(),"fra2")
+                    transaction.addToBackStack("tekGonderiFragmentEklendi")
+                    transaction.commit()
+                }
             }
+
+
+
 
         }
 

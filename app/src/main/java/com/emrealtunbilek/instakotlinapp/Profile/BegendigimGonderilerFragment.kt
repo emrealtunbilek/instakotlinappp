@@ -3,6 +3,7 @@ package com.emrealtunbilek.instakotlinapp.Profile
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,13 @@ import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Models.Users
 
 import com.emrealtunbilek.instakotlinapp.R
+import com.emrealtunbilek.instakotlinapp.utils.ProfilePostGridRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.fragment_begendigim_gonderiler.view.*
 
 
 class BegendigimGonderilerFragment : Fragment() {
@@ -116,5 +119,13 @@ class BegendigimGonderilerFragment : Fragment() {
 
     private fun listeyiHazirla() {
         Log.e("CCC","SON :"+begendigimTumGonderiler.size)
+
+        var myRecyclerview = myView!!.begendigimGonderilerListesi
+        var myLayoutManager=GridLayoutManager(this!!.activity,3)
+
+        myRecyclerview.layoutManager=myLayoutManager
+
+        var myAdapter=ProfilePostGridRecyclerAdapter(begendigimTumGonderiler,this!!.activity!!)
+        myRecyclerview.adapter=myAdapter
     }
 }
