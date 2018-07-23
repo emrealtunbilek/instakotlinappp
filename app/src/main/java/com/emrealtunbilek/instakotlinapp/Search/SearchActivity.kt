@@ -128,9 +128,9 @@ class SearchActivity : AppCompatActivity() {
         var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
         var mRef=FirebaseDatabase.getInstance().reference
 
-        if(takipEttigimUserIDleri.contains(myUserID)){
+       /* if(takipEttigimUserIDleri.contains(myUserID)){
             takipEttigimUserIDleri.remove(myUserID)
-        }
+        }*/
 
         var toplamGosterilecekPostSayisi=0
 
@@ -145,10 +145,8 @@ class SearchActivity : AppCompatActivity() {
 
                 if(p0!!.getValue() != null){
 
-                   var eklenecekUserPost=UserPosts()
-                   eklenecekUserPost.userID=p0!!.getValue(Users::class.java)!!.user_id
-                   eklenecekUserPost.userName=p0!!.getValue(Users::class.java)!!.user_name
-                   eklenecekUserPost.userPhotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
+                   var okunanUser=p0!!.getValue(Users::class.java)
+
 
 
                    mRef.child("posts").child(takipEttigimUserIDleri.get(i)).orderByChild("yuklenme_tarih").limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener{
@@ -167,6 +165,10 @@ class SearchActivity : AppCompatActivity() {
                                for(post in p0!!.children){
 
                                    var okunanPost=post!!.getValue(Posts::class.java)
+                                   var eklenecekUserPost=UserPosts()
+                                   eklenecekUserPost.userID=okunanUser!!.user_id
+                                   eklenecekUserPost.userName=okunanUser!!.user_name
+                                   eklenecekUserPost.userPhotoURL=okunanUser!!.user_detail!!.profile_picture
                                    eklenecekUserPost.postID=okunanPost!!.post_id
                                    eklenecekUserPost.postAciklama=okunanPost!!.aciklama
                                    eklenecekUserPost.postYuklenmeTarih=okunanPost!!.yuklenme_tarih
@@ -177,7 +179,7 @@ class SearchActivity : AppCompatActivity() {
                                }
                                if(gosterilecekTumGonderiler.size==toplamGosterilecekPostSayisi){
                                    listeyiHazirla()
-                                   Log.e("kkk","liste hazırlanacak size:"+gosterilecekTumGonderiler.size)
+                                   Log.e("kkk","liste hazırlanacak size:"+gosterilecekTumGonderiler)
                                }
 
                            }
