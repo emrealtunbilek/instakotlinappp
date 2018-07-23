@@ -3,18 +3,24 @@ package com.emrealtunbilek.instakotlinapp.Search
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.Log
+import android.view.View
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.Models.Posts
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
+import com.emrealtunbilek.instakotlinapp.utils.ProfilePostGridRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.otaliastudios.cameraview.Grid
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlin.math.sign
@@ -38,6 +44,27 @@ class SearchActivity : AppCompatActivity() {
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
 
+        supportFragmentManager.addOnBackStackChangedListener(object : FragmentManager.OnBackStackChangedListener{
+            override fun onBackStackChanged() {
+
+                var backStacktekiElemanSayisi= supportFragmentManager.backStackEntryCount
+                if(backStacktekiElemanSayisi==0){
+                    Log.e("MMM","Back stackte eleman yok")
+                    tumLayout.visibility= View.VISIBLE
+                    frameLayout.visibility=View.GONE
+                }else{
+                    tumLayout.visibility=View.GONE
+                    frameLayout.visibility=View.VISIBLE
+                    Log.e("MMM","*****************************************")
+                    for(i in 0..backStacktekiElemanSayisi-1)
+                        Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
+
+                }
+
+            }
+
+        })
+
         takipEttigimUserIDleriGetir()
 
 
@@ -50,6 +77,7 @@ class SearchActivity : AppCompatActivity() {
 
         }
     }
+
 
     private fun takipEttigimUserIDleriGetir() {
         var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
@@ -128,9 +156,9 @@ class SearchActivity : AppCompatActivity() {
         var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
         var mRef=FirebaseDatabase.getInstance().reference
 
-       /* if(takipEttigimUserIDleri.contains(myUserID)){
+        if(takipEttigimUserIDleri.contains(myUserID)){
             takipEttigimUserIDleri.remove(myUserID)
-        }*/
+        }
 
         var toplamGosterilecekPostSayisi=0
 
@@ -188,11 +216,6 @@ class SearchActivity : AppCompatActivity() {
                    })
 
 
-                }else {
-
-
-
-
                 }
 
             }
@@ -210,6 +233,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun listeyiHazirla() {
+
+        var myRecyclerView=recyclerSonGonderiler
+
+        var myLayoutManager=GridLayoutManager(this,3)
+        myRecyclerView.layoutManager=myLayoutManager
+
+        var myAdapter=ProfilePostGridRecyclerAdapter(gosterilecekTumGonderiler,this)
+        myRecyclerView.adapter=myAdapter
+
 
     }
 
@@ -229,8 +261,19 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(0,0)
+
+        if(supportFragmentManager.backStackEntryCount>0){
+            tumLayout.visibility=View.GONE
+            frameLayout.visibility=View.VISIBLE
+            supportFragmentManager.popBackStack()
+        }else{
+            tumLayout.visibility=View.VISIBLE
+            frameLayout.visibility=View.GONE
+            super.onBackPressed()
+            overridePendingTransition(0,0)
+        }
+
+
     }
 
     private fun setupAuthListener() {

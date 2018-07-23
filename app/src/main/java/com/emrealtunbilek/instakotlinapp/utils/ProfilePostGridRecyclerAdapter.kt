@@ -16,11 +16,14 @@ import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import com.emrealtunbilek.instakotlinapp.Generic.TekGonderiFragment
+import com.emrealtunbilek.instakotlinapp.Generic.TekGonderiSearchFragment
 import com.emrealtunbilek.instakotlinapp.Profile.BegendigimGonderilerFragment
 import com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity
 import com.emrealtunbilek.instakotlinapp.Profile.ProfileSettingsActivity
+import com.emrealtunbilek.instakotlinapp.Search.SearchActivity
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile_settings.*
+import kotlinx.android.synthetic.main.activity_search.*
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 
@@ -165,6 +168,19 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
                     transaction.add(R.id.profileSettingsContainer,TekGonderiFragment(),"fra2")
                     transaction.addToBackStack("TekGonderiFragment")
                     transaction.commit()
+                }
+                //bu kısım calısıyorsa bu adapter search activitydeki populer son paylasımlar için kullanılmıstır
+                else if(myContext is SearchActivity){
+
+                    (myContext as SearchActivity).tumLayout.visibility= View.GONE
+                    (myContext as SearchActivity).frameLayout.visibility=View.VISIBLE
+                    EventBus.getDefault().postSticky(EventbusDataEvents.SecilenGonderiyiGonder(oankiGonderi, videoMu))
+                    var transaction=(myContext as SearchActivity).supportFragmentManager.beginTransaction()
+                    transaction.add(R.id.frameLayout,TekGonderiSearchFragment(),"fra2")
+                    transaction.addToBackStack("TekGonderiSearchFragment")
+                    transaction.commit()
+
+
                 }
                 //bu kısım calısıyorsa bu adapter profile activity veya user profile activiyde kullanılmıstır
                 else {
