@@ -5,11 +5,19 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
+import com.emrealtunbilek.instakotlinapp.Models.Posts
+import com.emrealtunbilek.instakotlinapp.Models.UserPosts
+import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlin.math.sign
 
 class SearchActivity : AppCompatActivity() {
 
@@ -18,6 +26,9 @@ class SearchActivity : AppCompatActivity() {
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+    var takipEttigimUserIDleri = ArrayList<String>()
+    var gosterilecekTumGonderiler=ArrayList<UserPosts>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +37,9 @@ class SearchActivity : AppCompatActivity() {
 
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
+
+        takipEttigimUserIDleriGetir()
+
 
 
 
@@ -36,6 +50,167 @@ class SearchActivity : AppCompatActivity() {
 
         }
     }
+
+    private fun takipEttigimUserIDleriGetir() {
+        var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
+        var mRef=FirebaseDatabase.getInstance().reference
+
+        mRef.child("following").child(myUserID).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                if(p0!!.getValue() != null){
+
+                    for (id in p0!!.children){
+                        takipEttigimUserIDleri.add(id.key)
+                    }
+                    Log.e("kkk","takip ettiğim user idleri "+takipEttigimUserIDleri)
+                    takipEttikleriminTakipEttigiKisiIDleriniGetir()
+
+                }
+            }
+
+        })
+
+
+
+
+    }
+
+    private fun takipEttikleriminTakipEttigiKisiIDleriniGetir() {
+        var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
+        var mRef=FirebaseDatabase.getInstance().reference
+
+        for (i in 0..takipEttigimUserIDleri.size-1){
+
+            mRef.child("following").child(takipEttigimUserIDleri.get(i)).orderByKey().limitToLast(3).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+
+                    var kullanicininToplamTakipEttigiKisiSayisi= p0!!.childrenCount!!.toInt()
+                    var toplamKullaniciIDSayisi=takipEttigimUserIDleri.size+kullanicininToplamTakipEttigiKisiSayisi
+
+                   if(p0!!.getValue()!=null){
+
+                       for (id in p0!!.children){
+                          if(!takipEttigimUserIDleri.contains(id.key)){
+
+                              takipEttigimUserIDleri.add(id.key)
+
+                          }
+                          else{
+                              Log.e("kkk","bu zaten listede diye eklenmedi:"+id.key)
+                            toplamKullaniciIDSayisi--
+                          }
+                       }
+
+                       if(toplamKullaniciIDSayisi==takipEttigimUserIDleri.size){
+                           Log.e("kkk","takip edilen user id sayısı:"+takipEttigimUserIDleri.size+" "+takipEttigimUserIDleri)
+                           takipEdilenlerinSonGonderileriniGetir()
+                       }
+
+                   }
+                }
+
+            })
+
+
+
+        }
+    }
+
+    private fun takipEdilenlerinSonGonderileriniGetir() {
+        var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
+        var mRef=FirebaseDatabase.getInstance().reference
+
+        if(takipEttigimUserIDleri.contains(myUserID)){
+            takipEttigimUserIDleri.remove(myUserID)
+        }
+
+        var toplamGosterilecekPostSayisi=0
+
+        for (i in 0..takipEttigimUserIDleri.size-1){
+
+        mRef.child("users").child(takipEttigimUserIDleri.get(i)).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+
+                if(p0!!.getValue() != null){
+
+                   var eklenecekUserPost=UserPosts()
+                   eklenecekUserPost.userID=p0!!.getValue(Users::class.java)!!.user_id
+                   eklenecekUserPost.userName=p0!!.getValue(Users::class.java)!!.user_name
+                   eklenecekUserPost.userPhotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
+
+
+                   mRef.child("posts").child(takipEttigimUserIDleri.get(i)).orderByChild("yuklenme_tarih").limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener{
+                       override fun onCancelled(p0: DatabaseError?) {
+
+                       }
+
+                       override fun onDataChange(p0: DataSnapshot?) {
+                           if(p0!!.getValue()!=null){
+
+                               var kullanicininPostSayisi=p0!!.childrenCount.toInt()
+                               toplamGosterilecekPostSayisi=toplamGosterilecekPostSayisi+kullanicininPostSayisi
+                               Log.e("kkk","kullanıcının post sayısı:"+kullanicininPostSayisi)
+                               Log.e("kkk","toplam gösterilecek post sayısı:"+toplamGosterilecekPostSayisi)
+
+                               for(post in p0!!.children){
+
+                                   var okunanPost=post!!.getValue(Posts::class.java)
+                                   eklenecekUserPost.postID=okunanPost!!.post_id
+                                   eklenecekUserPost.postAciklama=okunanPost!!.aciklama
+                                   eklenecekUserPost.postYuklenmeTarih=okunanPost!!.yuklenme_tarih
+                                   eklenecekUserPost.postURL=okunanPost!!.file_url
+
+                                   gosterilecekTumGonderiler.add(eklenecekUserPost)
+
+                               }
+                               if(gosterilecekTumGonderiler.size==toplamGosterilecekPostSayisi){
+                                   listeyiHazirla()
+                                   Log.e("kkk","liste hazırlanacak size:"+gosterilecekTumGonderiler.size)
+                               }
+
+                           }
+                       }
+
+                   })
+
+
+                }else {
+
+
+
+
+                }
+
+            }
+
+        })
+
+
+
+
+
+
+        }
+
+
+    }
+
+    private fun listeyiHazirla() {
+
+    }
+
 
     override fun onResume() {
         super.onResume()

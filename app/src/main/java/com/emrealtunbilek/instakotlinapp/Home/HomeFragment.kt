@@ -133,47 +133,51 @@ class HomeFragment : Fragment() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot?) {
-                    var userID = kullaniciID
-                    var kullaniciAdi = p0!!.getValue(Users::class.java)!!.user_name
-                    var kullaniciFotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
+
+                   if(p0!!.getValue() != null){
+                       var userID = kullaniciID
+                       var kullaniciAdi = p0!!.getValue(Users::class.java)!!.user_name
+                       var kullaniciFotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
 
 
-                    mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener{
-                        override fun onCancelled(p0: DatabaseError?) {
+                       mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener{
+                           override fun onCancelled(p0: DatabaseError?) {
 
-                        }
+                           }
 
-                        override fun onDataChange(p0: DataSnapshot?) {
+                           override fun onDataChange(p0: DataSnapshot?) {
 
-                            if(p0!!.hasChildren())
-                            {
-                                Log.e("HATA",kullaniciID+" idli kişinin fotoları var")
-                                for (ds in p0!!.children){
+                               if(p0!!.hasChildren())
+                               {
+                                   Log.e("HATA",kullaniciID+" idli kişinin fotoları var")
+                                   for (ds in p0!!.children){
 
-                                    var eklenecekUserPosts=UserPosts()
-                                    eklenecekUserPosts.userID=userID
-                                    eklenecekUserPosts.userName=kullaniciAdi
-                                    eklenecekUserPosts.userPhotoURL=kullaniciFotoURL
-                                    eklenecekUserPosts.postID=ds.getValue(Posts::class.java)!!.post_id
-                                    eklenecekUserPosts.postURL=ds.getValue(Posts::class.java)!!.file_url
-                                    eklenecekUserPosts.postAciklama=ds.getValue(Posts::class.java)!!.aciklama
-                                    eklenecekUserPosts.postYuklenmeTarih=ds.getValue(Posts::class.java)!!.yuklenme_tarih
+                                       var eklenecekUserPosts=UserPosts()
+                                       eklenecekUserPosts.userID=userID
+                                       eklenecekUserPosts.userName=kullaniciAdi
+                                       eklenecekUserPosts.userPhotoURL=kullaniciFotoURL
+                                       eklenecekUserPosts.postID=ds.getValue(Posts::class.java)!!.post_id
+                                       eklenecekUserPosts.postURL=ds.getValue(Posts::class.java)!!.file_url
+                                       eklenecekUserPosts.postAciklama=ds.getValue(Posts::class.java)!!.aciklama
+                                       eklenecekUserPosts.postYuklenmeTarih=ds.getValue(Posts::class.java)!!.yuklenme_tarih
 
-                                    tumGonderiler.add(eklenecekUserPosts)
+                                       tumGonderiler.add(eklenecekUserPosts)
 
-                                }
-                            }else {
-                                Log.e("HATA",kullaniciID+" idli kişinin fotoları yok")
-                            }
+                                   }
+                               }else {
+                                   Log.e("HATA",kullaniciID+" idli kişinin fotoları yok")
+                               }
 
-                            Log.e("HATA",kullaniciID+" idli kişinin fotoları var, sayisi:"+tumGonderiler.size)
+                               Log.e("HATA",kullaniciID+" idli kişinin fotoları var, sayisi:"+tumGonderiler.size)
 
-                            if(i >= tumTakipEttiklerim.size-1)
-                            setupRecyclerView()
+                               if(i >= tumTakipEttiklerim.size-1)
+                                   setupRecyclerView()
 
-                        }
+                           }
 
-                    })
+                       })
+                   }
+
 
 
 
