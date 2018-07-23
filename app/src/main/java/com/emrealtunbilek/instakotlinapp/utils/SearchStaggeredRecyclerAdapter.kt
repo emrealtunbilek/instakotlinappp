@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.emrealtunbilek.instakotlinapp.Models.UserPosts
 import com.emrealtunbilek.instakotlinapp.R
-import kotlinx.android.synthetic.main.tek_sutun_grid_resim_profil.view.*
 import android.os.Build
 import android.graphics.Bitmap
 import android.os.AsyncTask
@@ -18,13 +17,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
 import com.emrealtunbilek.instakotlinapp.Generic.TekGonderiFragment
 import com.emrealtunbilek.instakotlinapp.Generic.TekGonderiSearchFragment
-import com.emrealtunbilek.instakotlinapp.Profile.BegendigimGonderilerFragment
-import com.emrealtunbilek.instakotlinapp.Profile.ProfileActivity
-import com.emrealtunbilek.instakotlinapp.Profile.ProfileSettingsActivity
 import com.emrealtunbilek.instakotlinapp.Search.SearchActivity
-import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile_settings.*
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.tek_sutun_staggered_resim_profil.view.*
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 
@@ -32,7 +27,7 @@ import java.util.*
 /**
  * Created by Emre on 3.06.2018.
  */
-class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>, var myContext:Context): RecyclerView.Adapter<ProfilePostGridRecyclerAdapter.MyViewHolder>() {
+class SearchStaggeredRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>, var myContext:Context): RecyclerView.Adapter<SearchStaggeredRecyclerAdapter.MyViewHolder>() {
 
     lateinit var inflater:LayoutInflater
 
@@ -60,7 +55,7 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-            var tekSutunDosya=inflater.inflate(R.layout.tek_sutun_grid_resim_profil, parent, false)
+            var tekSutunDosya=inflater.inflate(R.layout.tek_sutun_staggered_resim_profil, parent, false)
             return MyViewHolder(tekSutunDosya)
 
     }
@@ -150,7 +145,7 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
      inner  class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
 
-        var tekSutunDosya=itemView as ConstraintLayout
+        var tekSutunDosya=itemView as CardView
         var videoIcon=tekSutunDosya.imgVideoIcon
         var dosyaResim=tekSutunDosya.imgTekSutunImage
         var dosyaProgressBar=tekSutunDosya.progressBar
@@ -160,18 +155,7 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
 
             //bu kısım calısıyorsa bu adapter begendigim gönderiler için veya profilesetting activityde kullanılmıstır
             tekSutunDosya.setOnClickListener {
-                if(myContext is ProfileSettingsActivity){
-                    (myContext as ProfileSettingsActivity).profileSettingsRoot.visibility= View.GONE
-                    (myContext as ProfileSettingsActivity).profileSettingsContainer.visibility=View.VISIBLE
-                    EventBus.getDefault().postSticky(EventbusDataEvents.SecilenGonderiyiGonder(oankiGonderi, videoMu))
-                    var transaction=(myContext as ProfileSettingsActivity).supportFragmentManager.beginTransaction()
-                    transaction.hide((myContext as ProfileSettingsActivity).supportFragmentManager.findFragmentByTag("fra1"))
-                    transaction.add(R.id.profileSettingsContainer,TekGonderiFragment(),"fra2")
-                    transaction.addToBackStack("TekGonderiFragment")
-                    transaction.commit()
-                }
-                //bu kısım calısıyorsa bu adapter search activitydeki populer son paylasımlar için kullanılmıstır
-                else if(myContext is SearchActivity){
+             if(myContext is SearchActivity){
 
                     (myContext as SearchActivity).tumLayout.visibility= View.GONE
                     (myContext as SearchActivity).frameLayout.visibility=View.VISIBLE
@@ -183,17 +167,7 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
 
 
                 }
-                //bu kısım calısıyorsa bu adapter profile activity veya user profile activiyde kullanılmıstır
-                else {
-                    Log.e("ZZZ","Secilen post :"+oankiGonderi.postURL+" video mu:"+videoMu)
-                    (myContext as AppCompatActivity).tumlayout.visibility= View.INVISIBLE
-                    (myContext as AppCompatActivity).profileContainer.visibility=View.VISIBLE
-                    EventBus.getDefault().postSticky(EventbusDataEvents.SecilenGonderiyiGonder(oankiGonderi, videoMu))
-                    var transaction=(myContext as AppCompatActivity).supportFragmentManager.beginTransaction()
-                    transaction.add(R.id.profileContainer,TekGonderiFragment(),"fra2")
-                    transaction.addToBackStack("tekGonderiFragmentEklendi")
-                    transaction.commit()
-                }
+
             }
 
 

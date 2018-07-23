@@ -15,6 +15,7 @@ import com.emrealtunbilek.instakotlinapp.Models.Users
 import com.emrealtunbilek.instakotlinapp.R
 import com.emrealtunbilek.instakotlinapp.utils.BottomnavigationViewHelper
 import com.emrealtunbilek.instakotlinapp.utils.ProfilePostGridRecyclerAdapter
+import com.emrealtunbilek.instakotlinapp.utils.SearchStaggeredRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -113,7 +114,7 @@ class SearchActivity : AppCompatActivity() {
 
         for (i in 0..takipEttigimUserIDleri.size-1){
 
-            mRef.child("following").child(takipEttigimUserIDleri.get(i)).orderByKey().limitToLast(3).addListenerForSingleValueEvent(object : ValueEventListener{
+            mRef.child("following").child(takipEttigimUserIDleri.get(i)).orderByKey().limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError?) {
 
                 }
@@ -156,9 +157,9 @@ class SearchActivity : AppCompatActivity() {
         var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
         var mRef=FirebaseDatabase.getInstance().reference
 
-        if(takipEttigimUserIDleri.contains(myUserID)){
+       /* if(takipEttigimUserIDleri.contains(myUserID)){
             takipEttigimUserIDleri.remove(myUserID)
-        }
+        }*/
 
         var toplamGosterilecekPostSayisi=0
 
@@ -177,7 +178,7 @@ class SearchActivity : AppCompatActivity() {
 
 
 
-                   mRef.child("posts").child(takipEttigimUserIDleri.get(i)).orderByChild("yuklenme_tarih").limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener{
+                   mRef.child("posts").child(takipEttigimUserIDleri.get(i)).orderByChild("yuklenme_tarih").limitToLast(10).addListenerForSingleValueEvent(object : ValueEventListener{
                        override fun onCancelled(p0: DatabaseError?) {
 
                        }
@@ -236,10 +237,10 @@ class SearchActivity : AppCompatActivity() {
 
         var myRecyclerView=recyclerSonGonderiler
 
-        var myLayoutManager=GridLayoutManager(this,3)
+        var myLayoutManager=StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
         myRecyclerView.layoutManager=myLayoutManager
 
-        var myAdapter=ProfilePostGridRecyclerAdapter(gosterilecekTumGonderiler,this)
+        var myAdapter=SearchStaggeredRecyclerAdapter(gosterilecekTumGonderiler,this)
         myRecyclerView.adapter=myAdapter
 
 
