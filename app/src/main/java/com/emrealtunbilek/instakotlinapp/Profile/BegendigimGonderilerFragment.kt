@@ -39,13 +39,15 @@ class BegendigimGonderilerFragment : Fragment() {
 
     private fun begendigimGonderileriGetir() {
 
+        myView!!.progressBar8.visibility=View.VISIBLE
+
         var userID = FirebaseAuth.getInstance().currentUser!!.uid
         var mRef = FirebaseDatabase.getInstance().reference
         var begendigimGonderiSayisi=0
 
         mRef.child("likes").orderByChild(userID).equalTo(userID).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
-
+                myView!!.progressBar8.visibility=View.GONE
             }
             override fun onDataChange(p0: DataSnapshot?) {
                 if(p0!!.getValue()!=null) {
@@ -57,7 +59,7 @@ class BegendigimGonderilerFragment : Fragment() {
 
                         mRef.child("posts").orderByChild(begendigimGonderiID).limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener{
                             override fun onCancelled(p0: DatabaseError?) {
-
+                                myView!!.progressBar8.visibility=View.GONE
                             }
 
                             override fun onDataChange(p0: DataSnapshot?) {
@@ -71,7 +73,7 @@ class BegendigimGonderilerFragment : Fragment() {
 
                                         mRef.child("users").child(gonderiyiPaylasanUserID).addListenerForSingleValueEvent(object : ValueEventListener{
                                             override fun onCancelled(p0: DatabaseError?) {
-
+                                                myView!!.progressBar8.visibility=View.GONE
                                             }
 
                                             override fun onDataChange(p0: DataSnapshot?) {
@@ -127,5 +129,6 @@ class BegendigimGonderilerFragment : Fragment() {
 
         var myAdapter=ProfilePostGridRecyclerAdapter(begendigimTumGonderiler,this!!.activity!!)
         myRecyclerview.adapter=myAdapter
+        myView!!.progressBar8.visibility=View.GONE
     }
 }

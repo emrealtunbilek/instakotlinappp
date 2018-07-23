@@ -77,22 +77,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
         })
 
-        containerGizli.setOnClickListener {
 
-            if(switchGizli.isChecked){
-
-                switchGizli.isChecked=false
-                mRef.child("users").child(mUser.uid).child("gizli_profil").setValue(false)
-
-            }else {
-
-                mRef.child("users").child(mUser.uid).child("gizli_profil").setValue(true)
-                switchGizli.isChecked=true
-
-            }
-
-
-        }
 
     }
 
@@ -114,6 +99,34 @@ class ProfileSettingsActivity : AppCompatActivity() {
             transaction.add(R.id.profileSettingsContainer,BegendigimGonderilerFragment(),"fra1")
             transaction.addToBackStack("BegendigimGonderilerFragment")
             transaction.commit()
+
+        }
+
+        containerGizli.setOnClickListener {
+
+            if(switchGizli.isChecked){
+
+                switchGizli.isChecked=false
+                mRef.child("users").child(mUser.uid).child("gizli_profil").setValue(false)
+
+            }else {
+
+                mRef.child("users").child(mUser.uid).child("gizli_profil").setValue(true)
+                switchGizli.isChecked=true
+
+            }
+
+
+        }
+
+        tvSifreniDegistir.setOnClickListener {
+            profileSettingsRoot.visibility=View.GONE
+            profileSettingsContainer.visibility=View.VISIBLE
+            var transaction=supportFragmentManager.beginTransaction()
+            transaction.add(R.id.profileSettingsContainer,SifreDegistirFragment(),"fraSifre")
+            transaction.addToBackStack("SifreniDegistirFragment")
+            transaction.commit()
+
 
         }
 

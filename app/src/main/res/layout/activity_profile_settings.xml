@@ -98,32 +98,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvBegendiginGonderiler" />
 
                 <TextView
-                    android:id="@+id/tvKaydedilenler"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Kaydedilenler"
-                    android:textColor="@color/siyah"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvSifreniDegistir" />
-
-                <TextView
-                    android:id="@+id/tvAramaGecmisiniSil"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Arama Geçmişini Sil"
-                    android:textColor="@color/mavi"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/containerGizli" />
-
-                <TextView
                     android:id="@+id/tvCikisYap"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -134,7 +108,7 @@
                     android:textColor="@color/mavi"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAramaGecmisiniSil" />
+                    app:layout_constraintTop_toBottomOf="@+id/containerGizli" />
 
                 <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
                     android:id="@+id/bottomNavigationView"
@@ -165,7 +139,7 @@
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvKaydedilenler">
+                    app:layout_constraintTop_toBottomOf="@+id/tvSifreniDegistir">
 
                         <TextView
                             android:id="@+id/tvGizliHesap"
@@ -173,8 +147,7 @@
                             android:layout_height="wrap_content"
                             android:text="Gizli Hesap"
                             android:textColor="@color/siyah"
-                            app:layout_constraintStart_toStartOf="parent"
-                             />
+                            app:layout_constraintStart_toStartOf="parent" />
 
                         <Switch
                             android:id="@+id/switchGizli"

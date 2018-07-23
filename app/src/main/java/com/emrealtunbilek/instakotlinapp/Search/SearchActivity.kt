@@ -81,12 +81,15 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun takipEttigimUserIDleriGetir() {
+
+        progressBar7.visibility=View.VISIBLE
+
         var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
         var mRef=FirebaseDatabase.getInstance().reference
 
         mRef.child("following").child(myUserID).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
-
+                progressBar7.visibility=View.GONE
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
@@ -116,7 +119,7 @@ class SearchActivity : AppCompatActivity() {
 
             mRef.child("following").child(takipEttigimUserIDleri.get(i)).orderByKey().limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError?) {
-
+                    progressBar7.visibility=View.GONE
                 }
 
                 override fun onDataChange(p0: DataSnapshot?) {
@@ -167,7 +170,7 @@ class SearchActivity : AppCompatActivity() {
 
         mRef.child("users").child(takipEttigimUserIDleri.get(i)).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError?) {
-
+                progressBar7.visibility=View.GONE
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
@@ -242,6 +245,7 @@ class SearchActivity : AppCompatActivity() {
 
         var myAdapter=SearchStaggeredRecyclerAdapter(gosterilecekTumGonderiler,this)
         myRecyclerView.adapter=myAdapter
+        progressBar7.visibility=View.GONE
 
 
     }

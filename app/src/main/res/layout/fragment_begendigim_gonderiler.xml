@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     tools:context="com.emrealtunbilek.instakotlinapp.Profile.BegendigimGonderilerFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar8"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/begendigimGonderilerListesi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/begendigimGonderilerListesi"
+        app:layout_constraintTop_toTopOf="@+id/begendigimGonderilerListesi" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/begendigimGonderilerListesi"
         android:layout_width="match_parent"

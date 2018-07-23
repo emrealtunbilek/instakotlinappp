@@ -18,11 +18,11 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_yeni_takip_istek" />
+            android:resource="@drawable/ic_new_notify" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/siyah" />
+            android:resource="@color/mavi" />
 
         <activity android:name=".Home.HomeActivity">
             <intent-filter>
