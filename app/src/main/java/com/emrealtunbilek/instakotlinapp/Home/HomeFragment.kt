@@ -170,8 +170,13 @@ class HomeFragment : Fragment() {
 
                                Log.e("HATA",kullaniciID+" idli kişinin fotoları var, sayisi:"+tumGonderiler.size)
 
-                               if(i >= tumTakipEttiklerim.size-1)
-                                   setupRecyclerView()
+                               if(i >= tumTakipEttiklerim.size-1){
+                                   if(tumGonderiler.size>0){
+                                       setupRecyclerView()
+                                   }
+
+                               }
+
 
                            }
 
@@ -209,9 +214,16 @@ class HomeFragment : Fragment() {
             }
         })
 
-        for(i in 0..SAYFA_BASINA_GONDERI_SAYISI-1){
-            sayfaBasinaTumGonderiler.add(tumGonderiler.get(i))
+        if(tumGonderiler.size>=SAYFA_BASINA_GONDERI_SAYISI){
+            for(i in 0..SAYFA_BASINA_GONDERI_SAYISI-1){
+                sayfaBasinaTumGonderiler.add(tumGonderiler.get(i))
+            }
+        }else{
+            for(i in 0..tumGonderiler.size-1){
+                sayfaBasinaTumGonderiler.add(tumGonderiler.get(i))
+            }
         }
+
 
         Log.e("XXX","Tüm gönderi sayısı:"+tumGonderiler.size)
         Log.e("XXX","Sayfa basına düşen gönderi sayısı:"+sayfaBasinaTumGonderiler.size)

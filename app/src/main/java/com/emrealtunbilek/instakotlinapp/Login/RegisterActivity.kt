@@ -142,6 +142,17 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
                               }
 
                           }
+                          //veritabanında herhangi bir kullanıcı yok, direk kaydediliriz
+                          else{
+
+                              loginRoot.visibility=View.GONE
+                              loginContainer.visibility=View.VISIBLE
+                              var transaction=supportFragmentManager.beginTransaction()
+                              transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
+                              transaction.addToBackStack("telefonKoduGirFragmentEklendi")
+                              transaction.commit()
+                              EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(etGirisYontemi.text.toString(),null,null,null, false))
+                          }
 
                         }
 
@@ -193,6 +204,18 @@ class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
                                     transaction.commit()
                                     EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(null,etGirisYontemi.text.toString(), null, null, true))
                                 }
+                            }
+                            //veritabanında hiç kullanıcı yok, aynen kaydet
+                            else{
+
+                                loginRoot.visibility=View.GONE
+                                loginContainer.visibility=View.VISIBLE
+                                var transaction=supportFragmentManager.beginTransaction()
+                                transaction.replace(R.id.loginContainer, KayitFragment())
+                                transaction.addToBackStack("emailileGirisFragmentEklendi")
+                                transaction.commit()
+                                EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(null,etGirisYontemi.text.toString(), null, null, true))
+
                             }
                         }
 

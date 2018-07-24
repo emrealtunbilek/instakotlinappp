@@ -74,38 +74,45 @@ class TakipNewsFragment : Fragment() {
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
-                for(userID in p0!!.children){
 
-                    var takipEttigimUserID=userID.key
+                if(p0!!.getValue() != null) {
+                    for (userID in p0!!.children) {
 
-                    mRef.child("takip_ettiklerimin_bildirimleri").child(takipEttigimUserID).limitToLast(10).addListenerForSingleValueEvent(object : ValueEventListener{
-                        override fun onCancelled(p0: DatabaseError?) {
+                        var takipEttigimUserID = userID.key
 
-                        }
-
-                        override fun onDataChange(p0: DataSnapshot?) {
-                            if(p0!!.getValue() != null){
-
-                                for (bildirim in p0!!.children){
-
-                                    var takipEttigimUser=takipEttigimUserID
-                                    var takipEttigimUserBildirimi=bildirim.getValue(BildirimModel::class.java)
-                                    takipEttigimUserBildirimi!!.takip_ettigimin_user_id=takipEttigimUser
-
-                                    takipEttikleriminTumBildirimleri.add(takipEttigimUserBildirimi)
-
-                                }
-
-
-                                listeyiHazirla()
-
+                        mRef.child("takip_ettiklerimin_bildirimleri").child(takipEttigimUserID).limitToLast(10).addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onCancelled(p0: DatabaseError?) {
 
                             }
-                        }
+
+                            override fun onDataChange(p0: DataSnapshot?) {
+                                if (p0!!.getValue() != null) {
+
+                                    for (bildirim in p0!!.children) {
+
+                                        var takipEttigimUser = takipEttigimUserID
+                                        var takipEttigimUserBildirimi = bildirim.getValue(BildirimModel::class.java)
+                                        takipEttigimUserBildirimi!!.takip_ettigimin_user_id = takipEttigimUser
+
+                                        takipEttikleriminTumBildirimleri.add(takipEttigimUserBildirimi)
+
+                                    }
 
 
-                    })
+                                    listeyiHazirla()
 
+
+                                }else{
+                                    myView.progressBar4.visibility=View.GONE
+                                }
+                            }
+
+
+                        })
+
+                    }
+                }else{
+                    myView.progressBar4.visibility=View.GONE
                 }
 
             }

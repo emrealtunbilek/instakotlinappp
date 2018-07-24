@@ -90,6 +90,8 @@ class SenNewsFragment : Fragment() {
 
                     setupRecyclerView()
 
+                }else{
+                    myView.progressBar.visibility=View.GONE
                 }
             }
 

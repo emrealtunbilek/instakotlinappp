@@ -99,8 +99,16 @@ class SearchActivity : AppCompatActivity() {
                         takipEttigimUserIDleri.add(id.key)
                     }
                     Log.e("kkk","takip ettiğim user idleri "+takipEttigimUserIDleri)
-                    takipEttikleriminTakipEttigiKisiIDleriniGetir()
 
+                    if(takipEttigimUserIDleri.size>0){
+                        takipEttikleriminTakipEttigiKisiIDleriniGetir()
+                    }else{
+                        progressBar7.visibility=View.GONE
+                    }
+
+
+                }else{
+                    progressBar7.visibility=View.GONE
                 }
             }
 
@@ -146,6 +154,8 @@ class SearchActivity : AppCompatActivity() {
                            takipEdilenlerinSonGonderileriniGetir()
                        }
 
+                   }else{
+                       progressBar7.visibility=View.GONE
                    }
                 }
 
@@ -212,6 +222,10 @@ class SearchActivity : AppCompatActivity() {
                                if(gosterilecekTumGonderiler.size==toplamGosterilecekPostSayisi){
                                    listeyiHazirla()
                                    Log.e("kkk","liste hazırlanacak size:"+gosterilecekTumGonderiler)
+                               }else if(gosterilecekTumGonderiler.size==50){
+                                   listeyiHazirla()
+                               }else if(gosterilecekTumGonderiler.size==0){
+                                   progressBar7.visibility=View.GONE
                                }
 
                            }
@@ -220,6 +234,8 @@ class SearchActivity : AppCompatActivity() {
                    })
 
 
+                }else{
+                    progressBar7.visibility=View.GONE
                 }
 
             }

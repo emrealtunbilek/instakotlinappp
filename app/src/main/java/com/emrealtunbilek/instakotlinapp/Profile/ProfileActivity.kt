@@ -142,6 +142,7 @@ class ProfileActivity : AppCompatActivity() {
                         tvWebSitesi.visibility=View.GONE
                     }
 
+
                 }
 
 
@@ -177,6 +178,9 @@ class ProfileActivity : AppCompatActivity() {
 
 
     private fun takipciSayilariniGuncelle() {
+
+        progressBar9.visibility=View.VISIBLE
+        tumlayout.visibility=View.INVISIBLE
 
         mRef = FirebaseDatabase.getInstance().reference
 
@@ -258,6 +262,11 @@ class ProfileActivity : AppCompatActivity() {
                                 tumGonderiler.add(eklenecekUserPosts)
 
                             }
+
+
+                        }else{
+                            progressBar9.visibility=View.GONE
+                            tumlayout.visibility=View.VISIBLE
                         }
 
                         setupRecyclerView(1)
@@ -281,6 +290,19 @@ class ProfileActivity : AppCompatActivity() {
     //1 ise grid 2 ise list view şeklinde veriler gösterilir
     private fun setupRecyclerView(layoutCesidi: Int) {
 
+        if(tumGonderiler.size==0){
+            golgelik2.visibility = View.GONE
+            golgelik3.visibility = View.GONE
+            profileRecyclerView.visibility = View.GONE
+            containerGonderiYok.visibility = View.VISIBLE
+        }else{
+            golgelik2.visibility = View.VISIBLE
+            golgelik3.visibility = View.VISIBLE
+            profileRecyclerView.visibility = View.VISIBLE
+            containerGonderiYok.visibility = View.GONE
+        }
+
+
         if(layoutCesidi==1){
 
             if (myRecyclerView!= null && myRecyclerView!!.getHandingVideoHolder() != null){
@@ -297,6 +319,9 @@ class ProfileActivity : AppCompatActivity() {
 
             myRecyclerView!!.layoutManager=GridLayoutManager(this,3)
 
+            progressBar9.visibility=View.GONE
+            tumlayout.visibility=View.VISIBLE
+
         }else if(layoutCesidi==2){
 
             if (myRecyclerView!= null && myRecyclerView?.getHandingVideoHolder() != null) {
@@ -309,6 +334,9 @@ class ProfileActivity : AppCompatActivity() {
             myRecyclerView=profileRecyclerView
             myRecyclerView!!.layoutManager=CenterLayoutManager(this,LinearLayoutManager.VERTICAL,false)
             myRecyclerView!!.adapter=ProfilePostListRecyclerAdapter(this,tumGonderiler)
+
+            progressBar9.visibility=View.GONE
+            tumlayout.visibility=View.VISIBLE
 
 
 
