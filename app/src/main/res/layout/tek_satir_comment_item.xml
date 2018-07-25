@@ -20,8 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:text="  "
         android:textColor="@color/siyah"
-        android:text="username ve de acıklama"
         app:layout_constraintStart_toEndOf="@+id/yorumYapanUserProfile"
         app:layout_constraintTop_toTopOf="@+id/yorumYapanUserProfile" />
 
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="1g"
+        android:text="   "
         app:layout_constraintStart_toEndOf="@+id/yorumYapanUserProfile"
         app:layout_constraintTop_toBottomOf="@+id/yorumYapanUserProfile" />
 
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="80 beğenme"
+        android:text="  "
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvYorumSure"
         app:layout_constraintStart_toEndOf="@+id/tvYorumSure"

@@ -3,6 +3,7 @@ package com.emrealtunbilek.instakotlinapp.utils
 import android.content.Context
 import android.os.Build
 import android.support.constraint.ConstraintLayout
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.Spanned
@@ -247,10 +248,10 @@ class ProfilePostListRecyclerAdapter(var context: Context, var tumGonderiler: Ar
         fun yorumlarFragmentiniBaslat(oankiGonderi: UserPosts) {
             EventBus.getDefault().postSticky(EventbusDataEvents.YorumYapilacakGonderininIDsiniGonder(oankiGonderi!!.postID))
 
-            (myProfileActivity as ProfileActivity).profileContainer.visibility=View.VISIBLE
-            (myProfileActivity as ProfileActivity).tumlayout.visibility=View.INVISIBLE
+            (myProfileActivity as AppCompatActivity).profileContainer.visibility=View.VISIBLE
+            (myProfileActivity as AppCompatActivity).tumlayout.visibility=View.INVISIBLE
 
-            var transaction = (myProfileActivity as ProfileActivity).supportFragmentManager.beginTransaction()
+            var transaction = (myProfileActivity as AppCompatActivity).supportFragmentManager.beginTransaction()
             transaction.replace(R.id.profileContainer, CommentFragment())
             transaction.addToBackStack("commentFragmentEklendi")
             transaction.commit()

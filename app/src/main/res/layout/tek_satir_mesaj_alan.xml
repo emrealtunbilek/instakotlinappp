@@ -14,13 +14,13 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/mesaj_alan_text_bg"
         android:padding="12dp"
-        app:layout_constraintWidth_max="300dp"
-        android:text="TextView"
+        android:text="  "
         android:textColor="@color/siyah"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mesajUserProfilePic"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="300dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/mesajUserProfilePic"

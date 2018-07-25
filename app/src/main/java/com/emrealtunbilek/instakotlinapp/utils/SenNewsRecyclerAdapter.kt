@@ -1,11 +1,13 @@
 package com.emrealtunbilek.instakotlinapp.utils
 
 import android.content.Context
+import android.content.Intent
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.emrealtunbilek.instakotlinapp.Generic.UserProfileActivity
 import com.emrealtunbilek.instakotlinapp.Models.BildirimModel
 import com.emrealtunbilek.instakotlinapp.R
 import com.google.firebase.auth.FirebaseAuth
@@ -179,6 +181,14 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
                             UniversalImageLoader.setImage(takipEdenPicURL, takipEdenUserProfileResim, null, "")
                         }
 
+                        takipEdenUserProfileResim.setOnClickListener {
+
+                            var intent=Intent(context,UserProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            intent.putExtra("secilenUserID",p0!!.child("user_id").getValue().toString())
+                            context.startActivity(intent)
+
+                        }
+
 
                     }
 
@@ -228,6 +238,11 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
                             UniversalImageLoader.setImage(takipEdenPicURL, takipEdenUserPicture, null, "")
                         }
 
+                        takipEdenUserPicture.setOnClickListener {
+                            var intent=Intent(context,UserProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            intent.putExtra("secilenUserID",p0!!.child("user_id").getValue().toString())
+                            context.startActivity(intent)
+                        }
 
                     }
 
@@ -277,6 +292,12 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
                         } else {
                             var takipEdenPicURL = "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
                             UniversalImageLoader.setImage(takipEdenPicURL, begenenProfilePicture, null, "")
+                        }
+
+                        begenenProfilePicture.setOnClickListener {
+                            var intent=Intent(context,UserProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            intent.putExtra("secilenUserID",p0!!.child("user_id").getValue().toString())
+                            context.startActivity(intent)
                         }
 
 

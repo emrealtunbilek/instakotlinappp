@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -55,6 +56,27 @@ class UserProfileActivity : AppCompatActivity() {
         secilenUserID = intent.getStringExtra("secilenUserID")
         tumGonderiler = ArrayList<UserPosts>()
 
+
+        supportFragmentManager.addOnBackStackChangedListener(object : FragmentManager.OnBackStackChangedListener{
+            override fun onBackStackChanged() {
+
+                var backStacktekiElemanSayisi= supportFragmentManager.backStackEntryCount
+                if(backStacktekiElemanSayisi==0){
+                    Log.e("MMM","Back stackte eleman yok")
+                    tumlayout.visibility= View.VISIBLE
+                    profileContainer.visibility=View.GONE
+                }else{
+                    tumlayout.visibility= View.GONE
+                    profileContainer.visibility=View.VISIBLE
+                    Log.e("MMM","*****************************************")
+                    for(i in 0..backStacktekiElemanSayisi-1)
+                        Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
+
+                }
+
+            }
+
+        })
 
         setupButtons()
         takipciSayilariniGuncelle()
@@ -517,11 +539,18 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        tumlayout.visibility= View.VISIBLE
-        profileContainer.visibility=View.INVISIBLE
 
-        super.onBackPressed()
-        overridePendingTransition(0,0)
+        if(supportFragmentManager.backStackEntryCount>0){
+            tumlayout.visibility= View.GONE
+            profileContainer.visibility=View.VISIBLE
+            supportFragmentManager.popBackStack()
+        }else{
+            tumlayout.visibility= View.VISIBLE
+            profileContainer.visibility=View.INVISIBLE
+            super.onBackPressed()
+            overridePendingTransition(0,0)
+        }
+
     }
 
     private fun setupAuthListener() {
