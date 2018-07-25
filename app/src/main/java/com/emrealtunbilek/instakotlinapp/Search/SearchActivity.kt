@@ -122,8 +122,9 @@ class SearchActivity : AppCompatActivity() {
     private fun takipEttikleriminTakipEttigiKisiIDleriniGetir() {
         var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
         var mRef=FirebaseDatabase.getInstance().reference
+        var toplamTakipciSayisi=takipEttigimUserIDleri.size
 
-        for (i in 0..takipEttigimUserIDleri.size-1){
+        for (i in 0..toplamTakipciSayisi-1){
 
             mRef.child("following").child(takipEttigimUserIDleri.get(i)).orderByKey().limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError?) {
@@ -132,8 +133,6 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onDataChange(p0: DataSnapshot?) {
 
-                    var kullanicininToplamTakipEttigiKisiSayisi= p0!!.childrenCount!!.toInt()
-                    var toplamKullaniciIDSayisi=takipEttigimUserIDleri.size+kullanicininToplamTakipEttigiKisiSayisi
 
                    if(p0!!.getValue()!=null){
 
@@ -145,16 +144,20 @@ class SearchActivity : AppCompatActivity() {
                           }
                           else{
                               Log.e("kkk","bu zaten listede diye eklenmedi:"+id.key)
-                            toplamKullaniciIDSayisi--
+
                           }
                        }
 
-                       if(toplamKullaniciIDSayisi==takipEttigimUserIDleri.size){
-                           Log.e("kkk","takip edilen user id sayısı:"+takipEttigimUserIDleri.size+" "+takipEttigimUserIDleri)
+                       if(i==toplamTakipciSayisi-1){
+                           Log.e("kkk"," i değeri: "+i+"takip edilen user id sayısı:"+takipEttigimUserIDleri.size+" "+takipEttigimUserIDleri)
                            takipEdilenlerinSonGonderileriniGetir()
                        }
 
                    }else{
+                       if(i==toplamTakipciSayisi-1){
+                           Log.e("kkk"," i değeri else kısmı: "+i+"takip edilen user id sayısı:"+takipEttigimUserIDleri.size+" "+takipEttigimUserIDleri)
+                           takipEdilenlerinSonGonderileriniGetir()
+                       }
                        progressBar7.visibility=View.GONE
                    }
                 }
@@ -170,11 +173,11 @@ class SearchActivity : AppCompatActivity() {
         var myUserID=FirebaseAuth.getInstance().currentUser!!.uid
         var mRef=FirebaseDatabase.getInstance().reference
 
-       /* if(takipEttigimUserIDleri.contains(myUserID)){
+        if(takipEttigimUserIDleri.contains(myUserID)){
             takipEttigimUserIDleri.remove(myUserID)
-        }*/
+        }
 
-        var toplamGosterilecekPostSayisi=0
+        Log.e("kkk","i maximum değeri :"+(takipEttigimUserIDleri.size-1))
 
         for (i in 0..takipEttigimUserIDleri.size-1){
 
@@ -188,6 +191,7 @@ class SearchActivity : AppCompatActivity() {
                 if(p0!!.getValue() != null){
 
                    var okunanUser=p0!!.getValue(Users::class.java)
+                    Log.e("kkk","şuan gönderileri getirilen user name:"+okunanUser!!.user_name)
 
 
 
@@ -199,10 +203,6 @@ class SearchActivity : AppCompatActivity() {
                        override fun onDataChange(p0: DataSnapshot?) {
                            if(p0!!.getValue()!=null){
 
-                               var kullanicininPostSayisi=p0!!.childrenCount.toInt()
-                               toplamGosterilecekPostSayisi=toplamGosterilecekPostSayisi+kullanicininPostSayisi
-                               Log.e("kkk","kullanıcının post sayısı:"+kullanicininPostSayisi)
-                               Log.e("kkk","toplam gösterilecek post sayısı:"+toplamGosterilecekPostSayisi)
 
                                for(post in p0!!.children){
 
@@ -217,25 +217,42 @@ class SearchActivity : AppCompatActivity() {
                                    eklenecekUserPost.postURL=okunanPost!!.file_url
 
                                    gosterilecekTumGonderiler.add(eklenecekUserPost)
+                                   Log.e("kkk","toplam post sayısı:"+gosterilecekTumGonderiler.size)
 
                                }
-                               if(gosterilecekTumGonderiler.size==toplamGosterilecekPostSayisi){
+                               Log.e("kkk","i değeri:"+i)
+                               if(i==takipEttigimUserIDleri.size-1){
                                    listeyiHazirla()
                                    Log.e("kkk","liste hazırlanacak size:"+gosterilecekTumGonderiler)
-                               }else if(gosterilecekTumGonderiler.size==50){
+                               }else if(gosterilecekTumGonderiler.size>=50){
                                    listeyiHazirla()
-                               }else if(gosterilecekTumGonderiler.size==0){
-                                   progressBar7.visibility=View.GONE
+                               }
+
+                           }else{
+                               Log.e("kkk","i değeri:"+i)
+                               if(i==takipEttigimUserIDleri.size-1){
+                                   listeyiHazirla()
+                                   Log.e("kkk","liste hazırlanacak else içerdeki size:"+gosterilecekTumGonderiler)
+                               }else if(gosterilecekTumGonderiler.size>=50){
+                                   listeyiHazirla()
                                }
 
                            }
+
                        }
 
                    })
 
 
                 }else{
+
                     progressBar7.visibility=View.GONE
+                    if(i==takipEttigimUserIDleri.size-1){
+                        listeyiHazirla()
+                        Log.e("kkk","liste hazırlanacak else dışardaki size:"+gosterilecekTumGonderiler)
+                    }else if(gosterilecekTumGonderiler.size>=50){
+                        listeyiHazirla()
+                    }
                 }
 
             }

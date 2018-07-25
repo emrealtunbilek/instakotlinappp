@@ -43,7 +43,7 @@ class TelefonKoduGirFragment : Fragment() {
 
         view.btnTelKodIleri.setOnClickListener {
 
-            if(gelenKod.equals(view.etOnayKodu.text.toString())){
+            if(gelenKod.equals(view.etOnayKodu.text.toString().trim())){
                 EventBus.getDefault().postSticky(EventbusDataEvents.KayitBilgileriniGonder(gelenTelNo,null, verificationID,gelenKod,false))
                 var transaction=activity!!.supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.loginContainer,KayitFragment())
@@ -68,6 +68,7 @@ class TelefonKoduGirFragment : Fragment() {
     }
 
     private fun setupCallback() {
+        progressBar.visibility=View.VISIBLE
         mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {

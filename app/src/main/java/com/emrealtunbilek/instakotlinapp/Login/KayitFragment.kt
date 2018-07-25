@@ -68,29 +68,148 @@ class KayitFragment : Fragment() {
 
         view.btnGiris.setOnClickListener {
 
-            var userNameKullanimdaMi = false
+            if(view.etKullaniciAdi.text.toString().trim().length>5 && view.etSifre.text.toString().trim().length>5 && !view.etAdSoyad.text.toString().trim().isNullOrEmpty()){
+                var userNameKullanimdaMi = false
+                mRef.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {
 
-            mRef.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
+                    }
 
-                }
+                    override fun onDataChange(p0: DataSnapshot?) {
 
-                override fun onDataChange(p0: DataSnapshot?) {
+                        if (p0!!.getValue() != null) {
 
-                    if (p0!!.getValue() != null) {
-
-                        for (user in p0!!.children) {
-                            var okunanKullanici = user.getValue(Users::class.java)
-                            if (okunanKullanici!!.user_name!!.equals(view.etKullaniciAdi.text.toString())) {
-                                Toast.makeText(activity, "Kullanıcı adı Kullanımda", Toast.LENGTH_SHORT).show()
-                                userNameKullanimdaMi = true
-                                break
+                            for (user in p0!!.children) {
+                                var okunanKullanici = user.getValue(Users::class.java)
+                                if (okunanKullanici!!.user_name!!.equals(view.etKullaniciAdi.text.toString())) {
+                                    Toast.makeText(activity, "Kullanıcı adı Kullanımda", Toast.LENGTH_SHORT).show()
+                                    userNameKullanimdaMi = true
+                                    break
+                                }
                             }
+
+                            if (userNameKullanimdaMi == false) {
+
+
+                                progressBar.visibility = View.VISIBLE
+
+                                //kullanıcı email ile kaydolmak istiyor
+                                if (emailIleKayitIslemi) {
+
+                                    var sifre = view.etSifre.text.toString()
+                                    var adSoyad = view.etAdSoyad.text.toString()
+                                    var userName = view.etKullaniciAdi.text.toString()
+
+
+                                    mAuth.createUserWithEmailAndPassword(gelenEmail, sifre)
+                                            .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                                                override fun onComplete(p0: Task<AuthResult>) {
+
+                                                    if (p0!!.isSuccessful) {
+
+                                                        var userID = mAuth.currentUser!!.uid.toString()
+
+                                                        //oturum açan kullanıcın verilerini databaseye kaydedelim...
+                                                        var defaultProfilPicture = "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+                                                        var kaydedilecekKullaniciDetaylari = UserDetails("0", "0", "0", defaultProfilPicture, "", "")
+                                                        var kaydedilecekKullanici = Users(gelenEmail, sifre, userName, adSoyad, "", "", userID, kaydedilecekKullaniciDetaylari)
+
+                                                        mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
+                                                                .addOnCompleteListener(object : OnCompleteListener<Void> {
+                                                                    override fun onComplete(p0: Task<Void>) {
+                                                                        if (p0!!.isSuccessful) {
+                                                                            fcmTokenKaydet()
+                                                                            progressBar.visibility = View.INVISIBLE
+                                                                        } else {
+                                                                            progressBar.visibility = View.INVISIBLE
+                                                                            mAuth.currentUser!!.delete()
+                                                                                    .addOnCompleteListener(object : OnCompleteListener<Void> {
+                                                                                        override fun onComplete(p0: Task<Void>) {
+                                                                                            if (p0!!.isSuccessful) {
+                                                                                                Toast.makeText(activity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
+                                                                                            }
+                                                                                        }
+
+                                                                                    })
+                                                                        }
+                                                                    }
+
+
+                                                                })
+
+
+                                                    } else {
+                                                        progressBar.visibility = View.INVISIBLE
+                                                        Toast.makeText(activity, "Oturum açılamadı :" + p0!!.exception, Toast.LENGTH_SHORT).show()
+                                                    }
+
+                                                }
+
+                                            })
+
+                                }
+
+                                //kulllanıcı telelfon no ile kayıt olmak istiyor
+                                else {
+
+                                    var sifre = view.etSifre.text.toString()
+                                    var sahteEmail = telNo + "@emre.com" //"+905547126420@emre.com"
+                                    var adSoyad = view.etAdSoyad.text.toString()
+                                    var userName = view.etKullaniciAdi.text.toString()
+                                    mAuth.createUserWithEmailAndPassword(sahteEmail, sifre)
+                                            .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                                                override fun onComplete(p0: Task<AuthResult>) {
+
+                                                    if (p0!!.isSuccessful) {
+
+                                                        var userID = mAuth.currentUser!!.uid.toString()
+
+
+                                                        //oturum açan kullanıcın verilerini databaseye kaydedelim...
+                                                        var defaultProfilPicture = "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
+                                                        var kaydedilecekKullaniciDetaylari = UserDetails("0", "0", "0", defaultProfilPicture, "", "")
+                                                        var kaydedilecekKullanici = Users("", sifre, userName, adSoyad, telNo, sahteEmail, userID, kaydedilecekKullaniciDetaylari)
+
+                                                        mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
+                                                                .addOnCompleteListener(object : OnCompleteListener<Void> {
+                                                                    override fun onComplete(p0: Task<Void>) {
+                                                                        if (p0!!.isSuccessful) {
+                                                                            fcmTokenKaydet()
+                                                                            progressBar.visibility = View.INVISIBLE
+                                                                        } else {
+                                                                            progressBar.visibility = View.INVISIBLE
+                                                                            mAuth.currentUser!!.delete()
+                                                                                    .addOnCompleteListener(object : OnCompleteListener<Void> {
+                                                                                        override fun onComplete(p0: Task<Void>) {
+                                                                                            if (p0!!.isSuccessful) {
+                                                                                                Toast.makeText(activity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
+                                                                                            }
+                                                                                        }
+
+                                                                                    })
+                                                                        }
+                                                                    }
+
+
+                                                                })
+                                                    } else {
+                                                        progressBar.visibility = View.INVISIBLE
+                                                        Toast.makeText(activity, "Oturum açılamadı :" + p0!!.exception, Toast.LENGTH_SHORT).show()
+                                                    }
+
+                                                }
+
+                                            })
+
+
+                                }
+
+
+                            }
+
                         }
-
-                        if (userNameKullanimdaMi == false) {
-
-
+                        //veritabanında kullanıcı yok, aynen kaydet
+                        else{
                             progressBar.visibility = View.VISIBLE
 
                             //kullanıcı email ile kaydolmak istiyor
@@ -207,130 +326,15 @@ class KayitFragment : Fragment() {
 
                         }
 
-                    }
-                    //veritabanında kullanıcı yok, aynen kaydet
-                    else{
-                        progressBar.visibility = View.VISIBLE
-
-                        //kullanıcı email ile kaydolmak istiyor
-                        if (emailIleKayitIslemi) {
-
-                            var sifre = view.etSifre.text.toString()
-                            var adSoyad = view.etAdSoyad.text.toString()
-                            var userName = view.etKullaniciAdi.text.toString()
-
-
-                            mAuth.createUserWithEmailAndPassword(gelenEmail, sifre)
-                                    .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                                        override fun onComplete(p0: Task<AuthResult>) {
-
-                                            if (p0!!.isSuccessful) {
-
-                                                var userID = mAuth.currentUser!!.uid.toString()
-
-                                                //oturum açan kullanıcın verilerini databaseye kaydedelim...
-                                                var defaultProfilPicture = "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
-                                                var kaydedilecekKullaniciDetaylari = UserDetails("0", "0", "0", defaultProfilPicture, "", "")
-                                                var kaydedilecekKullanici = Users(gelenEmail, sifre, userName, adSoyad, "", "", userID, kaydedilecekKullaniciDetaylari)
-
-                                                mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
-                                                        .addOnCompleteListener(object : OnCompleteListener<Void> {
-                                                            override fun onComplete(p0: Task<Void>) {
-                                                                if (p0!!.isSuccessful) {
-                                                                    fcmTokenKaydet()
-                                                                    progressBar.visibility = View.INVISIBLE
-                                                                } else {
-                                                                    progressBar.visibility = View.INVISIBLE
-                                                                    mAuth.currentUser!!.delete()
-                                                                            .addOnCompleteListener(object : OnCompleteListener<Void> {
-                                                                                override fun onComplete(p0: Task<Void>) {
-                                                                                    if (p0!!.isSuccessful) {
-                                                                                        Toast.makeText(activity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
-                                                                                    }
-                                                                                }
-
-                                                                            })
-                                                                }
-                                                            }
-
-
-                                                        })
-
-
-                                            } else {
-                                                progressBar.visibility = View.INVISIBLE
-                                                Toast.makeText(activity, "Oturum açılamadı :" + p0!!.exception, Toast.LENGTH_SHORT).show()
-                                            }
-
-                                        }
-
-                                    })
-
-                        }
-
-                        //kulllanıcı telelfon no ile kayıt olmak istiyor
-                        else {
-
-                            var sifre = view.etSifre.text.toString()
-                            var sahteEmail = telNo + "@emre.com" //"+905547126420@emre.com"
-                            var adSoyad = view.etAdSoyad.text.toString()
-                            var userName = view.etKullaniciAdi.text.toString()
-                            mAuth.createUserWithEmailAndPassword(sahteEmail, sifre)
-                                    .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                                        override fun onComplete(p0: Task<AuthResult>) {
-
-                                            if (p0!!.isSuccessful) {
-
-                                                var userID = mAuth.currentUser!!.uid.toString()
-
-
-                                                //oturum açan kullanıcın verilerini databaseye kaydedelim...
-                                                var defaultProfilPicture = "https://emrealtunbilek.com/wp-content/uploads/2016/10/apple-icon-72x72.png"
-                                                var kaydedilecekKullaniciDetaylari = UserDetails("0", "0", "0", defaultProfilPicture, "", "")
-                                                var kaydedilecekKullanici = Users("", sifre, userName, adSoyad, telNo, sahteEmail, userID, kaydedilecekKullaniciDetaylari)
-
-                                                mRef.child("users").child(userID).setValue(kaydedilecekKullanici)
-                                                        .addOnCompleteListener(object : OnCompleteListener<Void> {
-                                                            override fun onComplete(p0: Task<Void>) {
-                                                                if (p0!!.isSuccessful) {
-                                                                    fcmTokenKaydet()
-                                                                    progressBar.visibility = View.INVISIBLE
-                                                                } else {
-                                                                    progressBar.visibility = View.INVISIBLE
-                                                                    mAuth.currentUser!!.delete()
-                                                                            .addOnCompleteListener(object : OnCompleteListener<Void> {
-                                                                                override fun onComplete(p0: Task<Void>) {
-                                                                                    if (p0!!.isSuccessful) {
-                                                                                        Toast.makeText(activity, "Kullanıcı kaydedilemedi, Tekrar deneyin", Toast.LENGTH_SHORT).show()
-                                                                                    }
-                                                                                }
-
-                                                                            })
-                                                                }
-                                                            }
-
-
-                                                        })
-                                            } else {
-                                                progressBar.visibility = View.INVISIBLE
-                                                Toast.makeText(activity, "Oturum açılamadı :" + p0!!.exception, Toast.LENGTH_SHORT).show()
-                                            }
-
-                                        }
-
-                                    })
-
-
-                        }
-
 
                     }
 
 
-                }
+                })
+            }else{
+                Toast.makeText(activity,"Kullanıcı adı ve şifre en az 6 karakter olmalıdır",Toast.LENGTH_SHORT).show()
+            }
 
-
-            })
 
 
         }
@@ -349,22 +353,12 @@ class KayitFragment : Fragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s!!.length > 5) {
-
-                if (etAdSoyad.text.toString().length > 5 && etKullaniciAdi.text.toString().length > 5 && etSifre.text.toString().length > 5) {
-
+            if (s!!.length >= 1 && view!!.etAdSoyad.text.toString().trim().length>=1 && view!!.etKullaniciAdi.text.toString().trim().length>=1 && view!!.etSifre.text.toString().trim().length>=1) {
                     btnGiris.isEnabled = true
                     btnGiris.setTextColor(ContextCompat.getColor(activity!!, R.color.beyaz))
                     btnGiris.setBackgroundResource(R.drawable.register_button_aktif)
-
-                } else {
-                    btnGiris.isEnabled = false
-                    btnGiris.setTextColor(ContextCompat.getColor(activity!!, R.color.sonukmavi))
-                    btnGiris.setBackgroundResource(R.drawable.register_button)
-                }
-
-
-            } else {
+            }
+            else {
                 btnGiris.isEnabled = false
                 btnGiris.setTextColor(ContextCompat.getColor(activity!!, R.color.sonukmavi))
                 btnGiris.setBackgroundResource(R.drawable.register_button)
