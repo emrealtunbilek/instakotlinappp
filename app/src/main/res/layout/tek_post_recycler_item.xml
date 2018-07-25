@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:text=" "
         android:textColor="@color/siyah"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
-        android:text="ealtunbilek"
+        android:text=" "
         android:textColor="@color/siyah"
         app:hashtagColor="@color/mavi"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,25 +90,29 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginStart="12dp"
-        android:text="3 GÜN ÖNCE"
+        android:text="  "
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgUserProfile">
 
 
         <com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.VideoView
+            android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:id="@+id/videoView">
+            android:visibility="gone">
 
             <View
                 android:id="@+id/videoKaranlik"
@@ -116,6 +120,7 @@
                 android:layout_height="300dp"
                 android:background="@color/siyah"
                 android:visibility="gone" />
+
             <com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.CameraAnimation
                 android:id="@+id/cameraAnimation"
                 android:layout_width="40dp"
@@ -126,6 +131,16 @@
         </com.emrealtunbilek.instakotlinapp.VideoRecyclerView.view.VideoView>
 
 
+        <ProgressBar
+            android:id="@+id/progressBar10"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgUserProfile" />
+
         <ImageView
             android:id="@+id/imgPostResim"
             android:layout_width="match_parent"
@@ -133,7 +148,7 @@
             android:adjustViewBounds="true"
             android:maxHeight="350dp"
             android:scaleType="centerCrop"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -147,6 +162,7 @@
             app:likeColor="@color/kirmizi"
             app:likeSize="128dp"
             app:likeSrc="@drawable/ic_begen_kirmizi" />
+
     </FrameLayout>
 
     <TextView
@@ -155,7 +171,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="  "
         android:textColor="@color/siyah"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,7 +184,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
-        android:text="12 yorumun tümünü gör"
+        android:text="  "
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/tvKacZamanOnce"
         app:layout_constraintStart_toStartOf="parent"

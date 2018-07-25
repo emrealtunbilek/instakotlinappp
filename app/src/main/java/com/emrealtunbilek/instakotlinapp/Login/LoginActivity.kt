@@ -47,8 +47,13 @@ class LoginActivity : AppCompatActivity() {
 
         btnGirisYap.setOnClickListener {
             //kullanıcı veritabanında aranır, bulunursa giriş yapma denemesi yapılır
-            progressBar3.visibility= View.VISIBLE
-            oturumAcacakKullaniciyiDenetle(etEmailTelorUsername.text.toString(), etSifre.text.toString())
+            if(etEmailTelorUsername.text.toString().trim().length >= 6 && etSifre.text.toString().trim().length >= 6){
+                progressBar3.visibility= View.VISIBLE
+                oturumAcacakKullaniciyiDenetle(etEmailTelorUsername.text.toString(), etSifre.text.toString())
+            }else{
+                Toast.makeText(this,"Kullanıcı adı veya şifre en az 6 karakter olmalıdır",Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         tvGirisYap.setOnClickListener {
@@ -115,7 +120,7 @@ class LoginActivity : AppCompatActivity() {
             girisYapacakEmail = okunanKullanici.email_phone_number.toString()
         } else {
 
-            if(!okunanKullanici.email.toString().isNullOrEmpty() && okunanKullanici.email_phone_number.toString().isNullOrEmpty()){
+            if(!okunanKullanici.email.toString().trim().isNullOrEmpty() && okunanKullanici.email_phone_number.toString().trim().isNullOrEmpty()){
                 girisYapacakEmail = okunanKullanici.email.toString()
             }else {
                 girisYapacakEmail = okunanKullanici.email_phone_number.toString()
@@ -170,7 +175,7 @@ class LoginActivity : AppCompatActivity() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-            if (etEmailTelorUsername.text.toString().length >= 6 && etSifre.text.toString().length >= 6) {
+            if (etEmailTelorUsername.text.toString().length >= 3 && etSifre.text.toString().length >= 3) {
 
                 btnGirisYap.isEnabled = true
                 btnGirisYap.setTextColor(ContextCompat.getColor(this@LoginActivity, R.color.beyaz))

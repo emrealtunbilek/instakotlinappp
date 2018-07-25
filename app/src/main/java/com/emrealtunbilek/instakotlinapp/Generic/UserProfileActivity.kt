@@ -102,6 +102,8 @@ class UserProfileActivity : AppCompatActivity() {
             containerButtons.visibility = View.GONE
             profileRecyclerView.visibility = View.GONE
             containerGizliUyari.visibility = View.VISIBLE
+            textView.setText("Bu Hesap Gizli")
+            textView2.setText("Fotoğraf ve videolarını görmek için bu hesabı\n takip et.")
 
 
         }
@@ -468,6 +470,20 @@ class UserProfileActivity : AppCompatActivity() {
 
     //1 ise grid 2 ise list view şeklinde veriler gösterilir
     private fun setupRecyclerView(layoutCesidi: Int) {
+
+        if(tumGonderiler.size==0){
+            golgelik2.visibility = View.GONE
+            golgelik3.visibility = View.GONE
+            profileRecyclerView.visibility = View.GONE
+            containerGizliUyari.visibility = View.VISIBLE
+            textView.setText("Henüz gönderi yok")
+            textView2.setText("")
+        }else{
+            golgelik2.visibility = View.VISIBLE
+            golgelik3.visibility = View.VISIBLE
+            profileRecyclerView.visibility = View.VISIBLE
+            containerGizliUyari.visibility = View.GONE
+        }
 
         if (layoutCesidi == 1) {
 

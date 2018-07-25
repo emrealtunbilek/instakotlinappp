@@ -24,7 +24,7 @@ class UniversalImageLoader(val mContext:Context) {
         get(){
 
           val defaultOptions = DisplayImageOptions.Builder()
-                  .showImageOnLoading(defaultImage)
+                  //.showImageOnLoading(defaultImage)
                   .showImageForEmptyUri(defaultImage)
                   .showImageOnFail(defaultImage)
                   .cacheOnDisk(true).cacheInMemory(true)
@@ -44,7 +44,7 @@ class UniversalImageLoader(val mContext:Context) {
 
     companion object {
 
-        private val defaultImage = R.drawable.ic_profile
+        private val defaultImage = R.drawable.defaultealogo
 
         fun setImage(imgURL:String, imageView:ImageView, mProgressBar:ProgressBar?, ilkKisim:String?){
 

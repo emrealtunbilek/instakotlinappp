@@ -271,6 +271,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun listeyiHazirla() {
 
+        if(gosterilecekTumGonderiler.size==0){
+            progressBar7.visibility=View.GONE
+        }
+
+
         var myRecyclerView=recyclerSonGonderiler
 
         var myLayoutManager=StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)

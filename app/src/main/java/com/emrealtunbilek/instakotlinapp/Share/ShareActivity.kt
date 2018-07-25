@@ -59,8 +59,7 @@ class ShareActivity : AppCompatActivity() {
                         if (report!!.areAllPermissionsGranted()) {
                             Log.e("HATA", "Tüm izinler verilmiş")
                             setupShareViewPager()
-                        }
-                        if (report!!.isAnyPermissionPermanentlyDenied) {
+                        }else if (report!!.isAnyPermissionPermanentlyDenied) {
                             Log.e("HATA", "izinlerden birine bidaha sorma denmiş")
 
                             var builder = AlertDialog.Builder(this@ShareActivity)
@@ -86,6 +85,8 @@ class ShareActivity : AppCompatActivity() {
                             })
                             builder.show()
 
+                        }else {
+                            finish()
                         }
 
                     }

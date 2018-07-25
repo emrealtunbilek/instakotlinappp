@@ -71,6 +71,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         var profileImage = tumLayout.imgUserProfile
         var userNameTitle = tumLayout.tvKullaniciAdiBaslik
         var gonderi = tumLayout.imgPostResim
+        var framelayout=tumLayout.frameLayout
         var userNameveAciklama = tumLayout.tvKullaniciAdiveAciklama
         var gonderiKacZamanOnce = tumLayout.tvKacZamanOnce
         var yorumYap = tumLayout.imgYorum
@@ -82,6 +83,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
         var myVideo = tumLayout.videoView
         var videoCameraAnim = tumLayout.cameraAnimation
         var videoKaranlikImage=tumLayout.videoKaranlik
+        var progressbar=tumLayout.progressBar10
 
 
         var olusturulanElemanVideoMu=false
@@ -129,7 +131,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
             }else {
                 myVideo.visibility=View.GONE
                 gonderi.visibility=View.VISIBLE
-                UniversalImageLoader.setImage(oankiGonderi.postURL!!, gonderi, null, "")
+                UniversalImageLoader.setImage(oankiGonderi.postURL!!, gonderi, progressbar, "")
             }
 
 
@@ -256,6 +258,7 @@ class HomeFragmentRecyclerAdapter(var context: Context, var tumGonderiler: Array
 
 
             }
+
 
 
         }

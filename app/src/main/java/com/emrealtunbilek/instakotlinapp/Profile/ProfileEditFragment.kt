@@ -124,39 +124,43 @@ class ProfileEditFragment : Fragment() {
     private fun kullaniciAdiniGuncelle(view: View, profilResmiDegisti: Boolean?) {
 
         if(!gelenKullaniciBilgileri!!.user_name!!.equals(view.etUserName.text.toString())){
+            if(view.etUserName.text.toString().trim().length>5){
+                mDatabaseRef.child("users").orderByChild("user_name").addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
 
-            mDatabaseRef.child("users").orderByChild("user_name").addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onCancelled(p0: DatabaseError?) {
+                    }
 
-                }
+                    override fun onDataChange(p0: DataSnapshot?) {
 
-                override fun onDataChange(p0: DataSnapshot?) {
+                        var userNameKullanimdaMi=false
 
-                    var userNameKullanimdaMi=false
+                        for(ds in p0!!.children){
 
-                    for(ds in p0!!.children){
+                            var okunanKullaniciAdi=ds!!.getValue(Users::class.java)!!.user_name
 
-                        var okunanKullaniciAdi=ds!!.getValue(Users::class.java)!!.user_name
+                            if(okunanKullaniciAdi!!.equals(view.etUserName.text.toString())){
+                                userNameKullanimdaMi=true
+                                profilBilgileriniGuncelle(view, profilResmiDegisti,false)
+                                break
+                            }
 
-                        if(okunanKullaniciAdi!!.equals(view.etUserName.text.toString())){
-                            userNameKullanimdaMi=true
-                            profilBilgileriniGuncelle(view, profilResmiDegisti,false)
-                            break
+
                         }
 
+                        if(userNameKullanimdaMi==false){
+                            mDatabaseRef.child("users").child(gelenKullaniciBilgileri!!.user_id).child("user_name").setValue(view.etUserName.text.toString())
+                            profilBilgileriniGuncelle(view, profilResmiDegisti,true)
+
+                        }
 
                     }
 
-                    if(userNameKullanimdaMi==false){
-                        mDatabaseRef.child("users").child(gelenKullaniciBilgileri!!.user_id).child("user_name").setValue(view.etUserName.text.toString())
-                        profilBilgileriniGuncelle(view, profilResmiDegisti,true)
 
-                    }
+                })
+            }else {
+                Toast.makeText(activity,"Kullanıcı adı en az 6 karakter olmalıdır",Toast.LENGTH_SHORT).show()
+            }
 
-                }
-
-
-            })
 
 
 
@@ -172,8 +176,13 @@ class ProfileEditFragment : Fragment() {
         var profilGuncellendiMi:Boolean?=null
 
         if (!gelenKullaniciBilgileri!!.adi_soyadi!!.equals(view.etProfileName.text.toString())) {
-            mDatabaseRef.child("users").child(gelenKullaniciBilgileri!!.user_id).child("adi_soyadi").setValue(view.etProfileName.text.toString())
-            profilGuncellendiMi=true
+            if(!view.etProfileName.text.toString().trim().isNullOrEmpty()){
+                mDatabaseRef.child("users").child(gelenKullaniciBilgileri!!.user_id).child("adi_soyadi").setValue(view.etProfileName.text.toString())
+                profilGuncellendiMi=true
+            }else{
+                Toast.makeText(activity,"Ad Soyad boş olamaz",Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         if(!gelenKullaniciBilgileri!!.user_detail!!.biography!!.equals(view.etUserBio.text.toString())){
