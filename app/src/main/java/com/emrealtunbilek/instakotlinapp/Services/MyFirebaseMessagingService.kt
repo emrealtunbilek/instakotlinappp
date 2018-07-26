@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.support.v4.app.NotificationCompat
-import android.util.Log
 import com.emrealtunbilek.instakotlinapp.Home.ChatActivity
 import com.emrealtunbilek.instakotlinapp.Home.HomeActivity
 import com.emrealtunbilek.instakotlinapp.Home.MessagesFragment
@@ -24,21 +23,32 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(p0: RemoteMessage?) {
 
-        var bildirimBaslik=p0!!.notification!!.title
-        var bildirimBody = p0!!.notification!!.body
+        if(p0!!.data != null){
 
-        var bildirimData=p0!!.data.get("secilenUserID")
+            if(p0!!.data!!.get("bildirimTuru")!!.toString().equals("yeni_mesaj")){
 
-        Log.e("FCM","BAŞLIK : $bildirimBaslik gövde: $bildirimBody")
+                var mesajGonderenUserName= p0!!.data.get("kimYolladi")
+                var sonMesaj = p0!!.data.get("neYolladi")
+                var mesajGonderenUserID=p0!!.data.get("secilenUserID")
 
-        if(bildirimBaslik.equals("Yeni Mesaj")){
+                if(ChatActivity.activityAcikMi==false && MessagesFragment.fragmentAcikMi==false)
+                yeniMesajBildiriminiGoster("Yeni Mesaj",mesajGonderenUserName +" : "+sonMesaj,mesajGonderenUserID)
 
-            if(MessagesFragment.fragmentAcikMi==false && ChatActivity.activityAcikMi==false)
-            yeniMesajBildiriminiGoster(bildirimBaslik, bildirimBody, bildirimData)
 
-        }else {
-            bildirimGoster(bildirimBaslik, bildirimBody)
+            }else if(p0!!.data!!.get("bildirimTuru")!!.toString().equals("yeni_takip_istek")){
+
+                var kimYolladi=p0!!.data.get("kimYolladi")
+                var takipEtmekIsteyenUserID=p0!!.data.get("secilenUserID")
+
+                yeniTakipBildiriminiGoster("Yeni Takip İsteği",kimYolladi +" seni takip etmek istiyor",takipEtmekIsteyenUserID)
+
+
+            }
+
+
         }
+
+
 
 
 
@@ -67,6 +77,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(bildirimIDOlustur(gidilecekUserID!!),builder)
 
 
+
+
+
+
     }
 
     private fun bildirimIDOlustur(gidilecekUserID: String): Int{
@@ -79,7 +93,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         return id
     }
 
-    private fun bildirimGoster(bildirimBaslik: String?, bildirimBody: String?) {
+    private fun yeniTakipBildiriminiGoster(bildirimBaslik: String?, bildirimBody: String?, takipEtmekIsteyenUserID: String?) {
 
         var pendingIntent=Intent(this,HomeActivity::class.java)
         pendingIntent.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -98,7 +112,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .build()
 
         var notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(System.currentTimeMillis().toInt(),builder)
+        notificationManager.notify(bildirimIDOlustur(takipEtmekIsteyenUserID!!),builder)
 
     }
 

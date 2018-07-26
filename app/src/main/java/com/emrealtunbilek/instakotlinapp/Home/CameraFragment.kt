@@ -41,14 +41,20 @@ class CameraFragment : Fragment() {
                 super.onPictureTaken(jpeg)
 
                 var cekilenFotoAdi=System.currentTimeMillis()
-                var cekilenFoto= File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/TestKlasor/"+cekilenFotoAdi+".jpg")
+                var cekilenFotoKlasor= File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/InstagramKotlinApp/compressed/")
 
-                var dosyaOlustur= FileOutputStream(cekilenFoto)
-                dosyaOlustur.write(jpeg)
-                dosyaOlustur.close()
+                if(cekilenFotoKlasor.isDirectory || cekilenFotoKlasor.mkdirs()){
+                    var dosyaTamYolu=File(Environment.getExternalStorageDirectory().absolutePath +"/DCIM/InstagramKotlinApp/compressed/"+cekilenFotoAdi+".jpg")
+                    var dosyaOlustur= FileOutputStream(dosyaTamYolu)
+                    dosyaOlustur.write(jpeg)
+                    Log.e("HATA2","cekilen resim buraya kaydedildi :"+dosyaTamYolu.absolutePath.toString())
+                    dosyaOlustur.close()
+
+                }
 
 
-                Log.e("HATA2","cekilen resim buraya kaydedildi :"+cekilenFoto.absolutePath.toString())
+
+
 
 
 

@@ -22,7 +22,7 @@
     <com.algolia.instantsearch.ui.views.Hits
         android:id="@+id/listeAramaSonuclari"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="200dp"
         android:layout_marginTop="4dp"
         algolia:itemLayout="@layout/hits_item"
         app:layout_constraintEnd_toEndOf="parent"

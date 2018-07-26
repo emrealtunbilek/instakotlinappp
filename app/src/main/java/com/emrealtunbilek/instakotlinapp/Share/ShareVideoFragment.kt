@@ -34,7 +34,7 @@ class ShareVideoFragment : Fragment() {
         videoView=view.videoView
 
         var olusacakVideoDosyaAdi=System.currentTimeMillis()
-        var olusacakVideoDosya= File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/TestKlasor/"+olusacakVideoDosyaAdi+".mp4")
+        var olusacakVideoDosya= File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/InstagramKotlinApp/compressed/"+olusacakVideoDosyaAdi+".mp4")
 
         videoView!!.addCameraListener(object : CameraListener(){
 

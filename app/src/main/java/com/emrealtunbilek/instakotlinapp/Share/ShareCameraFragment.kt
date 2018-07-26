@@ -48,7 +48,7 @@ class ShareCameraFragment : Fragment() {
                 super.onPictureTaken(jpeg)
 
                 var cekilenFotoAdi=System.currentTimeMillis()
-                var cekilenFoto=File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/TestKlasor/"+cekilenFotoAdi+".jpg")
+                var cekilenFoto=File(Environment.getExternalStorageDirectory().absolutePath+"/DCIM/InstagramKotlinApp/compressed/"+cekilenFotoAdi+".jpg")
 
                 var dosyaOlustur=FileOutputStream(cekilenFoto)
                 dosyaOlustur.write(jpeg)

@@ -27,12 +27,10 @@ exports.takipIstegiBildirimiGonder=functions.database.ref("/takip_istekleri/{tak
 
       const yeniTakipIstegiBildirimi = {
 
-        notification : {
-          click_action : '.HomeActivity',
-          title : 'Takip İsteği',
-          body  : `${takipEtmekIsteyenUserName} seni takip etmek istiyor`,
-          icon  : 'default'
-
+        data : {
+          bildirimTuru  : `yeni_takip_istek`,
+          kimYolladi    : `${takipEtmekIsteyenUserName}`,
+          secilenUserID : `${takipEtmekIsteyenUserID}`
         }
       };
 
@@ -77,15 +75,11 @@ const user_token=result.val();
         if(son_mesaji_yazan_userin_idsi == mesajGonderenUserID){
 
           const yeniMesajBildirimi = {
-            notification : {
-              click_action : '.HomeActivity',
-              title : 'Yeni Mesaj',
-              body  : `${user_name} : ${son_yazilan_mesaj} `,
-              icon  : 'default'
-            },
-
             data : {
-              secilenUserID : `${mesajGonderenUserID}`
+              bildirimTuru  : `yeni_mesaj`,
+              kimYolladi    : `${user_name}`,
+              neYolladi     : `${son_yazilan_mesaj}`,
+              secilenUserID : `${mesajGonderenUserID}`,
             }
           };
 
