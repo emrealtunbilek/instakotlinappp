@@ -213,7 +213,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA","LoginActivitydesin")
+        //Log.e("HATA","LoginActivitydesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 

@@ -57,10 +57,10 @@ class ShareActivity : AppCompatActivity() {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
 
                         if (report!!.areAllPermissionsGranted()) {
-                            Log.e("HATA", "Tüm izinler verilmiş")
+                            //Log.e("HATA", "Tüm izinler verilmiş")
                             setupShareViewPager()
                         }else if (report!!.isAnyPermissionPermanentlyDenied) {
-                            Log.e("HATA", "izinlerden birine bidaha sorma denmiş")
+                            //Log.e("HATA", "izinlerden birine bidaha sorma denmiş")
 
                             var builder = AlertDialog.Builder(this@ShareActivity)
                             builder.setTitle("İzin Gerekli")
@@ -93,7 +93,7 @@ class ShareActivity : AppCompatActivity() {
 
                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
 
-                        Log.e("HATA", "izinlerden biri reddedilmiş, kullanıcıyı ikna et")
+                        //Log.e("HATA", "izinlerden biri reddedilmiş, kullanıcıyı ikna et")
 
                         var builder = AlertDialog.Builder(this@ShareActivity)
                         builder.setTitle("İzin Gerekli")
@@ -121,7 +121,7 @@ class ShareActivity : AppCompatActivity() {
                 })
                 .withErrorListener(object : PermissionRequestErrorListener {
                     override fun onError(error: DexterError?) {
-                        Log.e("HATA", error!!.toString())
+                        //Log.e("HATA", error!!.toString())
                     }
 
                 }).check()
@@ -209,7 +209,7 @@ class ShareActivity : AppCompatActivity() {
 
                 if (user == null) {
 
-                    Log.e("HATA", "Kullanıcı oturum açmamış, ProfileActivitydesin")
+                    //Log.e("HATA", "Kullanıcı oturum açmamış, ProfileActivitydesin")
 
                     var intent = Intent(this@ShareActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

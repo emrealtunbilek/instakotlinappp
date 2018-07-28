@@ -76,7 +76,7 @@ class AlgolisSearchMesajActivity : AppCompatActivity() {
                 var user = FirebaseAuth.getInstance().currentUser
 
                 if (user == null) {
-                    Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
+                    //Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
                     var intent = Intent(this@AlgolisSearchMesajActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
@@ -92,7 +92,7 @@ class AlgolisSearchMesajActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA", "AlgoliaSearchmesajydesin")
+        //Log.e("HATA", "AlgoliaSearchmesajydesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 

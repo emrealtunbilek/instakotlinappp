@@ -60,15 +60,15 @@ class ProfileActivity : AppCompatActivity() {
 
                 var backStacktekiElemanSayisi= supportFragmentManager.backStackEntryCount
                 if(backStacktekiElemanSayisi==0){
-                    Log.e("MMM","Back stackte eleman yok")
+                    //Log.e("MMM","Back stackte eleman yok")
                     tumlayout.visibility= View.VISIBLE
                     profileContainer.visibility=View.GONE
                 }else{
                     tumlayout.visibility= View.GONE
                     profileContainer.visibility=View.VISIBLE
-                    Log.e("MMM","*****************************************")
-                    for(i in 0..backStacktekiElemanSayisi-1)
-                        Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
+                    //Log.e("MMM","*****************************************")
+                   // for(i in 0..backStacktekiElemanSayisi-1)
+                        //Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
 
                 }
 
@@ -247,7 +247,7 @@ class ProfileActivity : AppCompatActivity() {
 
                         if(p0!!.hasChildren())
                         {
-                            Log.e("HATA","COCUK VAR")
+                            //Log.e("HATA","COCUK VAR")
                             for (ds in p0!!.children){
 
                                 var eklenecekUserPosts= UserPosts()
@@ -307,7 +307,7 @@ class ProfileActivity : AppCompatActivity() {
 
             if (myRecyclerView!= null && myRecyclerView!!.getHandingVideoHolder() != null){
                 myRecyclerView!!.getHandingVideoHolder().stopVideo();
-                Log.e("HATA","Gridlayout aktif, videoları durdur")
+                //Log.e("HATA","Gridlayout aktif, videoları durdur")
             }
 
 
@@ -326,7 +326,7 @@ class ProfileActivity : AppCompatActivity() {
 
             if (myRecyclerView!= null && myRecyclerView?.getHandingVideoHolder() != null) {
                 myRecyclerView!!.getHandingVideoHolder().playVideo();
-                Log.e("HATA","Listview aktif, varsa bekleyen videoyu oynat")
+                //Log.e("HATA","Listview aktif, varsa bekleyen videoyu oynat")
             }
 
             imgGrid.setColorFilter(ContextCompat.getColor(this,R.color.siyah),PorterDuff.Mode.SRC_IN)
@@ -369,7 +369,7 @@ class ProfileActivity : AppCompatActivity() {
 
                 if(user == null){
 
-                    Log.e("HATA","Kullanıcı oturum açmamış, ProfileActivitydesin")
+                    //Log.e("HATA","Kullanıcı oturum açmamış, ProfileActivitydesin")
 
                     var intent= Intent(this@ProfileActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -387,7 +387,7 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA","ProfileActivitydesin")
+        //Log.e("HATA","ProfileActivitydesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 
@@ -403,7 +403,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onResume()
         if (myRecyclerView!= null && myRecyclerView?.getHandingVideoHolder() != null) {
             myRecyclerView!!.getHandingVideoHolder().playVideo();
-            Log.e("HATA","RESUME CALISIYO")
+            //Log.e("HATA","RESUME CALISIYO")
         }
 
     }
@@ -412,7 +412,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onPause()
         if (myRecyclerView!= null && myRecyclerView!!.getHandingVideoHolder() != null){
             myRecyclerView!!.getHandingVideoHolder().stopVideo();
-            Log.e("HATA","PAUSE CALISIYO")
+            //Log.e("HATA","PAUSE CALISIYO")
         }
     }
 }

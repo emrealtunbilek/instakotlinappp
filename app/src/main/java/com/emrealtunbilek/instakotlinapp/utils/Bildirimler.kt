@@ -49,7 +49,7 @@ object Bildirimler {
                         for (bildirim in p0!!.children){
 
                             var okunanBildirimKey=bildirim!!.key
-                            Log.e("KONTROL",bildirim.toString())
+                            //Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == YENI_TAKIP_ISTEGI && bildirim.child("user_id").getValue()!!.equals(mUserID)){
                                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).child(okunanBildirimKey).removeValue()
                                 break
@@ -96,7 +96,7 @@ object Bildirimler {
                         for (bildirim in p0!!.children){
 
                             var okunanBildirimKey=bildirim!!.key
-                            Log.e("KONTROL",bildirim.toString())
+                            //Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == TAKIP_ETMEYE_BASLADI && bildirim.child("user_id").getValue()!!.equals(mUserID)){
                                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).child(okunanBildirimKey).removeValue()
                                 silindiMi=true
@@ -120,7 +120,7 @@ object Bildirimler {
                         for (bildirim in p0!!.children){
 
                             var okunanBildirimKey=bildirim!!.key
-                            Log.e("KONTROL",bildirim.toString())
+                            //Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == TAKIP_ISTEGI_ONAYLANDI && bildirim.child("user_id").getValue()!!.equals(bildirimYapanUserID)){
                                 mRef.child("benim_bildirimlerim").child(mUserID).child(okunanBildirimKey).removeValue()
                                 silindiMi=true
@@ -147,7 +147,7 @@ object Bildirimler {
                         for (bildirim in p0!!.children){
 
                             var okunanBildirimKey=bildirim!!.key
-                            Log.e("KONTROL",bildirim.toString())
+                            //Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == TAKIP_ETMEYE_BASLADI && bildirim.child("user_id").getValue()!!.equals(bildirimYapanUserID)){
                                 mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).child(okunanBildirimKey).removeValue()
                                 break
@@ -172,7 +172,7 @@ object Bildirimler {
                         for (bildirim in p0!!.children){
 
                             var okunanBildirimKey=bildirim!!.key
-                            Log.e("VVV",bildirim.toString())
+                            //Log.e("VVV",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == YENI_TAKIP_ISTEGI && bildirim.child("user_id").getValue()!!.equals(bildirimYapanUserID)){
                                 mRef.child("benim_bildirimlerim").child(mAuth.uid).child(okunanBildirimKey).removeValue()
                                 break
@@ -208,7 +208,7 @@ object Bildirimler {
                 yeniBildirim.put("bildirim_tur", TAKIP_ISTEGI_ONAYLANDI)
                 yeniBildirim.put("user_id", bildirimYapanUserID)
                 yeniBildirim.put("time", ServerValue.TIMESTAMP)
-                Log.e("FCM","BİLDİRİM KAYDEDILDI")
+                //Log.e("FCM","BİLDİRİM KAYDEDILDI")
                 mRef.child("benim_bildirimlerim").child(mUserID).child(yeniBildirimID).setValue(yeniBildirim)
             }
 
@@ -254,7 +254,7 @@ object Bildirimler {
                         for (bildirim in p0!!.children){
 
                             var okunanBildirimKey=bildirim!!.key
-                            Log.e("KONTROL",bildirim.toString())
+                            //Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == GONDERI_BEGENILDI && bildirim.child("gonderi_id").getValue()!!.equals(gonderiID)){
                                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).child(okunanBildirimKey).removeValue()
                                 break
@@ -277,7 +277,7 @@ object Bildirimler {
                         for (bildirim in p0!!.children){
 
                             var okunanBildirimKey=bildirim!!.key
-                            Log.e("KONTROL",bildirim.toString())
+                            //Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == GONDERI_BEGENILDI && bildirim.child("gonderi_id").getValue()!!.equals(gonderiID)){
                                 mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).child(okunanBildirimKey).removeValue()
                                 break

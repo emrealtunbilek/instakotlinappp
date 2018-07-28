@@ -40,15 +40,15 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
                 var backStacktekiElemanSayisi= supportFragmentManager.backStackEntryCount
                 if(backStacktekiElemanSayisi==0){
-                    Log.e("MMM","Back stackte eleman yok")
+                    //Log.e("MMM","Back stackte eleman yok")
                     profileSettingsRoot.visibility=View.VISIBLE
                     profileSettingsContainer.visibility=View.GONE
                 }else{
                     profileSettingsRoot.visibility=View.GONE
                     profileSettingsContainer.visibility=View.VISIBLE
-                    Log.e("MMM","*****************************************")
-                    for(i in 0..backStacktekiElemanSayisi-1)
-                        Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
+                    //Log.e("MMM","*****************************************")
+                    //for(i in 0..backStacktekiElemanSayisi-1)
+                        //Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
 
                 }
 
@@ -185,7 +185,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
                 if(user == null){
 
-                    Log.e("HATA","Kullanıcı oturum açmamış, ProfileActivitydesin")
+                    //Log.e("HATA","Kullanıcı oturum açmamış, ProfileActivitydesin")
 
                     var intent= Intent(this@ProfileSettingsActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -208,7 +208,7 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA","ProfileActivitydesin")
+        //Log.e("HATA","ProfileActivitydesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 

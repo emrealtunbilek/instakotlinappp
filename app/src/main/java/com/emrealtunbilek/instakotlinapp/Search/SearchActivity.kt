@@ -50,15 +50,15 @@ class SearchActivity : AppCompatActivity() {
 
                 var backStacktekiElemanSayisi= supportFragmentManager.backStackEntryCount
                 if(backStacktekiElemanSayisi==0){
-                    Log.e("MMM","Back stackte eleman yok")
+                    //Log.e("MMM","Back stackte eleman yok")
                     tumLayout.visibility= View.VISIBLE
                     frameLayout.visibility=View.GONE
                 }else{
                     tumLayout.visibility=View.GONE
                     frameLayout.visibility=View.VISIBLE
-                    Log.e("MMM","*****************************************")
-                    for(i in 0..backStacktekiElemanSayisi-1)
-                        Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
+                    //Log.e("MMM","*****************************************")
+                    //for(i in 0..backStacktekiElemanSayisi-1)
+                        //Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
 
                 }
 
@@ -98,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
                     for (id in p0!!.children){
                         takipEttigimUserIDleri.add(id.key)
                     }
-                    Log.e("kkk","takip ettiğim user idleri "+takipEttigimUserIDleri)
+                    //Log.e("kkk","takip ettiğim user idleri "+takipEttigimUserIDleri)
 
                     if(takipEttigimUserIDleri.size>0){
                         takipEttikleriminTakipEttigiKisiIDleriniGetir()
@@ -143,19 +143,19 @@ class SearchActivity : AppCompatActivity() {
 
                           }
                           else{
-                              Log.e("kkk","bu zaten listede diye eklenmedi:"+id.key)
+                              //Log.e("kkk","bu zaten listede diye eklenmedi:"+id.key)
 
                           }
                        }
 
                        if(i==toplamTakipciSayisi-1){
-                           Log.e("kkk"," i değeri: "+i+"takip edilen user id sayısı:"+takipEttigimUserIDleri.size+" "+takipEttigimUserIDleri)
+                           //Log.e("kkk"," i değeri: "+i+"takip edilen user id sayısı:"+takipEttigimUserIDleri.size+" "+takipEttigimUserIDleri)
                            takipEdilenlerinSonGonderileriniGetir()
                        }
 
                    }else{
                        if(i==toplamTakipciSayisi-1){
-                           Log.e("kkk"," i değeri else kısmı: "+i+"takip edilen user id sayısı:"+takipEttigimUserIDleri.size+" "+takipEttigimUserIDleri)
+                           //Log.e("kkk"," i değeri else kısmı: "+i+"takip edilen user id sayısı:"+takipEttigimUserIDleri.size+" "+takipEttigimUserIDleri)
                            takipEdilenlerinSonGonderileriniGetir()
                        }
                        progressBar7.visibility=View.GONE
@@ -177,7 +177,7 @@ class SearchActivity : AppCompatActivity() {
             takipEttigimUserIDleri.remove(myUserID)
         }
 
-        Log.e("kkk","i maximum değeri :"+(takipEttigimUserIDleri.size-1))
+        //Log.e("kkk","i maximum değeri :"+(takipEttigimUserIDleri.size-1))
 
 
         for (i in 0..takipEttigimUserIDleri.size-1){
@@ -192,7 +192,7 @@ class SearchActivity : AppCompatActivity() {
                 if(p0!!.getValue() != null){
 
                    var okunanUser=p0!!.getValue(Users::class.java)
-                    Log.e("kkk","şuan gönderileri getirilen user name:"+okunanUser!!.user_name)
+                    //Log.e("kkk","şuan gönderileri getirilen user name:"+okunanUser!!.user_name)
 
 
 
@@ -218,22 +218,22 @@ class SearchActivity : AppCompatActivity() {
                                    eklenecekUserPost.postURL=okunanPost!!.file_url
 
                                    gosterilecekTumGonderiler.add(eklenecekUserPost)
-                                   Log.e("kkk","toplam post sayısı:"+gosterilecekTumGonderiler.size)
+                                   //Log.e("kkk","toplam post sayısı:"+gosterilecekTumGonderiler.size)
 
                                }
-                               Log.e("kkk","i değeri:"+i)
+                               //Log.e("kkk","i değeri:"+i)
                                if(i==takipEttigimUserIDleri.size-1){
                                    listeyiHazirla()
-                                   Log.e("kkk","liste hazırlanacak size:"+gosterilecekTumGonderiler)
+                                   //Log.e("kkk","liste hazırlanacak size:"+gosterilecekTumGonderiler)
                                }else if(gosterilecekTumGonderiler.size>=50){
                                    listeyiHazirla()
                                }
 
                            }else{
-                               Log.e("kkk","i değeri:"+i)
+                               //Log.e("kkk","i değeri:"+i)
                                if(i==takipEttigimUserIDleri.size-1){
                                    listeyiHazirla()
-                                   Log.e("kkk","liste hazırlanacak else içerdeki size:"+gosterilecekTumGonderiler)
+                                   //Log.e("kkk","liste hazırlanacak else içerdeki size:"+gosterilecekTumGonderiler)
                                }else if(gosterilecekTumGonderiler.size>=50){
                                    listeyiHazirla()
                                }
@@ -250,7 +250,7 @@ class SearchActivity : AppCompatActivity() {
                     progressBar7.visibility=View.GONE
                     if(i==takipEttigimUserIDleri.size-1){
                         listeyiHazirla()
-                        Log.e("kkk","liste hazırlanacak else dışardaki size:"+gosterilecekTumGonderiler)
+                        //Log.e("kkk","liste hazırlanacak else dışardaki size:"+gosterilecekTumGonderiler)
                     }else if(gosterilecekTumGonderiler.size>=50){
                         listeyiHazirla()
                     }
@@ -326,7 +326,7 @@ class SearchActivity : AppCompatActivity() {
                 var user = FirebaseAuth.getInstance().currentUser
 
                 if (user == null) {
-                    Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
+                    //Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
                     var intent = Intent(this@SearchActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
@@ -342,7 +342,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA", "HomeActivitydesin")
+        //Log.e("HATA", "HomeActivitydesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 

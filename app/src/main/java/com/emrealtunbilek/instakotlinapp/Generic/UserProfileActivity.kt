@@ -64,15 +64,15 @@ class UserProfileActivity : AppCompatActivity() {
 
                 var backStacktekiElemanSayisi= supportFragmentManager.backStackEntryCount
                 if(backStacktekiElemanSayisi==0){
-                    Log.e("MMM","Back stackte eleman yok")
+                    //Log.e("MMM","Back stackte eleman yok")
                     tumlayout.visibility= View.VISIBLE
                     profileContainer.visibility=View.GONE
                 }else{
                     tumlayout.visibility= View.GONE
                     profileContainer.visibility=View.VISIBLE
-                    Log.e("MMM","*****************************************")
-                    for(i in 0..backStacktekiElemanSayisi-1)
-                        Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
+                    //Log.e("MMM","*****************************************")
+                    //for(i in 0..backStacktekiElemanSayisi-1)
+                        //Log.e("MMM",""+supportFragmentManager.getBackStackEntryAt(i).name)
 
                 }
 
@@ -116,7 +116,7 @@ class UserProfileActivity : AppCompatActivity() {
 
             if (kullaniciPostListe != null && kullaniciPostListe!!.getHandingVideoHolder() != null) {
                 kullaniciPostListe!!.getHandingVideoHolder().stopVideo();
-                Log.e("HATA", "PAUSE CALISIYO")
+                //Log.e("HATA", "PAUSE CALISIYO")
             }
 
             tumGonderiler.clear()
@@ -225,7 +225,7 @@ class UserProfileActivity : AppCompatActivity() {
                         mRef.child("following").child(mUser.uid).child(secilenUserID).setValue(secilenUserID)
                         mRef.child("follower").child(secilenUserID).child(mUser.uid).setValue(mUser.uid)
 
-                        Log.e("KONTROL", "PROFILE ARTIK GIZLI DEGIL TAKIBE BASLA")
+                        //Log.e("KONTROL", "PROFILE ARTIK GIZLI DEGIL TAKIBE BASLA")
 
                         Bildirimler.bildirimKaydet(secilenUserID,Bildirimler.TAKIP_ETMEYE_BASLADI)
 
@@ -417,7 +417,7 @@ class UserProfileActivity : AppCompatActivity() {
         super.onResume()
         if (kullaniciPostListe != null && kullaniciPostListe?.getHandingVideoHolder() != null) {
             kullaniciPostListe!!.getHandingVideoHolder().playVideo();
-            Log.e("HATA", "RESUME CALISIYO")
+            //Log.e("HATA", "RESUME CALISIYO")
         }
 
     }
@@ -426,7 +426,7 @@ class UserProfileActivity : AppCompatActivity() {
         super.onPause()
         if (kullaniciPostListe != null && kullaniciPostListe!!.getHandingVideoHolder() != null) {
             kullaniciPostListe!!.getHandingVideoHolder().stopVideo();
-            Log.e("HATA", "PAUSE CALISIYO")
+            //Log.e("HATA", "PAUSE CALISIYO")
         }
     }
 
@@ -461,7 +461,7 @@ class UserProfileActivity : AppCompatActivity() {
                     override fun onDataChange(p0: DataSnapshot?) {
 
                         if (p0!!.hasChildren()) {
-                            Log.e("HATA", "COCUK VAR")
+                            //Log.e("HATA", "COCUK VAR")
                             for (ds in p0!!.children) {
 
                                 var eklenecekUserPosts = UserPosts()
@@ -514,7 +514,7 @@ class UserProfileActivity : AppCompatActivity() {
 
             if (kullaniciPostListe != null && kullaniciPostListe!!.getHandingVideoHolder() != null) {
                 kullaniciPostListe!!.getHandingVideoHolder().stopVideo();
-                Log.e("HATA", "Gridlayout aktif, videoları durdur")
+                //Log.e("HATA", "Gridlayout aktif, videoları durdur")
             }
 
             imgGrid.setColorFilter(ContextCompat.getColor(this, R.color.mavi), PorterDuff.Mode.SRC_IN)
@@ -527,7 +527,7 @@ class UserProfileActivity : AppCompatActivity() {
         } else if (layoutCesidi == 2) {
             if (kullaniciPostListe != null && kullaniciPostListe?.getHandingVideoHolder() != null) {
                 kullaniciPostListe!!.getHandingVideoHolder().playVideo();
-                Log.e("HATA", "Listview aktif, varsa bekleyen videoyu oynat")
+                //Log.e("HATA", "Listview aktif, varsa bekleyen videoyu oynat")
             }
 
             imgGrid.setColorFilter(ContextCompat.getColor(this, R.color.siyah), PorterDuff.Mode.SRC_IN)
@@ -565,7 +565,7 @@ class UserProfileActivity : AppCompatActivity() {
 
                 if (user == null) {
 
-                    Log.e("HATA", "Kullanıcı oturum açmamış, UserProfileActivitydesin")
+                    //Log.e("HATA", "Kullanıcı oturum açmamış, UserProfileActivitydesin")
 
                     var intent = Intent(this@UserProfileActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -582,7 +582,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA", "UserProfileActivitydesin")
+        //Log.e("HATA", "UserProfileActivitydesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 

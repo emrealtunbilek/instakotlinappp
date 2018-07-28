@@ -47,7 +47,7 @@ class CameraFragment : Fragment() {
                     var dosyaTamYolu=File(Environment.getExternalStorageDirectory().absolutePath +"/DCIM/InstagramKotlinApp/compressed/"+cekilenFotoAdi+".jpg")
                     var dosyaOlustur= FileOutputStream(dosyaTamYolu)
                     dosyaOlustur.write(jpeg)
-                    Log.e("HATA2","cekilen resim buraya kaydedildi :"+dosyaTamYolu.absolutePath.toString())
+                    //Log.e("HATA2","cekilen resim buraya kaydedildi :"+dosyaTamYolu.absolutePath.toString())
                     dosyaOlustur.close()
 
                 }
@@ -91,20 +91,20 @@ class CameraFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.e("HATA2"," CAMERA FRAGMENTI ON RESUME")
+        //Log.e("HATA2"," CAMERA FRAGMENTI ON RESUME")
         if(kameraIzniVerildiMi==true)
         myCamera!!.start()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.e("HATA2"," CAMERA FRAGMENTI ON PAUSE")
+        //Log.e("HATA2"," CAMERA FRAGMENTI ON PAUSE")
         myCamera!!.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.e("HATA2"," CAMERA FRAGMENTI ON DESTROY")
+        //Log.e("HATA2"," CAMERA FRAGMENTI ON DESTROY")
 
         if(myCamera!=null)
             myCamera!!.destroy()

@@ -66,7 +66,7 @@ class ShareActivityGridViewAdapter(context: Context?, resource: Int, var klasord
             var videoSuresi=retriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
             var videoSuresiLong=videoSuresi.toLong()
 
-            Log.e("HATA6","VİDEO SURESı:"+videoSuresiLong)
+            //Log.e("HATA6","VİDEO SURESı:"+videoSuresiLong)
 
             viewHolder.tvSure.setText(convertDuration(videoSuresiLong))
             UniversalImageLoader.setImage(klasordekiDosyalar.get(position), viewHolder.imageView, viewHolder.progressBar,"file:/")

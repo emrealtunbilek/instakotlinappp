@@ -181,7 +181,7 @@ class ShareNextFragment : Fragment() {
                 .addOnProgressListener(object : OnProgressListener<UploadTask.TaskSnapshot> {
                     override fun onProgress(p0: UploadTask.TaskSnapshot?) {
                         var progress = 100.0 * p0!!.bytesTransferred / p0!!.totalByteCount
-                        Log.e("HATA", "ILERLEME : " + progress)
+                        //Log.e("HATA", "ILERLEME : " + progress)
                         dialogYukleniyor.tvBilgi.text = "%" + progress.toInt().toString() + " yüklendi.."
 
                     }

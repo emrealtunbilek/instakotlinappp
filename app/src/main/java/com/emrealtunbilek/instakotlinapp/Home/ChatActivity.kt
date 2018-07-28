@@ -180,11 +180,11 @@ class ChatActivity : AppCompatActivity() {
 
                 if(!TextUtils.isEmpty(p0.toString()) && p0!!.toString().trim().length == 1){
                     typing=true
-                    Log.e("KONTROL","KULLANICI YAZMAYA BASLAMIS")
+                    //Log.e("KONTROL","KULLANICI YAZMAYA BASLAMIS")
                     mYaziyorRef.child("typing").setValue(true)
                 }else if(typing && p0!!.toString().trim().length == 0){
                     typing=false
-                    Log.e("KONTROL","KULLANICI YAZMAYI BIRAKTI")
+                    //Log.e("KONTROL","KULLANICI YAZMAYI BIRAKTI")
                     mYaziyorRef.child("typing").setValue(false)
                 }
 
@@ -227,7 +227,7 @@ class ChatActivity : AppCompatActivity() {
 
                   override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
 
-                      Log.e("KONTROL","p0 kaç tane veri geldi "+p0!!.childrenCount+" pos:"+dahaFazlaMesajPos)
+                      //Log.e("KONTROL","p0 kaç tane veri geldi "+p0!!.childrenCount+" pos:"+dahaFazlaMesajPos)
                       var okunanMesaj=p0!!.getValue(Mesaj::class.java)
 
                       if(!zatenListedeOlanMesajID.equals(p0!!.key)){
@@ -246,7 +246,7 @@ class ChatActivity : AppCompatActivity() {
                       }
 
 
-                      Log.e("KONTROL","ZATEN LİSTEDEKI ID:"+zatenListedeOlanMesajID+" ILK GETIRILIEN ID:"+ilkGetirilenMesajID+" mesaj id:"+p0!!.key)
+                      //Log.e("KONTROL","ZATEN LİSTEDEKI ID:"+zatenListedeOlanMesajID+" ILK GETIRILIEN ID:"+ilkGetirilenMesajID+" mesaj id:"+p0!!.key)
 
 
 
@@ -337,7 +337,7 @@ class ChatActivity : AppCompatActivity() {
                 myRecyclerViewAdapter.notifyItemInserted(tumMesajlar.size-1)
                 myRecyclerView.scrollToPosition(tumMesajlar.size-1)
 
-               Log.e("KONTROL","İLK OKUNAN MESAJ ID :"+ilkGetirilenMesajID)
+               //Log.e("KONTROL","İLK OKUNAN MESAJ ID :"+ilkGetirilenMesajID)
 
 
             }
@@ -412,7 +412,7 @@ class ChatActivity : AppCompatActivity() {
 
            if(p0!!.getValue()!=null){
                if(p0!!.getValue() == true){
-                   Log.e("kontrol","value event listener tetiklendi"+p0!!.getValue()!!.toString())
+                   //Log.e("kontrol","value event listener tetiklendi"+p0!!.getValue()!!.toString())
 
                    if(ekrandaSonGorulmeVarMi){
                        sonGorulmeContainer.visibility=View.GONE
@@ -423,7 +423,7 @@ class ChatActivity : AppCompatActivity() {
 
 
                }else if(p0!!.getValue() == false){
-                   Log.e("kontrol","değer false olmus")
+                   //Log.e("kontrol","değer false olmus")
 
                    if(ekrandaSonGorulmeVarMi){
                        sonGorulmeContainer.visibility=View.VISIBLE
@@ -502,7 +502,7 @@ class ChatActivity : AppCompatActivity() {
                 var user = FirebaseAuth.getInstance().currentUser
 
                 if (user == null) {
-                    Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
+                    //Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
                     var intent = Intent(this@ChatActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
@@ -518,14 +518,23 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        activityAcikMi=true
-        Log.e("HATA", "Chat activity on start")
+        if(activityAcikMi==false){
+            activityAcikMi=true
+        }else{
+            activityAcikMi=true
+        }
+
+        //Log.e("HATA", "Chat activity on start")
         mAuth.addAuthStateListener(mAuthListener)
     }
 
     override fun onStop() {
         super.onStop()
-        activityAcikMi=false
+        if(activityAcikMi==true){
+            activityAcikMi=false
+        }else{
+            activityAcikMi=false
+        }
         mRef.child("mesajlar").child(mesajGonderenUserId).child(sohbetEdilecekUserId).removeEventListener(childEventListener)
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener)
@@ -534,14 +543,22 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        activityAcikMi=true
-        Log.e("KONTROL",mYaziyorRef.toString())
+        if(activityAcikMi==false){
+            activityAcikMi=true
+        }else{
+            activityAcikMi=true
+        }
+        //Log.e("KONTROL",mYaziyorRef.toString())
         mDinleYaziyorRef.child("typing").addValueEventListener(yaziyorEventListener)
     }
 
     override fun onPause() {
         super.onPause()
-        activityAcikMi=false
+        if(activityAcikMi==true){
+            activityAcikMi=false
+        }else{
+            activityAcikMi=false
+        }
         mYaziyorRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
 

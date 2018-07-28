@@ -55,7 +55,7 @@ class BegendigimGonderilerFragment : Fragment() {
                     begendigimGonderiSayisi=p0!!.childrenCount.toInt()
                     for(begenilenGonderi in p0!!.children){
                         var begendigimGonderiID= begenilenGonderi.key!!.toString()
-                        Log.e("CCC","begnedigim gönderi id:"+begendigimGonderiID)
+                        //Log.e("CCC","begnedigim gönderi id:"+begendigimGonderiID)
 
                         mRef.child("posts").orderByChild(begendigimGonderiID).limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener{
                             override fun onCancelled(p0: DatabaseError?) {
@@ -69,7 +69,7 @@ class BegendigimGonderilerFragment : Fragment() {
 
                                         var gonderiyiPaylasanUserID=post!!.key
                                         var gonderi=post.child(begendigimGonderiID).getValue(Posts::class.java)!!
-                                        Log.e("CCC","BEGENDİĞİM GÖNDERİ:"+gonderi!!.toString())
+                                        //Log.e("CCC","BEGENDİĞİM GÖNDERİ:"+gonderi!!.toString())
 
                                         mRef.child("users").child(gonderiyiPaylasanUserID).addListenerForSingleValueEvent(object : ValueEventListener{
                                             override fun onCancelled(p0: DatabaseError?) {
@@ -87,7 +87,7 @@ class BegendigimGonderilerFragment : Fragment() {
                                                 begendigimPost.postYuklenmeTarih=gonderi.yuklenme_tarih
 
                                                 begendigimTumGonderiler.add(begendigimPost)
-                                                Log.e("CCC","SON :"+begendigimPost!!.toString())
+                                                //Log.e("CCC","SON :"+begendigimPost!!.toString())
                                                 if(begendigimGonderiSayisi==begendigimTumGonderiler.size){
                                                     listeyiHazirla()
                                                 }
@@ -124,7 +124,7 @@ class BegendigimGonderilerFragment : Fragment() {
     }
 
     private fun listeyiHazirla() {
-        Log.e("CCC","SON :"+begendigimTumGonderiler.size)
+        //Log.e("CCC","SON :"+begendigimTumGonderiler.size)
 
         var myRecyclerview = myView!!.begendigimGonderilerListesi
         var myLayoutManager=GridLayoutManager(this!!.activity,3)

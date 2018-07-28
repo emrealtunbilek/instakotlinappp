@@ -1,11 +1,13 @@
 package com.emrealtunbilek.instakotlinapp.Services
 
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
+import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.emrealtunbilek.instakotlinapp.Generic.UserProfileActivity
@@ -18,6 +20,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import android.os.Build.VERSION_CODES.O
+import android.os.Build.VERSION.SDK_INT
+import android.support.annotation.RequiresApi
+
 
 /**
  * Created by Emre on 14.07.2018.
@@ -35,7 +41,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 var mesajGonderenUserID=p0!!.data.get("secilenUserID")
 
                 if(ChatActivity.activityAcikMi==false && MessagesFragment.fragmentAcikMi==false)
-                yeniMesajBildiriminiGoster("Yeni Mesaj",mesajGonderenUserName +" : "+sonMesaj,mesajGonderenUserID)
+                {
+                    Log.e("FCM","bildirim olusturulacak gönderen user name:"+mesajGonderenUserName)
+                    yeniMesajBildiriminiGoster("Yeni Mesaj",mesajGonderenUserName +" : "+sonMesaj,mesajGonderenUserID)
+                }
+
 
 
             }else if(p0!!.data!!.get("bildirimTuru")!!.toString().equals("yeni_takip_istek")){
@@ -43,7 +53,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 var kimYolladi=p0!!.data.get("kimYolladi")
                 var takipEtmekIsteyenUserID=p0!!.data.get("secilenUserID")
 
-                Log.e("FCM","BİLDİRİM GELDİ : "+p0!!.data)
+                //Log.e("FCM","BİLDİRİM GELDİ : "+p0!!.data)
 
                 yeniTakipBildiriminiGoster("Yeni Takip İsteği",kimYolladi +" seni takip etmek istiyor",takipEtmekIsteyenUserID)
 
@@ -52,10 +62,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 var istegiKabulEdenUserName=p0!!.data.get("kimYolladi")
                 var istegiKabulEdenUserID=p0!!.data.get("secilenUserID")
 
-                Log.e("FCM","BİLDİRİM GELDİ : "+p0!!.data)
+                //Log.e("FCM","BİLDİRİM GELDİ : "+p0!!.data)
 
                 takipIstekKabulEdildiBildiriminiGoster("Takip İsteği Onaylandı",istegiKabulEdenUserName +" kullanıcısı takip isteğini kabul etti",istegiKabulEdenUserID)
-                Log.e("FCM","BİLDİRİM kaydedilecek : "+p0!!.data)
+                //Log.e("FCM","BİLDİRİM kaydedilecek : "+p0!!.data)
                 Bildirimler.bildirimKaydet(istegiKabulEdenUserID!!,Bildirimler.TAKIP_ISTEGI_ONAYLANDI)
             }
 
@@ -67,6 +77,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
     }
+
 
     private fun yeniMesajBildiriminiGoster(bildirimBaslik: String?, bildirimBody: String?, gidilecekUserID: String?) {
 
@@ -88,7 +99,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .build()
 
         var notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        @RequiresApi(O)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("Yeni Mesaj", "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
+
         notificationManager.notify(bildirimIDOlustur(gidilecekUserID!!),builder)
+
+
 
 
 
@@ -126,6 +146,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .build()
 
         var notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        @RequiresApi(O)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("Yeni Takip isteği", "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
         notificationManager.notify(bildirimIDOlustur(takipEtmekIsteyenUserID!!),builder)
 
     }
@@ -149,6 +175,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .build()
 
         var notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        @RequiresApi(O)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel("Takip Başladı", "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
+
         notificationManager.notify(bildirimIDOlustur(takipIsteginiKabulEdenUserID!!),builder)
 
     }

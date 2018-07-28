@@ -115,14 +115,14 @@ class ShareGalleryFragment : Fragment() {
 
                 var bitmap=imgCropView.croppedImage
                 if(bitmap != null){
-                    Log.e("GALERI","BİTMAP OLUSMUS")
+                    //Log.e("GALERI","BİTMAP OLUSMUS")
                     var croppedImagePath=DosyaIslemleri.cropImageandSave(bitmap)
                     EventBus.getDefault().postSticky(EventbusDataEvents.PaylasilacakResmiGonder(croppedImagePath,dosyaTuruResimMi))
                     transaction.replace(R.id.fragmentContainerLayout,ShareNextFragment())
                     transaction.addToBackStack("shareNextFragmentEklendi")
                     transaction.commit()
                 }else{
-                    Log.e("GALERI","BİTMAP olusmamıs")
+                    //Log.e("GALERI","BİTMAP olusmamıs")
                 }
 
 
@@ -206,7 +206,7 @@ class ShareGalleryFragment : Fragment() {
                 imgCropView.visibility=View.GONE
                 dosyaTuruResimMi=false
                 videoView.setVideoURI(Uri.parse("file://"+dosyaYolu))
-                Log.e("HATA","Video : "+"file://"+dosyaYolu)
+                //Log.e("HATA","Video : "+"file://"+dosyaYolu)
                 videoView.start()
 
             }else {
@@ -228,19 +228,19 @@ class ShareGalleryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.e("HATA2"," GALERY FRAGMENTI ON RESUME")
+        //Log.e("HATA2"," GALERY FRAGMENTI ON RESUME")
 
     }
 
     override fun onPause() {
         super.onPause()
-        Log.e("HATA2"," GALERY FRAGMENTI ON PAUSE")
+        //Log.e("HATA2"," GALERY FRAGMENTI ON PAUSE")
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.e("HATA2"," GALERY FRAGMENTI ON DESTROY")
+        //Log.e("HATA2"," GALERY FRAGMENTI ON DESTROY")
     }
 
     //////////////////////////// EVENTBUS /////////////////////////////////

@@ -70,7 +70,7 @@ class SearchStaggeredRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
 
 
         if(dosyaTuru.equals(".mp4")){
-            Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
+            //Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
             holder.videoIcon.visibility=View.VISIBLE
 
             VideodanThumbOlustur(holder).execute(dosyaYolu)
@@ -78,7 +78,7 @@ class SearchStaggeredRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
             holder.setData(kullaniciPostlari.get(position), true)
 
         }else {
-            Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
+            //Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
             holder.videoIcon.visibility=View.GONE
             holder.dosyaProgressBar.visibility=View.VISIBLE
             UniversalImageLoader.setImage(dosyaYolu!!, holder.dosyaResim, holder.dosyaProgressBar,"")

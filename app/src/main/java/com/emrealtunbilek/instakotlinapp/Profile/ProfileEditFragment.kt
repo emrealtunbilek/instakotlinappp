@@ -101,7 +101,7 @@ class ProfileEditFragment : Fragment() {
                         })
                         .addOnFailureListener(object : OnFailureListener{
                             override fun onFailure(p0: Exception) {
-                                Log.e("HATA", p0!!.message)
+                                //Log.e("HATA", p0!!.message)
                                 kullaniciAdiniGuncelle(view,false)
                             }
 

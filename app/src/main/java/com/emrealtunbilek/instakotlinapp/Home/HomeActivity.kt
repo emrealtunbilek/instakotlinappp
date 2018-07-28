@@ -150,12 +150,12 @@ class HomeActivity : AppCompatActivity() {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
 
                         if (report!!.areAllPermissionsGranted()) {
-                            Log.e("HATA", "Tüm izinler verilmiş")
+                            //Log.e("HATA", "Tüm izinler verilmiş")
 
                             EventBus.getDefault().postSticky(EventbusDataEvents.KameraIzinBilgisiGonder(true))
                         }
                         if (report!!.isAnyPermissionPermanentlyDenied) {
-                            Log.e("HATA", "izinlerden birine bidaha sorma denmiş")
+                            //Log.e("HATA", "izinlerden birine bidaha sorma denmiş")
 
                             var builder = AlertDialog.Builder(this@HomeActivity)
                             builder.setTitle("İzin Gerekli")
@@ -188,7 +188,7 @@ class HomeActivity : AppCompatActivity() {
 
                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
 
-                        Log.e("HATA", "izinlerden biri reddedilmiş, kullanıcıyı ikna et")
+                        //Log.e("HATA", "izinlerden biri reddedilmiş, kullanıcıyı ikna et")
 
                         var builder = AlertDialog.Builder(this@HomeActivity)
                         builder.setTitle("İzin Gerekli")
@@ -220,7 +220,7 @@ class HomeActivity : AppCompatActivity() {
                 })
                 .withErrorListener(object : PermissionRequestErrorListener {
                     override fun onError(error: DexterError?) {
-                        Log.e("HATA", error!!.toString())
+                        //Log.e("HATA", error!!.toString())
                     }
 
                 }).check()
@@ -259,7 +259,7 @@ class HomeActivity : AppCompatActivity() {
                 var user = FirebaseAuth.getInstance().currentUser
 
                 if (user == null) {
-                    Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
+                    //Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
                     var intent = Intent(this@HomeActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
@@ -275,7 +275,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA", "HomeActivitydesin")
+        //Log.e("HATA", "HomeActivitydesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 

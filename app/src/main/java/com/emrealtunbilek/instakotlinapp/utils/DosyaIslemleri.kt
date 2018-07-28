@@ -58,25 +58,25 @@ class DosyaIslemleri {
                     //sadece dosyalara bakılır
                     if(klasordekiTumDosyalar[i].isFile){
 
-                        Log.e("HATA","okunan veri bir dosya")
+                        //Log.e("HATA","okunan veri bir dosya")
 
                         //okudugumuz dosyanın telefondaki yeri ve de adını içerir.
                         //files://root/logo.png
                        var okunanDosyaYolu=klasordekiTumDosyalar[i].absolutePath
 
-                        Log.e("HATA","okunan dosya yolu"+okunanDosyaYolu)
+                        //Log.e("HATA","okunan dosya yolu"+okunanDosyaYolu)
 
                        var noktaninSonIndexi= okunanDosyaYolu.lastIndexOf(".")
                         if(noktaninSonIndexi>0){
                             var dosyaTuru=okunanDosyaYolu.substring(noktaninSonIndexi)
 
-                            Log.e("HATA","okunan dosya türü"+dosyaTuru)
+                            //Log.e("HATA","okunan dosya türü"+dosyaTuru)
 
                             if(dosyaTuru!= null && (dosyaTuru.equals(".jpg") || dosyaTuru.equals(".jpeg") || dosyaTuru.equals(".png") || dosyaTuru.equals(".mp4"))){
 
 
                                 tumDosyalar.add(okunanDosyaYolu)
-                                Log.e("HATA","arrayliste eklenen dosya"+okunanDosyaYolu)
+                                //Log.e("HATA","arrayliste eklenen dosya"+okunanDosyaYolu)
                             }
                         }
 
@@ -112,7 +112,7 @@ class DosyaIslemleri {
             var klasordekiDosyalar=dosya.listFiles()
 
             if(klasordekiDosyalar != null && klasordekiDosyalar.size>0){
-                Log.e("GALERI","KLASOR BOS DEGIL"+klasorAdi)
+                //Log.e("GALERI","KLASOR BOS DEGIL"+klasorAdi)
                 return true
             }else return false
 
@@ -143,7 +143,7 @@ class DosyaIslemleri {
 
 
             var yeniDosyaninAdi="cropimage"+System.currentTimeMillis().toString().substring(8,12)+".jpg"
-            Log.e("GALERI","olusan yeni dosyanın adı"+yeniDosyaninAdi)
+            //Log.e("GALERI","olusan yeni dosyanın adı"+yeniDosyaninAdi)
 
             val bytes = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -162,7 +162,7 @@ class DosyaIslemleri {
                     fileOutputStream = FileOutputStream(file)
                     fileOutputStream.write(bytes.toByteArray())
 
-                    Log.e("GALERI","yeni dosyanın absolute path:"+file.absolutePath)
+                    //Log.e("GALERI","yeni dosyanın absolute path:"+file.absolutePath)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -252,7 +252,7 @@ class DosyaIslemleri {
 
         override fun onPostExecute(filePath: String?) {
 
-            Log.e("HATA","yENİ DOSYANIN PATHI : "+filePath)
+            //Log.e("HATA","yENİ DOSYANIN PATHI : "+filePath)
             compressFragment.dismiss()
             (myFragment as ShareNextFragment).uploadStorage(filePath)
             super.onPostExecute(filePath)

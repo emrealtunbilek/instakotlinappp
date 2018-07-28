@@ -160,8 +160,8 @@ class CommentFragment : Fragment() {
             override fun onBindViewHolder(holder: CommentViewHolder, position: Int, model: Comments) {
                 holder.setData(model)
 
-                Log.e("HATA","YORUM YAPILACAK FOTO:"+yorumYapilacakGonderininID)
-                Log.e("HATA","yorum ıd:"+getRef(0).key)
+                //Log.e("HATA","YORUM YAPILACAK FOTO:"+yorumYapilacakGonderininID)
+                //Log.e("HATA","yorum ıd:"+getRef(0).key)
                 //ilk yorum foto paylasırken yapılan acıklama ise begen iconu kaldırılır
                 if(position==0 && (yorumYapilacakGonderininID!!.equals(getRef(0).key))){
                     holder.yorumBegen.visibility=View.INVISIBLE
@@ -273,7 +273,7 @@ class CommentFragment : Fragment() {
 
 
                                 }else {
-                                    Log.e("HATA","KULLANICI BULUNAMADI")
+                                    //Log.e("HATA","KULLANICI BULUNAMADI")
                                 }
                             }
 

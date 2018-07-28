@@ -76,17 +76,17 @@ class TelefonKoduGirFragment : Fragment() {
                 {
                     gelenKod = credential.smsCode!!
                     progressBar.visibility=View.INVISIBLE
-                    Log.e("HATA","on verification completed sms gelmiş:"+ gelenKod)
+                    //Log.e("HATA","on verification completed sms gelmiş:"+ gelenKod)
 
                 }else{
-                    Log.e("HATA","on verification completed sms gelmeyecek")
+                    //Log.e("HATA","on verification completed sms gelmeyecek")
                 }
 
 
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
-                 Log.e("HATA","Hata çıktı: "+e.message)
+                 //Log.e("HATA","Hata çıktı: "+e.message)
                 Toast.makeText(activity,"hata:"+e.message,Toast.LENGTH_SHORT).show()
                 progressBar.visibility=View.INVISIBLE
             }
@@ -95,7 +95,7 @@ class TelefonKoduGirFragment : Fragment() {
                                     token: PhoneAuthProvider.ForceResendingToken?) {
                 verificationID =verificationId!!
                 progressBar.visibility=View.VISIBLE
-                Log.e("HATA","oncodesent çalıştı")
+                //Log.e("HATA","oncodesent çalıştı")
             }
         }
     }
@@ -104,7 +104,7 @@ class TelefonKoduGirFragment : Fragment() {
     internal fun onTelefonNoEvent(kayitBilgileri : EventbusDataEvents.KayitBilgileriniGonder){
 
         gelenTelNo= kayitBilgileri.telNo!!
-        Log.e("emre","Gelen tel no : "+gelenTelNo)
+        //Log.e("emre","Gelen tel no : "+gelenTelNo)
 
     }
 

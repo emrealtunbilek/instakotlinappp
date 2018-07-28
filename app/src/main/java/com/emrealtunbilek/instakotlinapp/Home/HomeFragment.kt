@@ -89,7 +89,7 @@ class HomeFragment : Fragment() {
     private fun tumTakipEttiklerimiGetir() {
 
         tumTakipEttiklerim.add(mUser.uid)
-        Log.e("HATA9", "benim uidim ekleniyor..." + mUser.uid)
+        //Log.e("HATA9", "benim uidim ekleniyor..." + mUser.uid)
 
         mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -103,11 +103,11 @@ class HomeFragment : Fragment() {
                         tumTakipEttiklerim.add(ds.key)
                     }
 
-                    Log.e("HATA", "TÜM TAKIP ETTİKLERİM:" + tumTakipEttiklerim.toString())
+                    //Log.e("HATA", "TÜM TAKIP ETTİKLERİM:" + tumTakipEttiklerim.toString())
                     kullaniciPostlariniGetir()
 
                 } else {
-                    Log.e("HATA9", "hiç takip ettiğim yok,sadece kendi gönderilerimi görücem")
+                    //Log.e("HATA9", "hiç takip ettiğim yok,sadece kendi gönderilerimi görücem")
                     kullaniciPostlariniGetir()
                 }
 
@@ -121,7 +121,7 @@ class HomeFragment : Fragment() {
     private fun kullaniciPostlariniGetir() {
 
         mRef = FirebaseDatabase.getInstance().reference
-        Log.e("ttt","takip edilecek user liste size:"+tumTakipEttiklerim.size+" liste:"+tumTakipEttiklerim)
+        //Log.e("ttt","takip edilecek user liste size:"+tumTakipEttiklerim.size+" liste:"+tumTakipEttiklerim)
         for (i in 0..tumTakipEttiklerim.size - 1) {
 
             var kullaniciID = tumTakipEttiklerim.get(i)
@@ -148,7 +148,7 @@ class HomeFragment : Fragment() {
                             override fun onDataChange(p0: DataSnapshot?) {
 
                                 if (p0!!.hasChildren()) {
-                                    Log.e("HATA", kullaniciID + " idli kişinin fotoları var")
+                                    //Log.e("HATA", kullaniciID + " idli kişinin fotoları var")
                                     for (ds in p0!!.children) {
 
                                         var eklenecekUserPosts = UserPosts()
@@ -161,16 +161,16 @@ class HomeFragment : Fragment() {
                                         eklenecekUserPosts.postYuklenmeTarih = ds.getValue(Posts::class.java)!!.yuklenme_tarih
 
                                         tumGonderiler.add(eklenecekUserPosts)
-                                        Log.e("ttt","kullanıcının tüm gönderileri eklendi, diğer kullanıcıya geç")
+                                        //Log.e("ttt","kullanıcının tüm gönderileri eklendi, diğer kullanıcıya geç")
 
 
 
 
                                     }
                                 }
-                                Log.e("ttt","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
+                                //Log.e("ttt","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
                                 if (tumGonderiler.size>0 && i==(tumTakipEttiklerim.size - 1)){
-                                    Log.e("ttt1","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
+                                    //Log.e("ttt1","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
                                     setupRecyclerView()
                                 }
 
@@ -181,7 +181,7 @@ class HomeFragment : Fragment() {
                         })
                     }else{
                         if (tumGonderiler.size>0 && i==(tumTakipEttiklerim.size - 1)){
-                            Log.e("ttt2","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
+                            //Log.e("ttt2","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
                             setupRecyclerView()
                         }
                     }
@@ -200,7 +200,7 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
 
-        Log.e("HATA", "3333333")
+        //Log.e("HATA", "3333333")
         Collections.sort(tumGonderiler, object : Comparator<UserPosts> {
             override fun compare(o1: UserPosts?, o2: UserPosts?): Int {
                 if (o1!!.postYuklenmeTarih!! > o2!!.postYuklenmeTarih!!) {
@@ -220,8 +220,8 @@ class HomeFragment : Fragment() {
         }
 
 
-        Log.e("XXX", "Tüm gönderi sayısı:" + tumGonderiler.size)
-        Log.e("XXX", "Sayfa basına düşen gönderi sayısı:" + sayfaBasinaTumGonderiler.size)
+        //Log.e("XXX", "Tüm gönderi sayısı:" + tumGonderiler.size)
+        //Log.e("XXX", "Sayfa basına düşen gönderi sayısı:" + sayfaBasinaTumGonderiler.size)
 
         mRecyclerView = fragmentView.recyclerview
         var recyclerAdapter = HomeFragmentRecyclerAdapter(this.activity!!, sayfaBasinaTumGonderiler)
@@ -237,9 +237,9 @@ class HomeFragment : Fragment() {
                 val layoutManager = mRecyclerView!!.layoutManager as CenterLayoutManager
 
                 if (dy > 0 && layoutManager.findLastVisibleItemPosition() == mRecyclerView!!.adapter!!.itemCount - 1) {
-                    Log.e("XXX", "Liste sonuna gelindi, yeni öğeleri getirt")
-                    Log.e("XXX", "Son görülen öğenin pos:" + layoutManager.findLastVisibleItemPosition())
-                    Log.e("XXX", "Listedeki eleman sayısı:" + mRecyclerView!!.adapter!!.itemCount)
+                    //Log.e("XXX", "Liste sonuna gelindi, yeni öğeleri getirt")
+                    //Log.e("XXX", "Son görülen öğenin pos:" + layoutManager.findLastVisibleItemPosition())
+                    //Log.e("XXX", "Listedeki eleman sayısı:" + mRecyclerView!!.adapter!!.itemCount)
                     if (sayfaninSonunaGelindi == false)
                         listeyeYeniElemanlariEkle()
                 }
@@ -255,7 +255,7 @@ class HomeFragment : Fragment() {
 
         if (mRecyclerView != null && mRecyclerView!!.getHandingVideoHolder() != null) {
             mRecyclerView!!.getHandingVideoHolder().stopVideo();
-            Log.e("HATA", "PAUSE CALISIYO")
+            //Log.e("HATA", "PAUSE CALISIYO")
         }
 
         var yeniGetirilecekElemanlarinAltSiniri = sayfaNumarasi * SAYFA_BASINA_GONDERI_SAYISI
@@ -271,7 +271,7 @@ class HomeFragment : Fragment() {
             }
 
         }
-        Log.e("XXX", "" + yeniGetirilecekElemanlarinAltSiniri + " dan " + yeniGetirilecekElemanlarinUstSiniri + " kadar eleman eklendi")
+        //Log.e("XXX", "" + yeniGetirilecekElemanlarinAltSiniri + " dan " + yeniGetirilecekElemanlarinUstSiniri + " kadar eleman eklendi")
         sayfaNumarasi++
     }
 
@@ -296,7 +296,7 @@ class HomeFragment : Fragment() {
 
                 if (user == null) {
 
-                    Log.e("HATA", "Kullanıcı oturum açmamış, ProfileActivitydesin")
+                    //Log.e("HATA", "Kullanıcı oturum açmamış, ProfileActivitydesin")
 
                     var intent = Intent(activity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -317,7 +317,7 @@ class HomeFragment : Fragment() {
         super.onResume()
         if (mRecyclerView != null && mRecyclerView?.getHandingVideoHolder() != null) {
             mRecyclerView!!.getHandingVideoHolder().playVideo();
-            Log.e("HATA", "RESUME CALISIYO")
+            //Log.e("HATA", "RESUME CALISIYO")
         }
 
     }
@@ -327,13 +327,13 @@ class HomeFragment : Fragment() {
         sayfaNumarasi = 0
         if (mRecyclerView != null && mRecyclerView!!.getHandingVideoHolder() != null) {
             mRecyclerView!!.getHandingVideoHolder().stopVideo();
-            Log.e("HATA", "PAUSE CALISIYO")
+            //Log.e("HATA", "PAUSE CALISIYO")
         }
     }
 
     override fun onStart() {
         super.onStart()
-        Log.e("HATA", "HomeFragmenttesin")
+        //Log.e("HATA", "HomeFragmenttesin")
         mAuth.addAuthStateListener(mAuthListener)
     }
 

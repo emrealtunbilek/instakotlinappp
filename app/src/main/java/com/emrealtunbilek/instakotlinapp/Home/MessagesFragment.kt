@@ -169,7 +169,7 @@ class MessagesFragment : Fragment() {
                 var user = FirebaseAuth.getInstance().currentUser
 
                 if (user == null) {
-                    Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
+                    //Log.e("HATA", "Kullanıcı oturum açmamış, HomeActivitydesn")
                     var intent = Intent(activity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
@@ -184,8 +184,9 @@ class MessagesFragment : Fragment() {
     }
 
     override fun onPause() {
-        super.onPause()
         fragmentAcikMi=false
+        super.onPause()
+
         tumKonusmalar.clear()
         if(listenerAtandiMi==true){
             listenerAtandiMi=false
@@ -194,6 +195,14 @@ class MessagesFragment : Fragment() {
 
     }
 
+    override fun onStart() {
+        fragmentAcikMi=true
+        super.onStart()
+    }
+    override fun onStop() {
+        fragmentAcikMi=false
+        super.onStop()
+    }
     override fun onResume() {
         super.onResume()
         fragmentAcikMi=true

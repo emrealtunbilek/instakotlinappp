@@ -46,8 +46,8 @@ class TekGonderiFragment : Fragment() {
 
         myView=inflater.inflate(R.layout.fragment_tek_gonderi, container, false)
 
-        Log.e("CCC","SECİLEN GONDERİ:"+secilenGonderi.toString())
-        Log.e("CCC","SECİLEN GONDERİ videomu :"+videoMu)
+        //Log.e("CCC","SECİLEN GONDERİ:"+secilenGonderi.toString())
+        //Log.e("CCC","SECİLEN GONDERİ videomu :"+videoMu)
 
         var tumLayout = myView as ConstraintLayout
 
@@ -172,7 +172,7 @@ class TekGonderiFragment : Fragment() {
 
                         mRef.child("likes").child(oankiGonderi.postID).child(userID).removeValue()
                         Bildirimler.bildirimKaydet(oankiGonderi.userID!!,Bildirimler.GONDERI_BEGENISI_GERI_CEK,oankiGonderi!!.postID!!)
-                        Log.e("VVV","HA BEGENME gerı cekme BILDIRIM:"+oankiGonderi!!.postID)
+                        //Log.e("VVV","HA BEGENME gerı cekme BILDIRIM:"+oankiGonderi!!.postID)
                         gonderiBegen.setImageResource(R.drawable.ic_like)
 
                     } else {
@@ -183,7 +183,7 @@ class TekGonderiFragment : Fragment() {
                         if(!oankiGonderi.userID!!.equals(userID))
                             Bildirimler.bildirimKaydet(oankiGonderi.userID!!,Bildirimler.GONDERI_BEGENILDI,oankiGonderi!!.postID!!)
 
-                        Log.e("VVV","HA BEGENME BILDIRIM:"+oankiGonderi!!.postID)
+                        //Log.e("VVV","HA BEGENME BILDIRIM:"+oankiGonderi!!.postID)
                         gonderiBegen.setImageResource(R.drawable.ic_begen_kirmizi)
                         mInstaLikeView.start()
                         begenmeSayisi.visibility=View.VISIBLE
@@ -348,19 +348,19 @@ class TekGonderiFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        Log.e("CCC","detach VIDEO DURDURULUR")
+        //Log.e("CCC","detach VIDEO DURDURULUR")
         myView!!.videoView.stopPlayback()
         EventBus.getDefault().unregister(this)
     }
 
     override fun onPause() {
-        Log.e("CCC","ON PAUSE CALISTI VIDEO DURDURULUR")
+        //Log.e("CCC","ON PAUSE CALISTI VIDEO DURDURULUR")
         myView!!.videoView.stopPlayback()
         super.onPause()
     }
 
     override fun onResume() {
-        Log.e("CCC","ON RESUME CALISTI VIDEO DURDURULUR")
+        //Log.e("CCC","ON RESUME CALISTI VIDEO DURDURULUR")
         myView!!.videoView.stopPlayback()
         setupNavigationView()
         super.onResume()

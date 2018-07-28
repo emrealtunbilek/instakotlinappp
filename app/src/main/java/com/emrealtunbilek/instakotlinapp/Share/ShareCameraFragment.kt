@@ -64,7 +64,7 @@ class ShareCameraFragment : Fragment() {
                 transaction.commit()
 
 
-                Log.e("HATA2","cekilen resim buraya kaydedildi :"+cekilenFoto.absolutePath.toString())
+                //Log.e("HATA2","cekilen resim buraya kaydedildi :"+cekilenFoto.absolutePath.toString())
 
 
 
@@ -82,19 +82,19 @@ class ShareCameraFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.e("HATA2"," CAMERA FRAGMENTI ON RESUME")
+        //Log.e("HATA2"," CAMERA FRAGMENTI ON RESUME")
         cameraView!!.start()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.e("HATA2"," CAMERA FRAGMENTI ON PAUSE")
+        //Log.e("HATA2"," CAMERA FRAGMENTI ON PAUSE")
         cameraView!!.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.e("HATA2"," CAMERA FRAGMENTI ON DESTROY")
+        //Log.e("HATA2"," CAMERA FRAGMENTI ON DESTROY")
 
         if(cameraView!=null)
          cameraView!!.destroy()

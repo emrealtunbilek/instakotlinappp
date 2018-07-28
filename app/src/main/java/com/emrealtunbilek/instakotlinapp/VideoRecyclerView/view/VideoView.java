@@ -63,7 +63,7 @@ public class VideoView extends RelativeLayout implements TextureView.SurfaceText
             String proxyUrl = proxy.getProxyUrl(video.getUrlVideo());
             mediaPlayer.setDataSource(proxyUrl);
         } catch (Exception e) {
-            Log.e("HATA BRUADA 2", "HATA"+e.getCause());
+            //Log.e("HATA BRUADA 2", "HATA"+e.getCause());
             e.printStackTrace();
         }
     }
@@ -102,7 +102,7 @@ public class VideoView extends RelativeLayout implements TextureView.SurfaceText
                 }
             });
         } catch (Exception e) {
-            Log.e("HATA BRUADA 1", "HATA"+e.getCause());
+            //Log.e("HATA BRUADA 1", "HATA"+e.getCause());
             e.printStackTrace();
         }
     }

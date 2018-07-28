@@ -75,7 +75,7 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
 
 
         if(dosyaTuru.equals(".mp4")){
-            Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
+            //Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
             holder.videoIcon.visibility=View.VISIBLE
 
             VideodanThumbOlustur(holder).execute(dosyaYolu)
@@ -83,7 +83,7 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
             holder.setData(kullaniciPostlari.get(position), true)
 
         }else {
-            Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
+            //Log.e("DOSYA TURU","DOSYA TURU"+ dosyaTuru)
             holder.videoIcon.visibility=View.GONE
             holder.dosyaProgressBar.visibility=View.VISIBLE
             UniversalImageLoader.setImage(dosyaYolu!!, holder.dosyaResim, holder.dosyaProgressBar,"")
@@ -185,7 +185,7 @@ class ProfilePostGridRecyclerAdapter(var kullaniciPostlari:ArrayList<UserPosts>,
                 }
                 //bu kısım calısıyorsa bu adapter profile activity veya user profile activiyde kullanılmıstır
                 else {
-                    Log.e("ZZZ","Secilen post :"+oankiGonderi.postURL+" video mu:"+videoMu)
+                    //Log.e("ZZZ","Secilen post :"+oankiGonderi.postURL+" video mu:"+videoMu)
                     (myContext as AppCompatActivity).tumlayout.visibility= View.INVISIBLE
                     (myContext as AppCompatActivity).profileContainer.visibility=View.VISIBLE
                     EventBus.getDefault().postSticky(EventbusDataEvents.SecilenGonderiyiGonder(oankiGonderi, videoMu))

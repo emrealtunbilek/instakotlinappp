@@ -392,7 +392,7 @@ class KayitFragment : Fragment() {
             gelenEmail = kayitbilgileri.email!!
 
            // Toast.makeText(activity, "Gelen email : " + gelenEmail, Toast.LENGTH_SHORT).show()
-            Log.e("emre", "Gelen email : " + gelenEmail)
+            //Log.e("emre", "Gelen email : " + gelenEmail)
         } else {
             emailIleKayitIslemi = false
             telNo = kayitbilgileri.telNo!!
