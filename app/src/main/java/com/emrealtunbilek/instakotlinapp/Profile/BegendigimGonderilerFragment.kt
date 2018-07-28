@@ -101,6 +101,8 @@ class BegendigimGonderilerFragment : Fragment() {
 
 
 
+                                }else{
+                                    myView!!.progressBar8.visibility=View.GONE
                                 }
                             }
 
@@ -112,6 +114,8 @@ class BegendigimGonderilerFragment : Fragment() {
 
 
 
+                }else{
+                    myView!!.progressBar8.visibility=View.GONE
                 }
             }
 

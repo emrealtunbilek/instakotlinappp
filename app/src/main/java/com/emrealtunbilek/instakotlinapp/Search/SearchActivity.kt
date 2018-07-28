@@ -179,6 +179,7 @@ class SearchActivity : AppCompatActivity() {
 
         Log.e("kkk","i maximum değeri :"+(takipEttigimUserIDleri.size-1))
 
+
         for (i in 0..takipEttigimUserIDleri.size-1){
 
         mRef.child("users").child(takipEttigimUserIDleri.get(i)).addListenerForSingleValueEvent(object : ValueEventListener{

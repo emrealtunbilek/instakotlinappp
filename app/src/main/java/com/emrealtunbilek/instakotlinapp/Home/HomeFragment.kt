@@ -33,16 +33,16 @@ class HomeFragment : Fragment() {
 
     lateinit var tumGonderiler: ArrayList<UserPosts>
     lateinit var sayfaBasinaTumGonderiler: ArrayList<UserPosts>
-    lateinit var tumTakipEttiklerim:ArrayList<String>
+    lateinit var tumTakipEttiklerim: ArrayList<String>
 
     lateinit var mAuth: FirebaseAuth
     lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     lateinit var mUser: FirebaseUser
     lateinit var mRef: DatabaseReference
-    var mRecyclerView: AutoPlayVideoRecyclerView?=null
+    var mRecyclerView: AutoPlayVideoRecyclerView? = null
     val SAYFA_BASINA_GONDERI_SAYISI = 10
-    var sayfaNumarasi=1
-    var sayfaninSonunaGelindi=false
+    var sayfaNumarasi = 1
+    var sayfaninSonunaGelindi = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
         mRef = FirebaseDatabase.getInstance().reference
         tumGonderiler = ArrayList<UserPosts>()
         sayfaBasinaTumGonderiler = ArrayList<UserPosts>()
-        tumTakipEttiklerim=ArrayList<String>()
+        tumTakipEttiklerim = ArrayList<String>()
 
 
 
@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
 
             tumGonderiler.clear()
             sayfaBasinaTumGonderiler.clear()
-            sayfaninSonunaGelindi=false
+            sayfaninSonunaGelindi = false
             kullaniciPostlariniGetir()
             fragmentView.refreshLayout.setRefreshing(false)
         }
@@ -89,25 +89,25 @@ class HomeFragment : Fragment() {
     private fun tumTakipEttiklerimiGetir() {
 
         tumTakipEttiklerim.add(mUser.uid)
-        Log.e("HATA9","benim uidim ekleniyor..."+mUser.uid)
+        Log.e("HATA9", "benim uidim ekleniyor..." + mUser.uid)
 
-        mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+        mRef.child("following").child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
 
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
-                if(p0!!.getValue()!=null){
+                if (p0!!.getValue() != null) {
 
-                    for(ds in p0!!.children){
+                    for (ds in p0!!.children) {
                         tumTakipEttiklerim.add(ds.key)
                     }
 
-                    Log.e("HATA","TÜM TAKIP ETTİKLERİM:"+tumTakipEttiklerim.toString())
+                    Log.e("HATA", "TÜM TAKIP ETTİKLERİM:" + tumTakipEttiklerim.toString())
                     kullaniciPostlariniGetir()
 
-                }else {
-                    Log.e("HATA9","hiç takip ettiğim yok,sadece kendi gönderilerimi görücem")
+                } else {
+                    Log.e("HATA9", "hiç takip ettiğim yok,sadece kendi gönderilerimi görücem")
                     kullaniciPostlariniGetir()
                 }
 
@@ -120,12 +120,12 @@ class HomeFragment : Fragment() {
 
     private fun kullaniciPostlariniGetir() {
 
-        mRef=FirebaseDatabase.getInstance().reference
+        mRef = FirebaseDatabase.getInstance().reference
+        Log.e("ttt","takip edilecek user liste size:"+tumTakipEttiklerim.size+" liste:"+tumTakipEttiklerim)
+        for (i in 0..tumTakipEttiklerim.size - 1) {
 
-        for (i in 0..tumTakipEttiklerim.size-1){
+            var kullaniciID = tumTakipEttiklerim.get(i)
 
-            var kullaniciID=tumTakipEttiklerim.get(i)
-            Log.e("HATA9",kullaniciID+" idli kullanıcı resimleri getiriliyor")
 
             mRef.child("users").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError?) {
@@ -134,57 +134,57 @@ class HomeFragment : Fragment() {
 
                 override fun onDataChange(p0: DataSnapshot?) {
 
-                   if(p0!!.getValue() != null){
-                       var userID = kullaniciID
-                       var kullaniciAdi = p0!!.getValue(Users::class.java)!!.user_name
-                       var kullaniciFotoURL=p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
+                    if (p0!!.getValue() != null) {
+                        var userID = kullaniciID
+                        var kullaniciAdi = p0!!.getValue(Users::class.java)!!.user_name
+                        var kullaniciFotoURL = p0!!.getValue(Users::class.java)!!.user_detail!!.profile_picture
 
 
-                       mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener{
-                           override fun onCancelled(p0: DatabaseError?) {
+                        mRef.child("posts").child(kullaniciID).addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onCancelled(p0: DatabaseError?) {
 
-                           }
+                            }
 
-                           override fun onDataChange(p0: DataSnapshot?) {
+                            override fun onDataChange(p0: DataSnapshot?) {
 
-                               if(p0!!.hasChildren())
-                               {
-                                   Log.e("HATA",kullaniciID+" idli kişinin fotoları var")
-                                   for (ds in p0!!.children){
+                                if (p0!!.hasChildren()) {
+                                    Log.e("HATA", kullaniciID + " idli kişinin fotoları var")
+                                    for (ds in p0!!.children) {
 
-                                       var eklenecekUserPosts=UserPosts()
-                                       eklenecekUserPosts.userID=userID
-                                       eklenecekUserPosts.userName=kullaniciAdi
-                                       eklenecekUserPosts.userPhotoURL=kullaniciFotoURL
-                                       eklenecekUserPosts.postID=ds.getValue(Posts::class.java)!!.post_id
-                                       eklenecekUserPosts.postURL=ds.getValue(Posts::class.java)!!.file_url
-                                       eklenecekUserPosts.postAciklama=ds.getValue(Posts::class.java)!!.aciklama
-                                       eklenecekUserPosts.postYuklenmeTarih=ds.getValue(Posts::class.java)!!.yuklenme_tarih
+                                        var eklenecekUserPosts = UserPosts()
+                                        eklenecekUserPosts.userID = userID
+                                        eklenecekUserPosts.userName = kullaniciAdi
+                                        eklenecekUserPosts.userPhotoURL = kullaniciFotoURL
+                                        eklenecekUserPosts.postID = ds.getValue(Posts::class.java)!!.post_id
+                                        eklenecekUserPosts.postURL = ds.getValue(Posts::class.java)!!.file_url
+                                        eklenecekUserPosts.postAciklama = ds.getValue(Posts::class.java)!!.aciklama
+                                        eklenecekUserPosts.postYuklenmeTarih = ds.getValue(Posts::class.java)!!.yuklenme_tarih
 
-                                       tumGonderiler.add(eklenecekUserPosts)
-
-                                   }
-                               }else {
-                                   Log.e("HATA",kullaniciID+" idli kişinin fotoları yok")
-                               }
-
-                               Log.e("HATA",kullaniciID+" idli kişinin fotoları var, sayisi:"+tumGonderiler.size)
-
-                               if(i >= tumTakipEttiklerim.size-1){
-                                   if(tumGonderiler.size>0){
-                                       setupRecyclerView()
-                                   }
-
-                               }
-
-
-                           }
-
-                       })
-                   }
+                                        tumGonderiler.add(eklenecekUserPosts)
+                                        Log.e("ttt","kullanıcının tüm gönderileri eklendi, diğer kullanıcıya geç")
 
 
 
+
+                                    }
+                                }
+                                Log.e("ttt","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
+                                if (tumGonderiler.size>0 && i==(tumTakipEttiklerim.size - 1)){
+                                    Log.e("ttt1","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
+                                    setupRecyclerView()
+                                }
+
+
+
+                            }
+
+                        })
+                    }else{
+                        if (tumGonderiler.size>0 && i==(tumTakipEttiklerim.size - 1)){
+                            Log.e("ttt2","gönderiler eklenmiş, tüm kullanıcılar gezilmiş listeyi göster i:"+i+" size:"+tumGonderiler.size)
+                            setupRecyclerView()
+                        }
+                    }
 
 
                 }
@@ -193,19 +193,14 @@ class HomeFragment : Fragment() {
             })
 
 
-
         }
-
-
-
-
 
 
     }
 
     private fun setupRecyclerView() {
 
-
+        Log.e("HATA", "3333333")
         Collections.sort(tumGonderiler, object : Comparator<UserPosts> {
             override fun compare(o1: UserPosts?, o2: UserPosts?): Int {
                 if (o1!!.postYuklenmeTarih!! > o2!!.postYuklenmeTarih!!) {
@@ -214,39 +209,39 @@ class HomeFragment : Fragment() {
             }
         })
 
-        if(tumGonderiler.size>=SAYFA_BASINA_GONDERI_SAYISI){
-            for(i in 0..SAYFA_BASINA_GONDERI_SAYISI-1){
+        if (tumGonderiler.size >= SAYFA_BASINA_GONDERI_SAYISI) {
+            for (i in 0..SAYFA_BASINA_GONDERI_SAYISI - 1) {
                 sayfaBasinaTumGonderiler.add(tumGonderiler.get(i))
             }
-        }else{
-            for(i in 0..tumGonderiler.size-1){
+        } else {
+            for (i in 0..tumGonderiler.size - 1) {
                 sayfaBasinaTumGonderiler.add(tumGonderiler.get(i))
             }
         }
 
 
-        Log.e("XXX","Tüm gönderi sayısı:"+tumGonderiler.size)
-        Log.e("XXX","Sayfa basına düşen gönderi sayısı:"+sayfaBasinaTumGonderiler.size)
+        Log.e("XXX", "Tüm gönderi sayısı:" + tumGonderiler.size)
+        Log.e("XXX", "Sayfa basına düşen gönderi sayısı:" + sayfaBasinaTumGonderiler.size)
 
-        mRecyclerView=fragmentView.recyclerview
-        var recyclerAdapter=HomeFragmentRecyclerAdapter(this.activity!!,sayfaBasinaTumGonderiler)
-        mRecyclerView!!.layoutManager=CenterLayoutManager(this.activity!!,LinearLayoutManager.VERTICAL,false)
-        mRecyclerView!!.adapter=recyclerAdapter
+        mRecyclerView = fragmentView.recyclerview
+        var recyclerAdapter = HomeFragmentRecyclerAdapter(this.activity!!, sayfaBasinaTumGonderiler)
+        mRecyclerView!!.layoutManager = CenterLayoutManager(this.activity!!, LinearLayoutManager.VERTICAL, false)
+        mRecyclerView!!.adapter = recyclerAdapter
 
 
-        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val layoutManager=mRecyclerView!!.layoutManager as CenterLayoutManager
+                val layoutManager = mRecyclerView!!.layoutManager as CenterLayoutManager
 
-                if(dy>0 && layoutManager.findLastVisibleItemPosition() == mRecyclerView!!.adapter!!.itemCount -1){
-                    Log.e("XXX","Liste sonuna gelindi, yeni öğeleri getirt")
-                    Log.e("XXX","Son görülen öğenin pos:"+layoutManager.findLastVisibleItemPosition())
-                    Log.e("XXX","Listedeki eleman sayısı:"+mRecyclerView!!.adapter!!.itemCount)
-                    if(sayfaninSonunaGelindi==false)
-                    listeyeYeniElemanlariEkle()
+                if (dy > 0 && layoutManager.findLastVisibleItemPosition() == mRecyclerView!!.adapter!!.itemCount - 1) {
+                    Log.e("XXX", "Liste sonuna gelindi, yeni öğeleri getirt")
+                    Log.e("XXX", "Son görülen öğenin pos:" + layoutManager.findLastVisibleItemPosition())
+                    Log.e("XXX", "Listedeki eleman sayısı:" + mRecyclerView!!.adapter!!.itemCount)
+                    if (sayfaninSonunaGelindi == false)
+                        listeyeYeniElemanlariEkle()
                 }
 
 
@@ -258,26 +253,25 @@ class HomeFragment : Fragment() {
 
     private fun listeyeYeniElemanlariEkle() {
 
-        if (mRecyclerView != null && mRecyclerView!!.getHandingVideoHolder() != null){
+        if (mRecyclerView != null && mRecyclerView!!.getHandingVideoHolder() != null) {
             mRecyclerView!!.getHandingVideoHolder().stopVideo();
-            Log.e("HATA","PAUSE CALISIYO")
+            Log.e("HATA", "PAUSE CALISIYO")
         }
 
-        var yeniGetirilecekElemanlarinAltSiniri=sayfaNumarasi*SAYFA_BASINA_GONDERI_SAYISI
-        var yeniGetirilecekElemanlarinUstSiniri=(sayfaNumarasi+1)*SAYFA_BASINA_GONDERI_SAYISI -1
-        for(i in yeniGetirilecekElemanlarinAltSiniri .. yeniGetirilecekElemanlarinUstSiniri){
-            if(sayfaBasinaTumGonderiler.size<=tumGonderiler.size-1)
-            {
+        var yeniGetirilecekElemanlarinAltSiniri = sayfaNumarasi * SAYFA_BASINA_GONDERI_SAYISI
+        var yeniGetirilecekElemanlarinUstSiniri = (sayfaNumarasi + 1) * SAYFA_BASINA_GONDERI_SAYISI - 1
+        for (i in yeniGetirilecekElemanlarinAltSiniri..yeniGetirilecekElemanlarinUstSiniri) {
+            if (sayfaBasinaTumGonderiler.size <= tumGonderiler.size - 1) {
                 sayfaBasinaTumGonderiler.add(tumGonderiler.get(i))
                 mRecyclerView!!.adapter.notifyDataSetChanged()
-            }else{
-                sayfaninSonunaGelindi=true
-                sayfaNumarasi=0
+            } else {
+                sayfaninSonunaGelindi = true
+                sayfaNumarasi = 0
                 break
             }
 
         }
-        Log.e("XXX",""+yeniGetirilecekElemanlarinAltSiniri+" dan "+yeniGetirilecekElemanlarinUstSiniri+" kadar eleman eklendi")
+        Log.e("XXX", "" + yeniGetirilecekElemanlarinAltSiniri + " dan " + yeniGetirilecekElemanlarinUstSiniri + " kadar eleman eklendi")
         sayfaNumarasi++
     }
 
@@ -287,7 +281,7 @@ class HomeFragment : Fragment() {
         var fragmentBottomNavView = fragmentView.bottomNavigationView
 
         BottomnavigationViewHelper.setupBottomNavigationView(fragmentBottomNavView)
-        BottomnavigationViewHelper.setupNavigation(activity!!, fragmentBottomNavView,ACTIVITY_NO)
+        BottomnavigationViewHelper.setupNavigation(activity!!, fragmentBottomNavView, ACTIVITY_NO)
         var menu = fragmentBottomNavView.menu
         var menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
@@ -323,16 +317,17 @@ class HomeFragment : Fragment() {
         super.onResume()
         if (mRecyclerView != null && mRecyclerView?.getHandingVideoHolder() != null) {
             mRecyclerView!!.getHandingVideoHolder().playVideo();
-            Log.e("HATA","RESUME CALISIYO")
+            Log.e("HATA", "RESUME CALISIYO")
         }
 
     }
 
     override fun onPause() {
         super.onPause()
-        if (mRecyclerView != null && mRecyclerView!!.getHandingVideoHolder() != null){
+        sayfaNumarasi = 0
+        if (mRecyclerView != null && mRecyclerView!!.getHandingVideoHolder() != null) {
             mRecyclerView!!.getHandingVideoHolder().stopVideo();
-            Log.e("HATA","PAUSE CALISIYO")
+            Log.e("HATA", "PAUSE CALISIYO")
         }
     }
 

@@ -103,6 +103,7 @@ class TakipNewsFragment : Fragment() {
 
 
                                 }else{
+                                    listeyiHazirla()
                                     myView.progressBar4.visibility=View.GONE
                                 }
                             }
@@ -112,6 +113,7 @@ class TakipNewsFragment : Fragment() {
 
                     }
                 }else{
+                    listeyiHazirla()
                     myView.progressBar4.visibility=View.GONE
                 }
 

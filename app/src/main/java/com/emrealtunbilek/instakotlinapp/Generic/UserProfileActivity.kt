@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.hoanganhtuan95ptit.autoplayvideorecyclerview.AutoPlayVideoRecyclerView
+import com.nostra13.universalimageloader.core.ImageLoader
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import org.greenrobot.eventbus.EventBus
 
@@ -50,6 +51,7 @@ class UserProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_user_profile)
 
         setupAuthListener()
+
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!
         mRef = FirebaseDatabase.getInstance().reference
@@ -202,6 +204,7 @@ class UserProfileActivity : AppCompatActivity() {
 
 
     }
+
 
     private fun takipBilgisiniGetir() {
 

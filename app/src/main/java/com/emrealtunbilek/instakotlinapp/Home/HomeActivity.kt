@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import com.emrealtunbilek.instakotlinapp.Generic.UserProfileActivity
 import com.emrealtunbilek.instakotlinapp.Login.LoginActivity
 import com.emrealtunbilek.instakotlinapp.News.NewsActivity
 import com.emrealtunbilek.instakotlinapp.R
@@ -45,11 +46,8 @@ class HomeActivity : AppCompatActivity() {
         setupAuthListener()
         mAuth = FirebaseAuth.getInstance()
 
-
-
-
         initImageLoader()
-
+        setupHomeViewPager()
         if(intent.extras != null){
 
             if(intent.extras.get("secilenUserID") != null){
@@ -57,14 +55,21 @@ class HomeActivity : AppCompatActivity() {
                 var intent=Intent(this,ChatActivity::class.java)
                 intent.putExtra("secilenUserID",secilenUserID)
                 startActivity(intent)
-            }else {
+            }else if(intent.extras.get("gidilecekUserID") != null){
+                var secilenUserID=intent.extras.getString("gidilecekUserID")
+                var intent=Intent(this,UserProfileActivity::class.java)
+                intent.putExtra("secilenUserID",secilenUserID)
+                startActivity(intent)
+            }
+
+            else {
                 var intent=Intent(this,NewsActivity::class.java)
                 intent.putExtra("bildirim","yeni_takip_istegi")
                 startActivity(intent)
             }
         }
 
-        setupHomeViewPager()
+
     }
 
     override fun onResume() {

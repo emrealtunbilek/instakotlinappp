@@ -44,6 +44,58 @@ exports.takipIstegiBildirimiGonder=functions.database.ref("/takip_istekleri/{tak
   });
 });
 
+exports.takipIstegiKabulEdildiBildirimiGonder=functions.database.ref("/takip_istekleri/{takip_edilmek_istenen_user_id}/{takip_etmek_isteyen_user_id}").onDelete((data, context)=>{
+
+  const takipIsteginiKabulEdenUserID = context.params.takip_edilmek_istenen_user_id;
+  const takipIstegiGonderenUserID = context.params.takip_etmek_isteyen_user_id;
+
+  console.log("Takip istegini kabul eden user id :", takipIsteginiKabulEdenUserID);
+  console.log("Takip etmek isteyen userın idsi:", takipIstegiGonderenUserID);
+
+  const takipKontrol=admin.database().ref(`/following/${takipIstegiGonderenUserID}/${takipIsteginiKabulEdenUserID}`).once('value');
+
+  return takipKontrol.then(result=>{
+
+    if(result.exists()){
+
+      const token=admin.database().ref(`/users/${takipIstegiGonderenUserID}/fcm_token`).once('value');
+      const user_name=admin.database().ref(`/users/${takipIsteginiKabulEdenUserID}/user_name`).once('value');
+
+      return token.then(result=>{
+
+        const takipIstegiKabulEdilenUserFCMToken = result.val();
+
+        console.log("Takip istegi kabul edilen userın fcm tokenı :", takipIstegiKabulEdilenUserFCMToken);
+
+        return user_name.then(result =>{
+
+          const takipIsteginiOnaylayanUserName= result.val();
+          console.log("Takip istegini onaylayan userın name değeri :", takipIsteginiOnaylayanUserName);
+
+          const yeniTakipIstegiBildirimi = {
+
+            data : {
+              bildirimTuru  : `takip_istek_kabul_edildi`,
+              kimYolladi    : `${takipIsteginiOnaylayanUserName}`,
+              secilenUserID : `${takipIsteginiKabulEdenUserID}`
+            }
+          };
+
+          return admin.messaging().sendToDevice(takipIstegiKabulEdilenUserFCMToken, yeniTakipIstegiBildirimi).then(result=>{
+            console.log("takip istegi onaylandı bildirimi gönderildi");
+          });
+
+
+
+        });
+      });
+    }
+
+
+  });
+
+});
+
 exports.yeniMesajBildirimiGonder=functions.database.ref("/mesajlar/{mesaj_gonderilen_user_id}/{mesaj_gonderen_user_id}/{yeni_mesaj_id}").onCreate((data, context)=>{
 
 const mesajGonderilenUserID =context.params.mesaj_gonderilen_user_id;

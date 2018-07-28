@@ -57,6 +57,10 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
             Bildirimler.YENI_TAKIP_ISTEGI -> {
                 return Bildirimler.YENI_TAKIP_ISTEGI
             }
+
+            Bildirimler.TAKIP_ISTEGI_ONAYLANDI -> {
+                return Bildirimler.TAKIP_ISTEGI_ONAYLANDI
+            }
             else -> return 0
 
         }
@@ -71,7 +75,7 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
             return GonderiBegendiViewHolder(myView)
 
 
-        } else if (viewType == Bildirimler.TAKIP_ETMEYE_BASLADI) {
+        } else if (viewType == Bildirimler.TAKIP_ETMEYE_BASLADI || viewType == Bildirimler.TAKIP_ISTEGI_ONAYLANDI) {
 
             var myView = LayoutInflater.from(context).inflate(R.layout.tek_satir_takip_basladi_news, parent, false)
 
@@ -100,6 +104,11 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
             Bildirimler.TAKIP_ETMEYE_BASLADI -> {
                 (holder as TakipBasladiViewHolder).setData(yeniSiralanmisListe.get(position))
             }
+
+            Bildirimler.TAKIP_ISTEGI_ONAYLANDI -> {
+                (holder as TakipBasladiViewHolder).setData(yeniSiralanmisListe.get(position))
+            }
+
             Bildirimler.YENI_TAKIP_ISTEGI -> {
                 (holder as TakipIstekViewHolder).setData(yeniSiralanmisListe.get(position))
             }
@@ -210,11 +219,16 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
 
         fun setData(oankiBildirim: BildirimModel) {
 
-            idsiVerilenKullanicininBilgileri(oankiBildirim.user_id, oankiBildirim.time!!)
+            if(oankiBildirim.bildirim_tur==Bildirimler.TAKIP_ISTEGI_ONAYLANDI){
+                idsiVerilenKullanicininBilgileri(oankiBildirim.user_id, oankiBildirim.time!!,1)
+            }else if(oankiBildirim.bildirim_tur==Bildirimler.TAKIP_ETMEYE_BASLADI){
+                idsiVerilenKullanicininBilgileri(oankiBildirim.user_id, oankiBildirim.time!!,2)
+            }
+
 
         }
 
-        private fun idsiVerilenKullanicininBilgileri(user_id: String?, bildirimZamani: Long) {
+        private fun idsiVerilenKullanicininBilgileri(user_id: String?, bildirimZamani: Long, kontrol: Int) {
 
             FirebaseDatabase.getInstance().getReference().child("users").child(user_id).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError?) {
@@ -225,8 +239,14 @@ class SenNewsRecyclerAdapter(var context: Context, var tumBildirimler: ArrayList
 
                     if (p0!!.getValue() != null) {
 
-                        if (!p0!!.child("user_name").getValue().toString().isNullOrEmpty())
-                            bildirim.setText(p0!!.child("user_name").getValue().toString() + " sizi takip etmeye başladı.   " + TimeAgo.getTimeAgoForComments(bildirimZamani))
+                        if (!p0!!.child("user_name").getValue().toString().isNullOrEmpty()){
+                            if(kontrol==1){
+                                bildirim.setText(p0!!.child("user_name").getValue().toString() + " takip isteğinizi onayladı.   " + TimeAgo.getTimeAgoForComments(bildirimZamani))
+
+                            }else if(kontrol==2){
+                                bildirim.setText(p0!!.child("user_name").getValue().toString() + " sizi takip etmeye başladı.   " + TimeAgo.getTimeAgoForComments(bildirimZamani))
+                            }
+                        }
 
 
 

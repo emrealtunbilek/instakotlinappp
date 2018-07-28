@@ -21,6 +21,7 @@ object Bildirimler {
      val GONDERI_BEGENISI_GERI_CEK=6
      val BANA_GELEN_TAKIP_ISTEGINI_SIL=7
      val BIRI_BENI_TAKIBE_BASLADI=8
+     val TAKIP_ISTEGI_ONAYLANDI=9
 
 
     fun bildirimKaydet(bildirimYapanUserID:String, bildirimTuru:Int){
@@ -83,6 +84,8 @@ object Bildirimler {
             }
 
             TAKIP_ETMEYI_BIRAKTI->{
+
+                var silindiMi=false
                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).addListenerForSingleValueEvent(object : ValueEventListener{
                     override fun onCancelled(p0: DatabaseError?) {
 
@@ -96,7 +99,8 @@ object Bildirimler {
                             Log.e("KONTROL",bildirim.toString())
                             if(bildirim.child("bildirim_tur").getValue().toString().toInt() == TAKIP_ETMEYE_BASLADI && bildirim.child("user_id").getValue()!!.equals(mUserID)){
                                 mRef.child("benim_bildirimlerim").child(bildirimYapanUserID).child(okunanBildirimKey).removeValue()
-                                break
+                                silindiMi=true
+
                             }
 
                         }
@@ -105,6 +109,33 @@ object Bildirimler {
 
 
                 })
+
+                mRef.child("benim_bildirimlerim").child(mUserID).addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError?) {
+
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot?) {
+
+                        for (bildirim in p0!!.children){
+
+                            var okunanBildirimKey=bildirim!!.key
+                            Log.e("KONTROL",bildirim.toString())
+                            if(bildirim.child("bildirim_tur").getValue().toString().toInt() == TAKIP_ISTEGI_ONAYLANDI && bildirim.child("user_id").getValue()!!.equals(bildirimYapanUserID)){
+                                mRef.child("benim_bildirimlerim").child(mUserID).child(okunanBildirimKey).removeValue()
+                                silindiMi=true
+
+
+                            }
+
+                        }
+
+                    }
+
+
+                })
+
+
 
                 mRef.child("takip_ettiklerimin_bildirimleri").child(mUserID).addListenerForSingleValueEvent(object : ValueEventListener{
                     override fun onCancelled(p0: DatabaseError?) {
@@ -170,6 +201,18 @@ object Bildirimler {
 
 
             }
+
+            TAKIP_ISTEGI_ONAYLANDI->{
+                var yeniBildirimID=mRef.child("benim_bildirimlerim").child(mUserID).push().key
+                var yeniBildirim=HashMap<String,Any>()
+                yeniBildirim.put("bildirim_tur", TAKIP_ISTEGI_ONAYLANDI)
+                yeniBildirim.put("user_id", bildirimYapanUserID)
+                yeniBildirim.put("time", ServerValue.TIMESTAMP)
+                Log.e("FCM","BİLDİRİM KAYDEDILDI")
+                mRef.child("benim_bildirimlerim").child(mUserID).child(yeniBildirimID).setValue(yeniBildirim)
+            }
+
+
 
 
 
